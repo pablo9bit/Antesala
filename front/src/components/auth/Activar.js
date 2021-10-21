@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import {AuthContext, useAlerta, useRest, Spinner, Link} from "../layout/Imports";
 
 const Activar = (props) => {

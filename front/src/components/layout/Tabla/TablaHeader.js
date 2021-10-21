@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { BotonTituloTabla } from "../FormsElements";
-import { TituloTabla } from "../Estilos";
 import TablaBuscador from "./TablaBuscador";
 
 const TablaHeader = ({
@@ -14,6 +13,7 @@ const TablaHeader = ({
   ordenarFiltrar,
   guardarPaginaActual,
 }) => {
+  
   const SetOrdenar = (campo) => {
     if (campo === campoOrden) {
       if (tipoOrden === "asc") {
@@ -50,7 +50,7 @@ const TablaHeader = ({
   }, [filtros, campoOrden, tipoOrden]);
 
   return (
-    <TituloTabla>
+    <thead className="TituloTabla">
       <tr >
         <th  className="text-center" style={{ fontSize: "16px" }}>
           Acciones
@@ -86,7 +86,7 @@ const TablaHeader = ({
           </th>
         ))}
       </tr>
-    </TituloTabla>
+    </thead>
   );
 };
 

@@ -1,24 +1,19 @@
 import { useReducer } from "react";
-import authReducer from "./AppReducer";
-import authContext from "./AppContext";
-import { clienteAxios } from "../../components/shared/Imports";
+import authReducer from "./AuthReducer";
+import authContext from "./AuthContext";
+import { clienteAxios } from "../../components/layout/Imports";
 
 import {
   LOGIN_EXITO,
   LOGIN_ERROR,
   USUARIO_AUTENTICADO,
   CERRAR_SESION,
-  OBTENER_USUARIOS,
-  ORDENAR_FILTRAR_USUARIOS,
-  ACTUALIZAR_USUARIO,
-  ELIMINAR_USUARIO,
-  SELECCIONAR_USUARIO,
-  IS_OPENED_MODAL,
+
+  
 } from "../../types";
 
 const AppState = (props) => {
   const initialState = {
-    isOpenedModal: false,
     token: sessionStorage.getItem("token"),
     usuario: null,
     autenticado: null,
@@ -180,7 +175,7 @@ const AppState = (props) => {
 
   // MODAL
 
-  const openModal = () => {
+/*   const openModal = () => {
     dispatch({
       type: IS_OPENED_MODAL,
       payload: true,
@@ -197,20 +192,17 @@ const AppState = (props) => {
       });
     }
   };
-
+ */
 
   
   return (
     <authContext.Provider
       value={{
-        isOpenedModal: state.isOpenedModal,
 
         token: state.token,
         usuario: state.usuario,
         autenticado: state.autenticado,
 
-        openModal,
-        closeModal,
         iniciarSesion,
         registrarUsuario,
         usuarioAutenticado,

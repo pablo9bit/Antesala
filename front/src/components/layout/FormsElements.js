@@ -1,6 +1,4 @@
-import React from "react";
-import { Boton, BotonCancelar } from "./Estilos";
-import { BotonTransparente } from "./Estilos";
+import  "./FormsElements.css";
 
 export const Input = ({ sets, onChange }) => {
   const { label, type, name, placeholder, valor } = sets;
@@ -120,9 +118,9 @@ export const ElementForm = ({ sets, onChange }) => {
 export const BotonSubmit = ({ label }) => {
   return (
     <div className="col-sm d-grid gap-2">
-      <Boton type="submit" className="btn btn-block btn-primary">
+      <button type="submit" className="btn btn-block btn-primary">
         {label}
-      </Boton>
+      </button>
     </div>
   );
 };
@@ -133,7 +131,7 @@ export const BotoneraForm = ({ funcionCancelar, valorfuncion }) => {
       <BotonSubmit label="Guardar" />
 
       <div className="col-sm d-grid gap-2">
-        <BotonCancelar
+        <button
           type="button"
           className="btn btn-block btn-secondary"
           onClick={() => {
@@ -141,7 +139,7 @@ export const BotoneraForm = ({ funcionCancelar, valorfuncion }) => {
           }}
         >
           Cerrar
-        </BotonCancelar>
+        </button>
       </div>
     </div>
   );
@@ -227,14 +225,14 @@ export const BotonTituloTabla = ({
 }) => {
   return (
     <>
-      <BotonTransparente
-        className="bg-transparent"
+      <button
+        className="bg-transparent BotonTransparente"
         onClick={() => {
           funcion(param);
         }}
       >
         {label}
-      </BotonTransparente>
+      </button>
       {campoOrden === param ? (
         <i
           className={`fa fa-angle-${

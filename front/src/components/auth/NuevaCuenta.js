@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Boton } from "../layout/Estilos";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext, useAlerta, useRest, Spinner, Link } from "../layout/Imports";
 
 const NuevaCuenta = () => {
@@ -312,9 +311,9 @@ const NuevaCuenta = () => {
             {loading ? <Spinner /> : <MostrarAlerta />}
 
             <div className="form-group">
-              <Boton type="submit" className=" btn btn-block btn-primary">
+              <button type="submit" className=" btn btn-block btn-primary">
                 Registrarme
-              </Boton>
+              </button>
             </div>
           </form>
         

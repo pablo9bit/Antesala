@@ -1,4 +1,3 @@
-import React from "react";
 
 const TablaBuscador = ({ param, onChangeFiltros, quitarFiltro, filtros }) => {
   return (

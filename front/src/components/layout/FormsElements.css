@@ -1,0 +1,103 @@
+.BotonEditar {
+    background-color: #fe2e64;
+    color: white !important;
+    border-radius: 10px;
+  }
+  .BotonEditar:hover {
+    background-color: darkred;
+    color: white !important;
+  }
+  
+  
+  .BotonTransparente {
+    background-color: #f9f9f9 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: #5e5e5e;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .Imagen {
+    margin: 20px;
+  }
+  
+  .ImagenResponsive {
+    width: 300px;
+  
+    @media (max-width: 600px) {
+      width: 90%;
+    }
+  }
+  
+  .DivBorder {
+    border: 1px solid #c00;
+    padding: 5px;
+  }
+  
+  .LiSinPunto {
+    list-style: none;
+  }
+  
+  .Cursiva {
+    font-style: italic;
+  }
+  
+  .BotonCancelar {
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
+  }
+  .BotonCancelar:hover {
+    background-color: #c54436;
+  }
+  
+  .BotonRedondo {
+    background-color: #002653;
+    color: white;
+    border-color: #002653;
+    border-radius: 20px;
+  }
+  .BotonRedondo :hover {
+    background-color: #c54436;
+  }
+  
+  .DivBuscador {
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    height: 150px !important;
+  }
+  
+  .DivformBuscador {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    margin: 0 auto;
+    float: none;
+  }
+  
+  .DivCard {
+    margin-right: 20px;
+    width: 270px;
+    margin-bottom: 10px;
+  }
+  
+  .BotonAceptar {
+    background-color: #002653;
+    color: white;
+    border-color: #002653;
+  }
+  .BotonAceptar :hover {
+    background-color: #c54436;
+  }
+  
+  .BotonQuitar {
+    border: none;
+    background-color: lightgray;
+    color: red;
+    border-radius: 20px;
+    margin: 5px;
+  }
+  

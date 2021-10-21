@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Pagination, TablaHeader, Fila } from "./";
+import "./estilos.css";
 
 const Tabla = ({
   registrosPorPagina,

@@ -8,7 +8,6 @@ import {
   ACTUALIZAR_USUARIO,
   ELIMINAR_USUARIO,
   SELECCIONAR_USUARIO,
-  IS_OPENED_MODAL,
 } from "../../types";
 
 const AppReducer = (state, action) => {
@@ -77,12 +76,12 @@ const AppReducer = (state, action) => {
         ),
         usuarioSeleccionado: action.payload,
       };
-    case IS_OPENED_MODAL:
+/*     case IS_OPENED_MODAL:
       return {
         ...state,
         isOpenedModal: action.payload,
       };
-
+ */
     default:
       return state;
   }

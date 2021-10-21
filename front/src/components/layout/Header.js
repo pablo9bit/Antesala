@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
-import AuthContext from "../../context/autenticacion/authContext";
+import { useContext } from "react";
+import { AuthContext, Link, useHistory } from "./Imports";
 
 const Header = () => {
   const history = useHistory();
@@ -50,27 +49,43 @@ const Header = () => {
             >
               Tutoriales
             </Link>
-            <Link aria-label="Como Empezar" to="/como" className="nav-item nav-link">
+            <Link
+              aria-label="Como Empezar"
+              to="/como"
+              className="nav-item nav-link"
+            >
               Como Empezar
             </Link>
-           {/*  <Link aria-label="Eventos" to="/events" className="nav-item nav-link">
+            {/*  <Link aria-label="Eventos" to="/events" className="nav-item nav-link">
               Eventos
             </Link> */}
-            <Link aria-label="Contactanos" to="/contacto" className="nav-item nav-link">
+            <Link
+              aria-label="Contactanos"
+              to="/contacto"
+              className="nav-item nav-link"
+            >
               Contactanos
             </Link>
-            <Link aria-label="Registrarse" to="/crearcuenta" className="nav-item nav-link">
+            <Link
+              aria-label="Registrarse"
+              to="/crearcuenta"
+              className="nav-item nav-link"
+            >
               Registrarse
             </Link>
           </div>
           <div className="navbar-nav">
             {usuario ? (
               <>
-                <Link aria-label="Mi Perfil" to="/admin" className="nav-item nav-link">
+                <Link
+                  aria-label="Mi Perfil"
+                  to="/admin"
+                  className="nav-item nav-link"
+                >
                   Mi Perfil
                 </Link>
                 <Link
-                aria-label="Cerrar Sesion" 
+                  aria-label="Cerrar Sesion"
                   to=""
                   onClick={() => {
                     cerrarSesion();
@@ -82,7 +97,11 @@ const Header = () => {
                 </Link>
               </>
             ) : (
-              <Link aria-label="Ingresar" to="/login" className="nav-item nav-link">
+              <Link
+                aria-label="Ingresar"
+                to="/login"
+                className="nav-item nav-link"
+              >
                 Ingresar
               </Link>
             )}

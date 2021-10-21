@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Boton } from "../layout/Estilos";
+import { useState, useContext, useEffect } from "react";
 import {AuthContext, useAlerta, useRest, Spinner, Link} from "../layout/Imports";
 
 const RecuperarPassword = (props) => {
@@ -124,9 +123,9 @@ const RecuperarPassword = (props) => {
             {loading ? <Spinner /> : <MostrarAlerta />}
 
             <div className="form-group">
-              <Boton type="submit" className="btn btn-block btn-primary">
+              <button type="submit" className="btn btn-block btn-primary">
                 Cambiar Contraseña
-              </Boton>
+              </button>
             </div>
           </form>
           <div className="text-center">

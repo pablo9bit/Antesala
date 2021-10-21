@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useContext } from "react";
 import "./Footer.css";
-import AuthContext from "../../context/autenticacion/authContext";
+import {AuthContext, Link, useHistory} from "../Imports"
 
 const Footer = () => {
   const history = useHistory();
