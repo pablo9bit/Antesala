@@ -171,28 +171,8 @@ const AppState = (props) => {
       setLoadingLocal(null);
     }
   };
-  
 
-  // MODAL
-
-/*   const openModal = () => {
-    dispatch({
-      type: IS_OPENED_MODAL,
-      payload: true,
-    });
-    console.log("open");
-    window.scrollTo(0, 0);
-  };
-  
-  const closeModal = (cierro) => {
-    if (cierro) {
-      dispatch({
-        type: IS_OPENED_MODAL,
-        payload: false,
-      });
-    }
-  };
- */
+    
 
   
   return (

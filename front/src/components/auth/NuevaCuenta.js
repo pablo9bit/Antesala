@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { AuthContext, useAlerta, Spinner, Link } from "../layout/Imports";
 
 const NuevaCuenta = (props) => {
-
   const tipo = props.match.params.tipo;
 
   const authContext = useContext(AuthContext);
@@ -103,7 +102,6 @@ const NuevaCuenta = (props) => {
           se refiera a su usuario. En caso que no lo complete se usara su nombre
           y apellido.{" "}
         </p>
-        
 
         <div className="form-group">
           <label htmlFor="nombre">Nombre</label>
@@ -133,7 +131,6 @@ const NuevaCuenta = (props) => {
           />
         </div>
 
-      
         <div className="form-group">
           <label htmlFor="telefono">Telefono</label>
           <input
@@ -193,20 +190,24 @@ const NuevaCuenta = (props) => {
         {loadingLocal ? <Spinner /> : <MostrarAlerta />}
 
         <div className="form-group">
+          <p className="text-center">
+            Al ingresar acepta nuestros{" "}
+            <Link to="/terminos" target="_blank">
+              Terminos y Condiciones
+            </Link>
+          </p>
           <button type="submit" className=" btn btn-block btn-primary">
             Registrarme
           </button>
         </div>
         <div className="text-center">
-        <Link aria-label="Ingresar" to={"/login"}>
-          Iniciar Sesión
-        </Link>
-      </div>
-      <br></br>
-      <br></br>
-
+          <Link aria-label="Ingresar" to={"/login"}>
+            Iniciar Sesión
+          </Link>
+        </div>
+        <br></br>
+        <br></br>
       </form>
-
     </div>
   );
 };
