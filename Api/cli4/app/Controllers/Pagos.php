@@ -6,7 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\PagosModel;
 
 
-class Pagos extends BaseTokenController
+class Pagos extends BaseController
 {
 	use ResponseTrait;
 
@@ -223,7 +223,7 @@ class Pagos extends BaseTokenController
 			
 			$id = $request->getGet('id');
 			
-			$model = new Pagos();
+			$model = new PagosModel();
 			$obj = $model->where('id', $id)->first();
 			
 			

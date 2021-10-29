@@ -9,7 +9,7 @@ use App\Models\ProductosRubrosModel;
 use App\Models\SubastasEstadosModel;
 
 
-class Combos extends BaseTokenController
+class Combos extends BaseController
 {
 	use ResponseTrait;
 

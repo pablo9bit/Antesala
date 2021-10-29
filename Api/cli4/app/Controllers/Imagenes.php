@@ -6,7 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\ProductosImagenesModel;
 use App\Models\PagosModel;
 
-class Imagenes extends BaseTokenController
+class Imagenes extends BaseController
 {
 	use ResponseTrait;
 
@@ -120,29 +120,6 @@ class Imagenes extends BaseTokenController
 				
 	}
 
-
-
-	public function crearThumb ($imagen){
-		
-		// thumb
-		
-		//if(file_exists(WRITEPATH.'uploads'.$imagen)){
-			$info = \Config\Services::image('imagick')
-				->withFile($imagen)
-				->getFile()
-				->getProperties(true);
-
-			$xOffset = ($info['width'] / 2) - 25;
-			$yOffset = ($info['height'] / 2) - 25;
-
-			\Config\Services::image('imagick')
-				->withFile($img)
-				->crop(50, 50, $xOffset, $yOffset)
-				->save(WRITEPATH.'uploads', 'thumb_'.$imagen);
-			
-		//}
-		
-	}
 
 
 

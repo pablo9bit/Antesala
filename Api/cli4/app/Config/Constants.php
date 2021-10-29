@@ -14,9 +14,9 @@
 //
 defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
 
-defined('EMPRESA') || define('EMPRESA', 'Remates Ya');
+defined('EMPRESA') || define('EMPRESA', 'Antesala');
 defined('EMAILADMIN') || define('EMAILADMIN', 'gestion.grupoeme@gmail.com');
-defined('URL') || define('URL', 'https://rematesya.com/api/');
+defined('URLSITIO') || define('URLSITIO', 'http://antesala.com.ar/api/cli4/');
 /*
 |--------------------------------------------------------------------------
 | Composer Path

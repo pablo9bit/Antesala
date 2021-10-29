@@ -1,20 +1,7 @@
-import React, { Suspense, useState, lazy } from "react";
+import { Suspense, useState, lazy } from "react";
 import ImgSlideTrap from "./ImgSlideTrap";
-import styled from "@emotion/styled";
 
-const MyYoutubeResponsive = lazy(() => import("../../pages/subasta/videos/YoutubeResponsive"));
-
-
-const LinkTransparencia = styled.a`
-  background-color: #002653;
-  opacity: 0.1;
-  width: 27px;
-
-  :hover {
-    background-color: #c54436;
-    opacity: 0.1;
-  }
-`;
+//const MyYoutubeResponsive = lazy(() => import("../../pages/subasta/videos/YoutubeResponsive"));
 
 const Slider = ({ imagenes, video }) => {
   const [indice, setIndice] = useState(0);
@@ -33,11 +20,12 @@ const Slider = ({ imagenes, video }) => {
     setIndice(pagina);
   };
 
-
   return (
     <>
       {video ? (
-        <Suspense fallback={<div></div>}><MyYoutubeResponsive video={video}/></Suspense>
+        <Suspense fallback={<div></div>}>
+          <MyYoutubeResponsive video={video} />
+        </Suspense>
       ) : null}
       <br></br>
       <div
@@ -57,7 +45,7 @@ const Slider = ({ imagenes, video }) => {
           ))}
         </div>
         {indice > 0 ? (
-          <LinkTransparencia
+          <Link
             onClick={() => {
               paginar("anterior");
             }}
@@ -69,11 +57,11 @@ const Slider = ({ imagenes, video }) => {
               aria-hidden="true"
             ></span>
             <span className="sr-only">Previous</span>
-          </LinkTransparencia>
+          </Link>
         ) : null}
 
         {indice < imagenes.length - 1 ? (
-          <LinkTransparencia
+          <Link
             onClick={() => {
               paginar("siguiente");
             }}
@@ -85,7 +73,7 @@ const Slider = ({ imagenes, video }) => {
               aria-hidden="true"
             ></span>
             <span className="sr-only">Next</span>
-          </LinkTransparencia>
+          </Link>
         ) : null}
       </div>
     </>

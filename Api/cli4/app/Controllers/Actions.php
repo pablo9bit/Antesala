@@ -3,10 +3,8 @@
 namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
-use App\Models\SuscripcionesModel;
 
-
-class Actions extends BaseTokenController
+class Actions extends BaseController
 {
 	use ResponseTrait;
 
@@ -14,89 +12,58 @@ class Actions extends BaseTokenController
 	public function enviarEmail()
 	{
 		$request = service('request');
-		
-		try
-		{
-			$campos= get_object_vars(json_decode($request->getBody()));
+
+		try {
+			$campos = get_object_vars(json_decode($request->getBody()));
 
 			// enviar mail 
-			$message = 'Mensaje: '.$campos['mensaje'].'<br><br>Nombre y Apellido: '.$campos['nya'].'<br><br>Email: '.$campos['email'];
-			$from 	 = 'enviamos.emails@gmail.com';
+			$message = 'Mensaje: ' . $campos['mensaje'] . '<br><br>Telefono: ' . $campos['telefono'] . '<br><br>Email: ' . $campos['email'];
 			$to 	 = EMAILADMIN;
-			$subject = 'EMAIL de '.EMPRESA;
-				
-			$this->_enviarEmail($message, $from, $to, $subject);
+			$subject = 'EMAIL de REMATE54 - ' . $campos['asunto'];
+
+			$this->_enviarEmail($to, $subject, $message);
 			// enviar mail 
 
-			return $this->respondCreated(['msg' => 'Su mensaje fue enviado con Exito']);
-			
-		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
+			return $this->respondCreated(['type' => 'ok', 'msg' => 'Su mensaje fue enviado con Exito']);
+		} catch (\Exception $e) {
+			return $this->fail(['type' => 'error', 'msg' => $e->getMessage()], 400);
 		}
 	}
-	
-	
-	public function Suscribir()	
+
+
+
+	// TEST APLICACION
+
+	public function emailtest()
 	{
-		
-		/* if(!$this->usuario){
-			return $this->fail(['msg' => '0'],400);
-		} */
-		
-		$request = service('request');
-		
-		try
-		{
-			$campos= get_object_vars(json_decode($request->getBody()));
-			$model = new SuscripcionesModel();
 
-			$obj = $model
-					->where('email', strtolower($campos['email']))
-					->first();
+		try {
+			$message = 'Hola Probando';
+			$to 	 = EMAILADMIN;
+			$subject = 'gmail EMAIL de ' . EMPRESA . ' - ' . time();
 
-			if (!$obj) {
-			
-			$data = [
-				'email'		=> strtolower($campos['email']),
-			];
+			$salida = $this->_enviarEmail($to, $subject, $message);
 
-			$producto = $model->insert($data);
-			return $this->respondCreated(['msg' => 'Se Suscribio con Exito']);
-			
-			} else {
-				return $this->fail(['msg' => 'Ya esta Suscripto', ],400);
-			}
-		
+			return $this->respondCreated(['salida' => $salida]);
+		} catch (\Exception $e) {
+			return $this->fail(['type' => 'error', 'msg' => $e->getMessage()], 400);
 		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
-		}
-				
 	}
 
-
-	
-	
 	public function test()
 	{
-		$request = service('request');
-		
-		try
-		{
-			
 
-			return $this->respondCreated(['msg' => 'exito']);
-			
-		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
+		try {
+
+			return $this->respondCreated([
+				'fechaServidor' => date('Y-m-d H:i:s'),
+				'fechaLocal' => $this->Ahora('datetime'),
+				'EmailAdmin' => EMAILADMIN,
+				'Empresa' => EMPRESA,
+				'Url' => URLSITIO,
+			]);
+		} catch (\Exception $e) {
+			return $this->fail(['type' => 'error', 'msg' => $e->getMessage()], 400);
 		}
 	}
-	
-	
-
 }

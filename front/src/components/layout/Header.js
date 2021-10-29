@@ -11,12 +11,12 @@ const Header = () => {
     <>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <Link aria-label="Home" className="navbar-brand" to="/">
-          <img
+         {/*  <img
             src="https://remate54.com/assets/images/Remate54200.png"
             alt="Logo"
             width="150px"
             height="66px"
-          />
+          /> */}
         </Link>
         <button
           type="button"

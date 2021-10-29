@@ -4,23 +4,15 @@ namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuariosModel;
-use Config\Services;
-use Firebase\JWT\JWT;
 
 class Auth extends BaseController
 {
 	use ResponseTrait;
 
-
 	
 	public function auth(){
 		
 		$request = service('request');
-		
-		if ($request->getMethod() !=='post') {
-			return $this->fail(['msg' => 'Metodo Incorrecto'],400);
-		}
-
 
 		try
 		{ 

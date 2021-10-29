@@ -10,7 +10,7 @@ use App\Models\SubastasModel;
 use App\Models\PagosModel;
 
 
-class Products extends BaseTokenController
+class Products extends BaseController
 {
 	use ResponseTrait;
 

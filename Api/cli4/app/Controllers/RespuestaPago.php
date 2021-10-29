@@ -5,7 +5,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\PagosModel;
 
 
-class RespuestaPago extends BaseTokenController 
+class RespuestaPago extends BaseController 
 { 
   
 

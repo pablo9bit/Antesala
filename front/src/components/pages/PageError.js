@@ -1,5 +1,3 @@
-import React from "react";
-import {GoogleAnalytics} from "../layout/Imports";
 
 const PageError = () => {
   

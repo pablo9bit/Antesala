@@ -1,12 +1,14 @@
 import Swal from "sweetalert2";
+import { v4 as uuidv4 } from "uuid";
+
 /* import styled from "@emotion/styled";
 import ReactGA from "react-ga";
 import GoogleAnalytics from "../rutas/GoogleAnalytics";
  */
- import AuthContext from "../../context/auth/AuthContext";
- import AuthState from "../../context/auth/AuthState";
+import AuthContext from "../../context/auth/AuthContext";
+import AuthState from "../../context/auth/AuthState";
 
- /*
+/*
 import SubastaContext from "../../context/subasta/SubastaContext";
 import SubastaState from "../../context/subasta/SubastaState";
 import UsuarioContext from "../../context/usuarios/UsuarioContext";
@@ -40,24 +42,15 @@ import Portal from "./Portal";
 
 //export { ReactGA, GoogleAnalytics };
 export { Link, NavLink, useHistory, Router, Switch, Route, Redirect };
-export { Swal };
+export { Swal, uuidv4 };
 export { clienteAxios, axios };
 //export { format, add };
-export {
-  Tabla,
-  Portal,
-  Layout,
-  ScrollToTop,
-  Spinner,
-};
+export { Tabla, Portal, Layout, ScrollToTop, Spinner };
 
 // contexts
 
- export {
-  AuthContext,
-  AuthState,
-};
+export { AuthContext, AuthState };
 
 // hooks
-
+export { useAlerta };
 //export { useUsuarioAutenticado, useAlerta };

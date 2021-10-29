@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\API\ResponseTrait;
 use Config\Services;
 use Firebase\JWT\JWT;
+use CodeIgniter\I18n\Time;
 
 class BaseController extends \CodeIgniter\Controller
 {
@@ -68,7 +69,6 @@ class BaseController extends \CodeIgniter\Controller
 		return $decoded ;
 	}
 
-	
 	public function _generarToken($user)
 	{
 		// Generar Token
@@ -98,26 +98,7 @@ class BaseController extends \CodeIgniter\Controller
 
 		return $jwt;
 	}
-	
-	public function _enviarEmail($message, $from, $to, $subject){
-	   $email = \Config\Services::email();
-	   $email->setFrom($from, EMPRESA);
-	   $email->setTo($to);
-	   $email->setSubject($subject);
-	   $email->setMessage($message);//your message here
-	   $email->setMailType('html');
-	   $email->setPriority(1);
-	   
-	   //$email->setCC('another@emailHere');//CC
-	   //$email->setBCC('thirdEmail@emialHere');// and BCC
-	   //$filename = '/img/yourPhoto.jpg'; //you can use the App patch 
-	   //$email->attach($filename);
 		
-	   $email->send();
-	   $email->printDebugger(['headers']);
-	}
-	
-	
 	public function _generateCode(){
 		$set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$code = substr(str_shuffle($set), 0, 64);
@@ -130,6 +111,53 @@ class BaseController extends \CodeIgniter\Controller
 
 	}
 	
+	// ENVIO DE EMAIL
+
+	public function _enviarEmail($to, $subject, $message)
+	{
+		return $this->_enviarEmailSMTP($to, $subject, $message);
+	}
+
+	public function _enviarEmailSMTP($to, $subject, $message)
+	{
+		$email = \Config\Services::email();
+		$email->setFrom(EMAILADMIN, EMPRESA);
+		$email->setTo($to);
+		$email->setSubject($subject);
+		$email->setMessage($message); //your message here
+		$email->setMailType('html');
+		$email->setPriority(1);
+
+		$email->send();
+		//$email->printDebugger(['headers']);
+
+
+
+		/* $email = \Config\Services::email();
+		$email->setFrom($from, 'Remate54');
+		$email->setTo($to);
+		$email->setSubject($subject);
+		$email->setMessage($message); //your message here
+		$email->setMailType('html');
+		$email->setPriority(1);
+
+		$email->send();
+		$email->printDebugger(['headers']); */
+	}
+
+
+	public function Ahora($formato)
+	{
+		$hoyD = new Time('now', 'America/Argentina/Cordoba');
+		if($formato === 'date'){
+			$hoy  = $hoyD->toDateString();
+		}else{
+			$hoy  = $hoyD->toDateTimeString();
+		}
+		
+		return $hoy;
+	}
+
 	
 
 }

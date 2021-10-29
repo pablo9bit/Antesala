@@ -5,7 +5,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuariosModel;
 
 
-class Test extends BaseTokenController 
+class Test extends BaseController 
 {
 
 	public function getLink()	

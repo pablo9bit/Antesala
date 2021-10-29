@@ -42,54 +42,10 @@ $routes->post('/auth/enviaractivar/',	'Auth::enviarActivarCuenta');
 
 
 
-//Users
-$routes->post('/users/', 				'User::add');
-$routes->get('/users/', 				'User::getAll');
-$routes->put('/users/', 				'User::update');
-//$routes->put('/users/recuperar', 		'User::updateRecuperarPass');
-
-//Products
-$routes->post('/products/', 			'Products::add');
-$routes->put('/products/', 				'Products::update');
-$routes->delete('/products/',			'Products::remove');
-$routes->get('/products/', 				'Products::getAllUser');
-$routes->get('/products/all/', 			'Products::getAll');
-$routes->get('/product/', 				'Products::get');
-
-//Subastas
-$routes->post('/subastas/add', 			'Subastas::add');
-$routes->get('/Subastas/CronJob', 		'Subastas::CronJobStartEndSubastas');
-$routes->post('/subastas/cancelar', 	'Subastas::cancelar');
-$routes->get('/Subastas/stats', 		'Subastas::getStatsSubasta');
-$routes->get('/Subastas/subastar', 		'Subastas::getSubastar');
-$routes->get('/Subastas/subastarmasivo','Subastas::getSubastarMasivo');
-
-$routes->get('/social/(:any)', 			'Subastas::index/$1');
-
-//subastas oferentes
-$routes->post('/subastasoferentes/solicitar', 	'SubastasOferentes::solicitar');
-$routes->get('/subastasoferentes/formartillero','SubastasOferentes::getAllForMartillero');
-$routes->put('/subastasoferentes/', 			'SubastasOferentes::update');
-$routes->put('/subastasoferentes/masivo', 		'SubastasOferentes::updateMasivo');
-
-//subastas ofertas
-$routes->post('/subastasofertas/ofertar', 		'SubastasOfertas::add');
-
 //Imagenes
 $routes->post('/imagenes/', 			'Imagenes::subir');
 $routes->get('/imagenes/', 				'Imagenes::getAll');
 $routes->delete('/imagenes/', 			'Imagenes::borrar');
-
-//Eventos
-$routes->get('/eventos/', 		'Eventos::getAll');
-$routes->post('/eventos/', 		'Eventos::add');
-$routes->put('/eventos/', 		'Eventos::update');
-$routes->delete('/eventos/', 	'Eventos::remove');
-
-
-
-//pages
-$routes->post('/actions/email', 		'Actions::enviarEmail');
 
 
 /**

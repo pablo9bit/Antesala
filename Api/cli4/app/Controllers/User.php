@@ -6,7 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuariosModel;
 
 
-class User extends BaseTokenController
+class User extends BaseController
 {
 	use ResponseTrait;
 

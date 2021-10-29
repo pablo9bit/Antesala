@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import {AuthContext, useAlerta, useRest, Spinner} from "../layout/Imports";
 
 const CambiarPassword = (props) => {
