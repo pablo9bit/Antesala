@@ -1,10 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  AuthContext,
-  useAlerta,
-  Spinner,
-  Link,
-} from "../layout/Imports";
+import { AuthContext, useAlerta, Spinner, Link } from "../layout/Imports";
+import { LoginConGoogle } from "../layout/FormsElements";
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -13,9 +9,9 @@ const Login = (props) => {
   const { autenticado, iniciarSesion } = authContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
-
-  const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
+
+
 
   useEffect(() => {
     if (autenticado) {
@@ -68,9 +64,9 @@ const Login = (props) => {
   return (
     <div
       className="abs-center"
-      style={{ paddingTop: "10px", paddingBottom: "50px" }}
+      /* style={{ paddingTop: "10px", paddingBottom: "50px" }} */
     >
-      <div className="p-3 form" style={{ width: "400px" }}>
+      <div className="p-3 form" /* style={{ width: "400px" }} */>
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -99,31 +95,15 @@ const Login = (props) => {
             />
           </div>
           {loadingLocal ? <Spinner /> : <MostrarAlerta />}
-          <div className="form-group">
+
+          <div className="row" style={{ padding: "10px" }}>
             <button type="submit" className="btn btn-block btn-primary">
               Ingresar
             </button>
           </div>
         </form>
 
-        <div className="row">
-          <div className="col-md-3">
-            <a
-              className="btn btn-outline-dark"
-              href="/users/googleauth"
-              role="button"
-              style="text-transform:none"
-            >
-              <img
-                width="20px"
-                style="margin-bottom:3px; margin-right:5px"
-                alt="Google sign-in"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
-              />
-              Login with Google
-            </a>
-          </div>
-        </div>
+        <LoginConGoogle />
 
         <div className="text-center">
           <Link aria-label="Obtener Cuenta" to={"/crearcuenta"}>

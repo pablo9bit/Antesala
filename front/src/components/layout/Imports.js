@@ -1,10 +1,19 @@
+import {
+  auth,
+  db,
+  analytics,
+  signInWithGooglePopup,
+  signInWithGoogleRedirect,
+  signInWithEmailAndPassword,
+  registerWithEmailAndPassword,
+  sendPasswordResetEmail,
+  logout,
+  onAuthStateChange,
+} from "./../../config/firebase";
+
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 
-/* import styled from "@emotion/styled";
-import ReactGA from "react-ga";
-import GoogleAnalytics from "../rutas/GoogleAnalytics";
- */
 import AuthContext from "../../context/auth/AuthContext";
 import AuthState from "../../context/auth/AuthState";
 
@@ -30,7 +39,7 @@ import {
 } from "react-router-dom";
 import clienteAxios from "../../config/axios";
 import axios from "axios";
-//import { v4 as uuidv4 } from "uuid";
+
 //import { format, add } from "date-fns";
 
 //import useRest from "../../hooks/useRest";
@@ -40,15 +49,14 @@ import Spinner from "./Spinner/Spinner";
 import Tabla from "./Tabla/Tabla";
 import Portal from "./Portal";
 
-//export { ReactGA, GoogleAnalytics };
 export { Link, NavLink, useHistory, Router, Switch, Route, Redirect };
+export { signInWithGooglePopup, signInWithGoogleRedirect,  onAuthStateChange };
 export { Swal, uuidv4 };
 export { clienteAxios, axios };
 //export { format, add };
 export { Tabla, Portal, Layout, ScrollToTop, Spinner };
 
 // contexts
-
 export { AuthContext, AuthState };
 
 // hooks

@@ -1,13 +1,7 @@
 import Header from "./Header";
 import Footer from "./Footer/Footer";
 
-/* const ContenedorForm = styled.div`
-  @media (min-width: 800px) {
-    width: 95%;
-    margin: auto;
-    min-height: 600px;
-  }
-`; */
+
 
 const Layout = ({ children }) => {
 

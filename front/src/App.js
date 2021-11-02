@@ -4,28 +4,39 @@ import {
   Router,
   Switch,
   Route,
-  AuthState
+  AuthState,
 } from "./components/layout/Imports";
-
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 import PageError from "./components/pages/PageError";
 import CrearCuenta from "./components/auth/NuevaCuenta";
-
+import Login from "./components/auth/Login";
+import { onAuthStateChange } from "./config/firebase";
 
 function App() {
-  return (
-    <AuthState>
-    <Router>
-      <Layout>
-        <ScrollToTop />
-        <Switch>
-          <Route exact path="/" component={PageError} />
-          <Route exact path="/crearCuenta/:tipo" component={CrearCuenta} />
 
-        </Switch>
-      </Layout>
-    </Router>
-    </AuthState>
+  const [user, setUser] = useState({ loggedIn: false });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange();
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  
+  return (
+      <AuthState>
+        <Router>
+          <Layout>
+            <ScrollToTop />
+            <Switch>
+              <Route exact path="/" component={PageError} />
+              <Route exact path="/crearCuenta/:tipo" component={CrearCuenta} />
+              <Route exact path="/ingresar" component={Login} />
+            </Switch>
+          </Layout>
+        </Router>
+      </AuthState>
   );
 }
 

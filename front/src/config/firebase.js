@@ -1,14 +1,7 @@
-// npm install firebase
-//https://www.npmjs.com/package/react-firebase-hooks
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect } from "firebase/auth";
+import "firebase/analytics";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAjmBgZwR1fII9k9BFyja7AzQ2PChpljew",
   authDomain: "usuarios-aa4c6.firebaseapp.com",
@@ -21,17 +14,36 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebase);
-const auth = firebase.auth();
-const db = firebase.firestore();
+const auth = getAuth();
+//const db = firebase.firestore();
 
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
+
+
+const signInWithGooglePopup = async () => {
   try {
-    const res = await auth.signInWithPopup(googleProvider);
-    const user = res.user;
-    const query = await db
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // ...
+        console.log(user);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+    /* const query = await db
       .collection("users")
       .where("uid", "==", user.uid)
       .get();
@@ -42,7 +54,46 @@ const signInWithGoogle = async () => {
         authProvider: "google",
         email: user.email,
       });
-    }
+    } */
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const signInWithGoogleRedirect = async () => {
+  try {
+    signInWithRedirect(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // ...
+      console.log(result);
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
+    /* const query = await db
+      .collection("users")
+      .where("uid", "==", user.uid)
+      .get();
+    if (query.docs.length === 0) {
+      await db.collection("users").add({
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      });
+    } */
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -60,12 +111,12 @@ const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await auth.createUserWithEmailAndPassword(email, password);
     const user = res.user;
-    await db.collection("users").add({
+    /*   await db.collection("users").add({
       uid: user.uid,
       name,
       authProvider: "local",
       email,
-    });
+    }); */
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -83,28 +134,31 @@ const sendPasswordResetEmail = async (email) => {
 const logout = () => {
   auth.signOut();
 };
-const onChange =()=> {
-  auth.onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
-  });
-}
+const onAuthStateChange = () => {
+  try {
+    auth.onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log(uid);
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  } catch {}
+};
 
 export {
+  firebase,
   auth,
-  db,
-  analytics,
-  signInWithGoogle,
+  signInWithGooglePopup,
+  signInWithGoogleRedirect,
   signInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordResetEmail,
   logout,
-  onChange,
+  onAuthStateChange,
 };

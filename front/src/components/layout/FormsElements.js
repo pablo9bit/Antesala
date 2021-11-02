@@ -1,4 +1,5 @@
-import  "./FormsElements.css";
+import "./FormsElements.css";
+import {signInWithGooglePopup, signInWithGoogleRedirect} from "../layout/Imports";
 
 export const Input = ({ sets, onChange }) => {
   const { label, type, name, placeholder, valor } = sets;
@@ -303,6 +304,27 @@ export const TextArea = ({ sets, onChange }) => {
           style={{ borderRadius: "15px" }}
         ></textarea>
       </div>
+    </div>
+  );
+};
+
+export const LoginConGoogle = () => {
+  return (
+    <div className="row" style={{ padding: "10px" }}>
+      <a
+        className="btn btn-outline-dark"
+        role="button"
+        style={{ textTransform: "none" }}
+        onClick={()=>signInWithGoogleRedirect()}
+      >
+        <img
+          width="20px"
+          style={{ marginBottom: "3px", marginRight: "5px" }}
+          alt="Google sign-in"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+        />
+        Login with Google
+      </a>
     </div>
   );
 };
