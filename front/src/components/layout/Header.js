@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { AuthContext, Link, useHistory } from "./Imports";
+import { FirebaseContext, Link, useHistory } from "./Imports";
 
 const Header = () => {
   const history = useHistory();
 
-  const authContext = useContext(AuthContext);
+  const authContext = useContext(FirebaseContext);
   const { usuario, cerrarSesion } = authContext;
 
   return (
@@ -99,7 +99,7 @@ const Header = () => {
             ) : (
               <Link
                 aria-label="Ingresar"
-                to="/login"
+                to="/ingresar"
                 className="nav-item nav-link"
               >
                 Ingresar

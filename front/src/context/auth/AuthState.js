@@ -92,10 +92,11 @@ const AppState = (props) => {
     try {
       setLoadingLocal(true);
       const result = await clienteAxios.get("/auth", "");
-      //console.log(result);
+
+      console.log(result);
       dispatch({
         type: USUARIO_AUTENTICADO,
-        payload: result.data.usuario,
+        payload: result,
       });
       setData(true);
       setLoadingLocal(false);

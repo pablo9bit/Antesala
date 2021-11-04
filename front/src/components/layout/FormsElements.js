@@ -308,14 +308,14 @@ export const TextArea = ({ sets, onChange }) => {
   );
 };
 
-export const LoginConGoogle = () => {
+export const LoginConGoogle = ({funcion}) => {
   return (
     <div className="row" style={{ padding: "10px" }}>
       <a
         className="btn btn-outline-dark"
         role="button"
         style={{ textTransform: "none" }}
-        onClick={()=>signInWithGoogleRedirect()}
+        onClick={()=>funcion()}
       >
         <img
           width="20px"

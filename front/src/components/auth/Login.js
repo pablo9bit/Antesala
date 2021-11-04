@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from "react";
-import { AuthContext, useAlerta, Spinner, Link } from "../layout/Imports";
+import { AuthContext, useAlerta, Spinner, Link, FirebaseContext } from "../layout/Imports";
 import { LoginConGoogle } from "../layout/FormsElements";
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 const Login = (props) => {
-  const authContext = useContext(AuthContext);
+  const authContext = useContext(FirebaseContext);
   const { autenticado, iniciarSesion } = authContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
@@ -103,7 +103,7 @@ const Login = (props) => {
           </div>
         </form>
 
-        <LoginConGoogle />
+        <LoginConGoogle funcion={iniciarSesion}/>
 
         <div className="text-center">
           <Link aria-label="Obtener Cuenta" to={"/crearcuenta"}>

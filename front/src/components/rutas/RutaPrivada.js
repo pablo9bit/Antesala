@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import {useUsuarioAutenticado} from "../shared/Imports";
+import {useUsuarioAutenticado} from "../layout/Imports";
 
 const RutaPrivada = ({ component: Component, ...props }) => {
 

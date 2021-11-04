@@ -16,7 +16,7 @@ let clienteAxios = axios.create(defaultOptions);
 
 // Set the AUTH token for any request
 clienteAxios.interceptors.request.use(function (config) {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   config.headers.Authorization = token ? `Bearer ${token}` : "";
   return config;
 });

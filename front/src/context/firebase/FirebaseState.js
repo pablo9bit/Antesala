@@ -2,21 +2,24 @@ import { useReducer } from "react";
 import authReducer from "./FirebaseReducer";
 import authContext from "./FirebaseContext";
 import {
-  clienteAxios,
-  onAuthStateChange,
-} from "../../components/layout/Imports";
+  auth,
+  provider,
+  signInWithPopup,
+} from "../../config/firebase";
+import { clienteAxios } from "../../components/layout/Imports";
 
 import {
-  LOGIN_EXITO,
-  LOGIN_ERROR,
-  USUARIO_AUTENTICADO,
-  CERRAR_SESION,
+  FB_LOGIN_EXITO,
+  FB_CERRAR_SESION,
+  FB_USUARIO_AUTENTICADO,
+  FB_USUARIO_LOCAL,
 } from "../../types";
 
 const FirebaseState = (props) => {
   const initialState = {
-    token: sessionStorage.getItem("token"),
+    token: null,
     usuario: null,
+    usuarioLocal: null,
     autenticado: null,
   };
 
@@ -24,165 +27,111 @@ const FirebaseState = (props) => {
 
   const iniciarSesion = async () => {
     try {
-      setLoadingLocal(true);
-      const result = await clienteAxios.post("auth", DatosForm);
-      usuarioAutenticado(setLoadingLocal, setData, setError);
-      //console.log(result);
-      setAlerta({
-        msg: result.data.msg,
-        type: result.data.type === "error" ? "error" : "success",
-      });
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          // const credential = GoogleAuthProvider.credentialFromResult(result);
+          // const token = credential.accessToken;
+          // The signed-in user info.
+          // const user = result.user;
+          dispatch({
+            type: FB_LOGIN_EXITO,
+            payload: result,
+          });
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          // const errorCode = error.code;
+          // const errorMessage = error.message;
+          // The email of the user's account used.
+          // const email = error.email;
+          // The AuthCredential type that was used.
+          // const credential = GoogleAuthProvider.credentialFromError(error);
+          dispatch({
+            type: FB_CERRAR_SESION,
+          });
+        });
+    } catch (err) {
       dispatch({
-        type: LOGIN_EXITO,
+        type: FB_CERRAR_SESION,
+      });
+    }
+  };
+
+  const userInfoLocal = async (setLoadingLocal, setData, setError) => {
+    try {
+      setLoadingLocal(true);
+      const result = await clienteAxios.get("/Auth/authUID", "");
+
+      console.log(result);
+      dispatch({
+        type: FB_USUARIO_LOCAL,
         payload: result.data.token,
       });
+      setData(true);
+      setLoadingLocal(false);
     } catch (e) {
-      setLoadingLocal(null);
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      dispatch({
-        type: LOGIN_ERROR,
-        payload: null,
-      });
+      setError(true);
+      setLoadingLocal(false);
     }
   };
 
-  const registrarUsuario = async (
-    DatosForm,
-    setLoadingLocal,
-    setAlerta,
-    LeerForm
-  ) => {
+  const usuarioAutenticado = (setLoadingLocal, setData, setError) => {
     try {
       setLoadingLocal(true);
-      const result = await clienteAxios.post("users", DatosForm);
-      setLoadingLocal(null);
-      setAlerta({ msg: result.data.msg, type: "success" });
-      LeerForm({
-        nombre: "",
-        apellido: "",
-        cuil: "",
-        ciudad: "",
-        provincia: "",
-        matricula: "",
-        email: "",
-        password: "",
-        passconfirmar: "",
-        telefono: "",
-        direccion: "",
-        tipousuario: "1",
-        colegio: "",
-        url: "",
-        alias: "",
-        cdadpublicaciones: "0",
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log(user);
+          dispatch({
+            type: FB_USUARIO_AUTENTICADO,
+            payload: user,
+          });
+          setData(true);
+        } else {
+          setError(true);
+        }
       });
-    } catch (e) {
-      setLoadingLocal(null);
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-    }
-  };
-
-  const usuarioAutenticado = async () => {
-    try {
-      const unsubscribe = onAuthStateChange();
-
-      console.log(unsubscribe);
-      dispatch({
-        type: USUARIO_AUTENTICADO,
-        payload: result.data.usuario,
-      });
-    } catch (e) {
-      dispatch({
-        type: USUARIO_AUTENTICADO,
-        payload: null,
-      });
+      setLoadingLocal(false);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   };
 
   const cerrarSesion = () => {
+    auth.signOut();
     dispatch({
-      type: CERRAR_SESION,
+      type: FB_CERRAR_SESION,
     });
   };
 
-  const activarCuenta = async (code, setLoadingLocal, setAlerta) => {
+  /*   const registrarUsuario = async (name, email, password) => {
     try {
-      setLoadingLocal(true);
-      //console.log(code);
-      const result = await clienteAxios.get("/auth/activar", {
-        params: { id: code },
-      });
-      console.log(result);
-      setLoadingLocal(null);
-      setAlerta({ msg: result.data.msg, type: "success" });
-    } catch (e) {
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      setLoadingLocal(null);
+      const res = await auth.createUserWithEmailAndPassword(email, password);
+      const user = res.user;
+        await db.collection("users").add({
+        uid: user.uid,
+        name,
+        authProvider: "local",
+        email,
+      }); 
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   };
-
-  const olvidePassword = async (DatosForm, setLoadingLocal, setAlerta) => {
-    try {
-      setLoadingLocal(true);
-      const result = await clienteAxios.post("/auth/recuperar", DatosForm);
-      setLoadingLocal(null);
-      setAlerta({ msg: result.data.msg, type: "success" });
-    } catch (e) {
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      setLoadingLocal(null);
-    }
-  };
-
-  const recuperarPassword = async (DatosForm, setLoadingLocal, setAlerta) => {
-    try {
-      setLoadingLocal(true);
-      const result = await clienteAxios.post(
-        "/auth/cambiarRecuperarPassword",
-        DatosForm
-      );
-      setLoadingLocal(null);
-      setAlerta({ msg: result.data.msg, type: "success" });
-    } catch (e) {
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      setLoadingLocal(null);
-    }
-  };
-
-  const cambiarPassword = async (usuario, setLoadingLocal, setAlerta) => {
-    try {
-      setLoadingLocal(true);
-      const resultado = await clienteAxios.put("/users", usuario);
-      //console.log(usuario);
-      setLoadingLocal(null);
-      setAlerta({
-        msg:
-          resultado.data.msg +
-          ". Por razones de Seguridad, se cerro su Sesión. Vuelva a Ingresar",
-        type: "success",
-      });
-      dispatch({
-        type: CERRAR_SESION,
-      });
-    } catch (e) {
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      setLoadingLocal(null);
-    }
-  };
-
+ */
   return (
     <authContext.Provider
       value={{
-        token: state.token,
         usuario: state.usuario,
         autenticado: state.autenticado,
-
+        usuarioLocal: state.userInfoLocal,
+        token: state.token,
+        userInfoLocal,
         iniciarSesion,
-        registrarUsuario,
         usuarioAutenticado,
         cerrarSesion,
-        activarCuenta,
-        recuperarPassword,
-        olvidePassword,
-        cambiarPassword,
       }}
     >
       {props.children}
