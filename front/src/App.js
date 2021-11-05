@@ -25,8 +25,8 @@ function App() {
             <ScrollToTop />
             <Switch>
               <RutaPrivadaInfo exact path="/" component={Home} />
-              <Route exact path="/crearCuenta/:tipo" component={CrearCuenta} />
-              <Route exact path="/ingresar" component={Login} />
+              <Route exact path="/crearCuenta" component={CrearCuenta} />
+              <RutaPrivadaInfo exact path="/ingresar" component={Login} />
             </Switch>
           </Layout>
         </Router>

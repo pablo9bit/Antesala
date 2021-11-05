@@ -9,7 +9,6 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const CERRAR_SESION = 'CERRAR_SESION';
 
 // firebase
-export const FB_LOGIN_EXITO = 'LOGIN_EXITO';
 export const FB_CERRAR_SESION = 'CERRAR_SESION';
 export const FB_USUARIO_AUTENTICADO = 'FB_USUARIO_AUTENTICADO';
 export const FB_USUARIO_LOCAL = 'FB_USUARIO_LOCAL';

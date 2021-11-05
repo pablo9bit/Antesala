@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
 import { AuthContext, useAlerta, Spinner, Link } from "../layout/Imports";
 
-const NuevaCuenta = (props) => {
-  const tipo = props.match.params.tipo;
+const NuevaCuenta = () => {
+ // const tipo = props.match.params.tipo;
 
   const authContext = useContext(AuthContext);
   const { registrarUsuario, ocultarMensaje, mensaje } = authContext;

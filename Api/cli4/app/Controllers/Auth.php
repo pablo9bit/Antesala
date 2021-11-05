@@ -70,13 +70,15 @@ class Auth extends BaseController
 		$request = service('request');
 
 		try {
-			$uid = '';
+
+			$uid = $request->getGet('uid');
+
 			// Consultar base de datos
 			$model = new UsuariosModel();
 			$user = $model->where('uid', $uid)->first();
 
 			if (!$user) {
-				return $this->fail(['msg' => 'Usuario No Existe'], 400);
+				return $this->respondCreated(['msg' => 'Usuario No Existe', 'token' => null]);
 			} else {
 
 				$token = $this->_generarToken($user);
@@ -86,6 +88,50 @@ class Auth extends BaseController
 			return $this->fail(['msg' => $e->getMessage()], 400);
 		}
 	}
+
+
+	public function add()
+	{
+
+		$request = service('request');
+
+		try {
+
+			$campos = get_object_vars(json_decode($request->getBody()));
+			$uid = $campos['uid'];
+
+			$model = new UsuariosModel();
+			$user = $model->where('uid', $uid)->first();
+
+			if (!$user) {
+
+				$data = [
+					'uid'		=> $uid,
+					'nombre' 	=> $campos['nombre'],
+					'apellido' 	=> $campos['apellido'],
+					'telefono'	=> $campos['telefono'],
+					'email'    	=> $campos['email'],
+					'idtipousuario' => $campos['tipousuario'],
+					'idestado'	=> $campos['idestado']
+				];
+
+				$model->insert($data);
+
+				$user = $model->where('uid', $uid)->first();
+				$token = $this->_generarToken($user);
+
+			} else {
+
+				$token = $this->_generarToken($user);
+			}
+
+			return $this->respondCreated(['token' => $token]);
+			
+		} catch (\Exception $e) {
+			return $this->fail(['msg' => $e->getMessage()], 400);
+		}
+	}
+
 
 
 	public function getInfo()

@@ -1,21 +1,17 @@
 import { useReducer } from "react";
 import authReducer from "./FirebaseReducer";
 import authContext from "./FirebaseContext";
-import {
-  auth,
-  provider,
-  signInWithPopup,
-} from "../../config/firebase";
-import { clienteAxios } from "../../components/layout/Imports";
+import { auth, provider, signInWithRedirect } from "../../config/firebase";
+import { clienteAxios, useHistory } from "../../components/layout/Imports";
 
 import {
-  FB_LOGIN_EXITO,
   FB_CERRAR_SESION,
   FB_USUARIO_AUTENTICADO,
   FB_USUARIO_LOCAL,
 } from "../../types";
 
 const FirebaseState = (props) => {
+  const history = useHistory();
   const initialState = {
     token: null,
     usuario: null,
@@ -25,55 +21,38 @@ const FirebaseState = (props) => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  const iniciarSesion = async () => {
-    try {
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          // const credential = GoogleAuthProvider.credentialFromResult(result);
-          // const token = credential.accessToken;
-          // The signed-in user info.
-          // const user = result.user;
-          dispatch({
-            type: FB_LOGIN_EXITO,
-            payload: result,
-          });
-        })
-        .catch((error) => {
-          // Handle Errors here.
-          // const errorCode = error.code;
-          // const errorMessage = error.message;
-          // The email of the user's account used.
-          // const email = error.email;
-          // The AuthCredential type that was used.
-          // const credential = GoogleAuthProvider.credentialFromError(error);
-          dispatch({
-            type: FB_CERRAR_SESION,
-          });
-        });
-    } catch (err) {
-      dispatch({
-        type: FB_CERRAR_SESION,
-      });
+  const iniciarSesionRedirect = async () => {
+    sessionStorage.setItem('action', 'log' );
+    signInWithRedirect(auth, provider).then(()=>{
+      console.log('sing');
     }
+      
+    );
   };
 
-  const userInfoLocal = async (setLoadingLocal, setData, setError) => {
+  const userInfoLocal = async () => {
+    let token = null;
     try {
-      setLoadingLocal(true);
-      const result = await clienteAxios.get("/Auth/authUID", "");
+      const result = await clienteAxios.get("/Auth/authUID", {
+        params: { uid: state.usuario.uid },
+      });
+ 
+    /*   const result = await clienteAxios.post("/Auth/add", {
+        uid: state.usuario.uid,
+        nombre: state.usuario,
+      }); */
 
+      console.log("hola");
+      token = result.data.token;
       console.log(result);
       dispatch({
         type: FB_USUARIO_LOCAL,
         payload: result.data.token,
       });
-      setData(true);
-      setLoadingLocal(false);
-    } catch (e) {
-      setError(true);
-      setLoadingLocal(false);
-    }
+
+     
+    } catch (e) {}
+    return token;
   };
 
   const usuarioAutenticado = (setLoadingLocal, setData, setError) => {
@@ -96,6 +75,7 @@ const FirebaseState = (props) => {
       console.error(err);
       alert(err.message);
     }
+
   };
 
   const cerrarSesion = () => {
@@ -126,10 +106,10 @@ const FirebaseState = (props) => {
       value={{
         usuario: state.usuario,
         autenticado: state.autenticado,
-        usuarioLocal: state.userInfoLocal,
+        usuarioLocal: state.usuarioLocal,
         token: state.token,
         userInfoLocal,
-        iniciarSesion,
+        iniciarSesionRedirect,
         usuarioAutenticado,
         cerrarSesion,
       }}

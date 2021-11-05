@@ -1,5 +1,4 @@
 import "./FormsElements.css";
-import {signInWithGooglePopup, signInWithGoogleRedirect} from "../layout/Imports";
 
 export const Input = ({ sets, onChange }) => {
   const { label, type, name, placeholder, valor } = sets;

@@ -1,5 +1,4 @@
 import {
-  FB_LOGIN_EXITO,
   FB_USUARIO_AUTENTICADO,
   FB_CERRAR_SESION,
   FB_USUARIO_LOCAL
@@ -8,17 +7,14 @@ import {
 const FirebaseReducer = (state, action) => {
   switch (action.type) {
     case FB_USUARIO_LOCAL:
-      localStorage.set('token', action.payload);
+      localStorage.setItem('token', action.payload);
       return {
+        ...state,
         token: action.payload,
       };
     case FB_USUARIO_AUTENTICADO:
       return {
-        autenticado: true,
-        usuario: action.payload,
-      };
-    case FB_LOGIN_EXITO:
-      return {
+        ...state,
         autenticado: true,
         usuario: action.payload,
       };
