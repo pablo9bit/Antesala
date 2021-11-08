@@ -26,7 +26,7 @@ function App() {
             <Switch>
               <RutaPrivadaInfo exact path="/" component={Home} />
               <Route exact path="/crearCuenta" component={CrearCuenta} />
-              <RutaPrivadaInfo exact path="/ingresar" component={Login} />
+              <Route exact path="/ingresar" component={Login} />
             </Switch>
           </Layout>
         </Router>

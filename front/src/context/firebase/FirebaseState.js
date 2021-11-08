@@ -1,7 +1,12 @@
 import { useReducer } from "react";
 import authReducer from "./FirebaseReducer";
 import authContext from "./FirebaseContext";
-import { auth, provider, signInWithRedirect } from "../../config/firebase";
+import {
+  auth,
+  provider,
+  signInWithRedirect,
+  getRedirectResult,
+} from "../../config/firebase";
 import { clienteAxios, useHistory } from "../../components/layout/Imports";
 
 import {
@@ -22,22 +27,45 @@ const FirebaseState = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const iniciarSesionRedirect = async () => {
-    sessionStorage.setItem('action', 'log' );
-    signInWithRedirect(auth, provider).then(()=>{
-      console.log('sing');
-    }
-      
-    );
+    sessionStorage.setItem("action", "iniciarSesionRedirect");
+    signInWithRedirect(auth, provider).then(() => {
+      console.log("sing");
+    });
   };
 
-  const userInfoLocal = async () => {
+  const obtenerInfoLogin = async () => {
+    getRedirectResult(auth)
+      .then((result) => {
+        const user = result.user;
+
+        if (user) {
+          dispatch({
+            type: FB_USUARIO_AUTENTICADO,
+            payload: user,
+          });
+          userInfoLocal(user.uid);
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // The email of the user's account used.
+        // const email = error.email;
+        // The AuthCredential type that was used.
+        // const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
+  const userInfoLocal = async (uid) => {
     let token = null;
     try {
       const result = await clienteAxios.get("/Auth/authUID", {
-        params: { uid: state.usuario.uid },
+        params: { uid },
       });
- 
-    /*   const result = await clienteAxios.post("/Auth/add", {
+
+      /*   const result = await clienteAxios.post("/Auth/add", {
         uid: state.usuario.uid,
         nombre: state.usuario,
       }); */
@@ -49,8 +77,6 @@ const FirebaseState = (props) => {
         type: FB_USUARIO_LOCAL,
         payload: result.data.token,
       });
-
-     
     } catch (e) {}
     return token;
   };
@@ -75,32 +101,17 @@ const FirebaseState = (props) => {
       console.error(err);
       alert(err.message);
     }
-
   };
 
   const cerrarSesion = () => {
+    sessionStorage.removeItem("action");
     auth.signOut();
     dispatch({
       type: FB_CERRAR_SESION,
     });
+    history.push("/ingresar");
   };
 
-  /*   const registrarUsuario = async (name, email, password) => {
-    try {
-      const res = await auth.createUserWithEmailAndPassword(email, password);
-      const user = res.user;
-        await db.collection("users").add({
-        uid: user.uid,
-        name,
-        authProvider: "local",
-        email,
-      }); 
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    }
-  };
- */
   return (
     <authContext.Provider
       value={{
@@ -109,6 +120,7 @@ const FirebaseState = (props) => {
         usuarioLocal: state.usuarioLocal,
         token: state.token,
         userInfoLocal,
+        obtenerInfoLogin,
         iniciarSesionRedirect,
         usuarioAutenticado,
         cerrarSesion,
