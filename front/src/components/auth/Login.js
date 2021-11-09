@@ -23,6 +23,7 @@ const Login = (props) => {
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
+  const [pasos, setPasos] = useState(null);
   const [DatosForm, LeerForm] = useState({
     email: "",
     password: "",
@@ -31,12 +32,12 @@ const Login = (props) => {
   const { email, password } = DatosForm;
 
   useEffect(() => {
-    obtenerInfoLogin();
+    obtenerInfoLogin(setLoadingLocal);
   }, []);
 
   useEffect(() => {
     if (autenticado && !token) {
-      sessionStorage.setItem("action", "registrarLocal");
+      setPasos("registrarLocal");
     }
     if (autenticado && token) {
       if (sessionStorage.getItem("url")) {
@@ -79,18 +80,7 @@ const Login = (props) => {
   };
 
 
-  if (sessionStorage.getItem("action") === "iniciarSesionRedirect")
-    return (
-      <>
-        <Spinner />
-        <div className="text-center">
-          <button onClick={()=>null}>Reintentar</button>
-        </div>
-      </>
-    );
-
-  if (sessionStorage.getItem("action") === "registrarLocal")
-    return <CompletarRegistro />;
+  if (pasos === "registrarLocal") return <CompletarRegistro />;
 
   return (
     <div
@@ -98,8 +88,6 @@ const Login = (props) => {
       /* style={{ paddingTop: "10px", paddingBottom: "50px" }} */
     >
       <div className="p-3 form" /* style={{ width: "400px" }} */>
-        {loadingLocal ? <Spinner /> : <MostrarAlerta />}
-
         {!autenticado ? (
           <>
             <form onSubmit={onSubmit}>

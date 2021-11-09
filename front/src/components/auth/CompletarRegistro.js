@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
-import { FirebaseContext, useAlerta, Spinner, Link } from "../layout/Imports";
+import { FirebaseContext, useAlerta, Spinner } from "../layout/Imports";
 
 const CompletarRegistro = () => {
   const authContext = useContext(FirebaseContext);
-  const { usuario } = authContext;
+  const { usuario, completarRegistro } = authContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
@@ -11,6 +11,10 @@ const CompletarRegistro = () => {
   const [DatosForm, LeerForm] = useState({
     telefono: "",
     tipousuario: "",
+    uid: usuario.uid,
+    nombre: usuario.displayName,
+    apellido: "",
+    email: usuario.email,
   });
 
   const { telefono, tipousuario } = DatosForm;
@@ -30,29 +34,7 @@ const CompletarRegistro = () => {
       return;
     }
 
-    /* const api = {
-      url: "/users",
-      type: "post",
-      datosJson: {
-        nombre,
-        apellido,
-        direccion,
-        cuil,
-        email,
-        password,
-        telefono,
-        tipousuario,
-        matricula,
-        colegio,
-        url,
-        alias,
-        cdadpublicaciones: "0",
-      },
-      getParams: null,
-      funcion: registrarUsuario,
-    };
-
-    load(api); */
+    completarRegistro(DatosForm, setLoadingLocal, setAlerta, LeerForm);
   };
 
   return (
@@ -62,7 +44,9 @@ const CompletarRegistro = () => {
     >
       <form onSubmit={onSubmit} className="p-3 form" style={{ width: "400px" }}>
         <br></br>
-        <h2 className="text-center">{usuario.displayName} Complete su Registro</h2>
+        <h2 className="text-center">
+          {usuario.displayName} Complete su Registro
+        </h2>
         <br></br>
 
         <div className="form-group">
@@ -80,11 +64,11 @@ const CompletarRegistro = () => {
         </div>
         <br></br>
         <div className="form-group">
-        <label htmlFor="tipousuario">Tipo de Usuario</label>
+          <label htmlFor="tipousuario">Tipo de Usuario</label>
           <select
-            name={tipousuario}
+            name="tipousuario"
             className="form-control"
-            id={tipousuario}
+            id="tipousuario"
             onChange={onChange}
             value={tipousuario}
           >

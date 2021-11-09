@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  createUserWithEmailAndPassword
 } from "firebase/auth";
 import "firebase/analytics";
 
@@ -33,21 +34,7 @@ const signInWithEmailAndPassword = async (email, password) => {
     alert(err.message);
   }
 };
-const registerWithEmailAndPassword = async (name, email, password) => {
-  try {
-    // const res = await auth.createUserWithEmailAndPassword(email, password);
-    // const user = res.user;
-    /*   await db.collection("users").add({
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email,
-    }); */
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
+
 const sendPasswordResetEmail = async (email) => {
   try {
     await auth.sendPasswordResetEmail(email);
@@ -68,6 +55,6 @@ export {
   signInWithRedirect,
   getRedirectResult,
   signInWithEmailAndPassword,
-  registerWithEmailAndPassword,
   sendPasswordResetEmail,
+  createUserWithEmailAndPassword,
 };

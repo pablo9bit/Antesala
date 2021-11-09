@@ -85,7 +85,7 @@ class BaseController extends \CodeIgniter\Controller
 			"nombre" => $user->nombre,
 			"estado" => $user->idestado,
 			"tipousuario"=> $user->idtipousuario,
-			"aprobado"=> $user->aprobado
+			"idestado"=> $user->idestado
 		);
 
 				/**
