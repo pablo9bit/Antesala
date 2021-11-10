@@ -11,7 +11,7 @@ class User extends BaseController
 	use ResponseTrait;
 
 
-	public function add()
+/* 	public function add()
 	{
 
 		$request = service('request');
@@ -25,23 +25,18 @@ class User extends BaseController
 			$user = $model->getUserExist($campos['email'], $campos['cuil']);
 
 			if (!$user) {
-
-				$password = $this->_cifer($campos['password']);
-				$code 	= $this->_generateCode();
 				
 				$data = [
+					'uid'		=> $uid,
 					'nombre' 	=> $campos['nombre'],
 					'apellido' 	=> $campos['apellido'],
-					'cuil'		=> $campos['cuil'],
 					'telefono'	=> $campos['telefono'],
-					'direccion'	=> $campos['direccion'],
 					'email'    	=> $campos['email'],
-					'password' 	=> $password,
-					'idtipousuario'=> $campos['tipousuario'],
-					'url'		=> $campos['url'],
-					'matricula' => $campos['matricula'],
-					'code'		=> $code
+					'idtipousuario' => $campos['tipousuario'],
+					'idestado'	=> 2,
+					'aprobado'	=> 1
 				];
+
 			
 				$user = $model->insert($data);
 				
@@ -70,7 +65,7 @@ class User extends BaseController
 		
 	}
 
-
+ */
 	public function update()
 	{
 		$request = service('request');
@@ -227,14 +222,24 @@ class User extends BaseController
 				$model->insert($data);
 
 				$user = $model->where('uid', $uid)->first();
-				$token = $this->_generarToken($user);
+				
+				if($campos['generatoken'] === "si"){
+					$token = $this->_generarToken($user);
+				}else{
+					$token = null;
+				}
 
 			} else {
 
-				$token = $this->_generarToken($user);
+				if($campos['generatoken'] === "si"){
+					$token = $this->_generarToken($user);
+				}else{
+					$token = null;
+				}
+				
 			}
 
-			return $this->respondCreated(['token' => $token]);
+			return $this->respondCreated(['token' => $token, 'msg'=> 'Su Usuario se Creo con Exito']);
 			
 		} catch (\Exception $e) {
 			return $this->fail(['msg' => $e->getMessage()], 400);

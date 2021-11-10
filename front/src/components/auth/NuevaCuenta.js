@@ -17,16 +17,11 @@ const NuevaCuenta = () => {
     apellido: "",
     telefono: "",
     tipousuario: "",
+    generatoken: "no",
   });
 
-  const {
-    nombre,
-    telefono,
-    email,
-    password,
-    confirmar,
-    tipousuario,
-  } = DatosForm;
+  const { nombre, telefono, email, password, confirmar, tipousuario } =
+    DatosForm;
 
   const onChange = (e) => {
     LeerForm({
@@ -49,7 +44,7 @@ const NuevaCuenta = () => {
       setAlerta({ msg: "Todos los campos son obligatorios", class: "danger" });
       return;
     }
-/*     if (!validPassword.test(password)) {
+    if (!validPassword.test(password)) {
       setAlerta({
         msg: "Las contraseñas debe contener al menos una mayúscula (A-Z) y un número (0-9) y tienen que estar conformadas con 6 o más caracteres",
         type: "error",
@@ -59,7 +54,7 @@ const NuevaCuenta = () => {
     if (password.trim() !== confirmar.trim()) {
       setAlerta({ msg: "Los Passwords no coinciden", class: "danger" });
       return;
-    } */
+    }
 
     registrarUsuario(DatosForm, setLoadingLocal, setAlerta, LeerForm);
   };

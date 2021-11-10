@@ -1,9 +1,10 @@
-import { useState, useContext } from "react";
-import { FirebaseContext, useAlerta, Spinner } from "../layout/Imports";
+import { useState, useContext, useEffect } from "react";
+import { FirebaseContext, useAlerta, Spinner, useHistory } from "../layout/Imports";
 
 const CompletarRegistro = () => {
+  const history = useHistory();
   const authContext = useContext(FirebaseContext);
-  const { usuario, completarRegistro } = authContext;
+  const { usuario, completarRegistro, token } = authContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
@@ -15,9 +16,22 @@ const CompletarRegistro = () => {
     nombre: usuario.displayName,
     apellido: "",
     email: usuario.email,
+    generatoken: "si",
   });
 
   const { telefono, tipousuario } = DatosForm;
+
+  useEffect(() => {
+    if (token) {
+      if (sessionStorage.getItem("url")) {
+        const url = sessionStorage.getItem("url");
+        sessionStorage.removeItem("url");
+        history.push(url);
+      } else {
+        history.push("/admin");
+      }
+    }
+  }, [token]);
 
   const onChange = (e) => {
     LeerForm({

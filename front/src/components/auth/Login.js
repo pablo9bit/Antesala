@@ -10,35 +10,28 @@ import { LoginConGoogle } from "../layout/FormsElements";
 import CompletarRegistro from "./CompletarRegistro";
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-const Login = (props) => {
+const Login = () => {
   const history = useHistory();
   const authContext = useContext(FirebaseContext);
-  const {
-    autenticado,
-    token,
-    iniciarSesionRedirect,
-    obtenerInfoLogin,
-    cerrarSesion,
-  } = authContext;
+  const { autenticado, token, iniciarSesionRedirect, obtenerInfoLogin } =
+    authContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
-  const [pasos, setPasos] = useState(null);
   const [DatosForm, LeerForm] = useState({
     email: "",
     password: "",
+    generatoken: "si",
   });
 
   const { email, password } = DatosForm;
 
   useEffect(() => {
-    obtenerInfoLogin(setLoadingLocal);
+    obtenerInfoLogin(setLoadingLocal, history);
   }, []);
 
   useEffect(() => {
-    if (autenticado && !token) {
-      setPasos("registrarLocal");
-    }
+    
     if (autenticado && token) {
       if (sessionStorage.getItem("url")) {
         const url = sessionStorage.getItem("url");
@@ -79,78 +72,76 @@ const Login = (props) => {
     }
   };
 
+    return (
+      <div
+        className="abs-center"
+        /* style={{ paddingTop: "10px", paddingBottom: "50px" }} */
+      >
+        <div className="p-3 form" /* style={{ width: "400px" }} */>
+          {!autenticado ? (
+            <>
+              <form onSubmit={onSubmit}>
+                <br></br>
+                <h2 className="text-center">ingresar a Antesala</h2>
+                <br></br>
 
-  if (pasos === "registrarLocal") return <CompletarRegistro />;
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    id="email"
+                    aria-describedby="emailHelp"
+                    placeholder="Ingrese su Email"
+                    onChange={onChange}
+                    value={email}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Contraseña</label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    className="form-control"
+                    aria-describedby="emailHelp"
+                    placeholder="Ingrese su Contraseña"
+                    onChange={onChange}
+                    value={password}
+                  />
+                </div>
+                {loadingLocal ? <Spinner /> : <MostrarAlerta />}
 
-  return (
-    <div
-      className="abs-center"
-      /* style={{ paddingTop: "10px", paddingBottom: "50px" }} */
-    >
-      <div className="p-3 form" /* style={{ width: "400px" }} */>
-        {!autenticado ? (
-          <>
-            <form onSubmit={onSubmit}>
-              <br></br>
-              <h2 className="text-center">ingresar a Antesala</h2>
-              <br></br>
+                <div className="row" style={{ padding: "10px" }}>
+                  <button type="submit" className="btn btn-block btn-primary">
+                    Ingresar
+                  </button>
+                </div>
+              </form>
 
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  placeholder="Ingrese su Email"
-                  onChange={onChange}
-                  value={email}
-                />
+              <LoginConGoogle funcion={iniciarSesionRedirect} />
+              <div className="text-center">
+                Al ingresar acepta nuestros{" "}
+                <Link to="/terminos" target="_blank">
+                  Terminos y Condiciones
+                </Link>
               </div>
-              <div className="form-group">
-                <label htmlFor="password">Contraseña</label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  className="form-control"
-                  aria-describedby="emailHelp"
-                  placeholder="Ingrese su Contraseña"
-                  onChange={onChange}
-                  value={password}
-                />
+              <div className="text-center">
+                <Link aria-label="Obtener Cuenta" to={"/crearcuenta"}>
+                  Obtener Cuenta
+                </Link>{" "}
+                -{" "}
+                <Link aria-label="Olvide mi Contraseña" to={"/olvide"}>
+                  Olvide mi Contraseña
+                </Link>
               </div>
-              {loadingLocal ? <Spinner /> : <MostrarAlerta />}
-
-              <div className="row" style={{ padding: "10px" }}>
-                <button type="submit" className="btn btn-block btn-primary">
-                  Ingresar
-                </button>
-              </div>
-            </form>
-
-            <LoginConGoogle funcion={iniciarSesionRedirect} />
-            <div className="text-center">
-              Al ingresar acepta nuestros{" "}
-              <Link to="/terminos" target="_blank">
-                Terminos y Condiciones
-              </Link>
-            </div>
-            <div className="text-center">
-              <Link aria-label="Obtener Cuenta" to={"/crearcuenta"}>
-                Obtener Cuenta
-              </Link>{" "}
-              -{" "}
-              <Link aria-label="Olvide mi Contraseña" to={"/olvide"}>
-                Olvide mi Contraseña
-              </Link>
-            </div>
-          </>
-        ) : null}
+            </>
+          ) : null}
+        </div>
       </div>
-    </div>
-  );
+    );
+
 };
 
 export default Login;

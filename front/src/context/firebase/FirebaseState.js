@@ -6,9 +6,9 @@ import {
   provider,
   signInWithRedirect,
   getRedirectResult,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
 } from "../../config/firebase";
-import { clienteAxios, useHistory } from "../../components/layout/Imports";
+import { clienteAxios } from "../../components/layout/Imports";
 
 import {
   FB_CERRAR_SESION,
@@ -17,7 +17,6 @@ import {
 } from "../../types";
 
 const FirebaseState = (props) => {
-  const history = useHistory();
   const initialState = {
     token: null,
     usuario: null,
@@ -34,19 +33,18 @@ const FirebaseState = (props) => {
     });
   };
 
-  const obtenerInfoLogin = async (setLoadingLocal) => {
+  const obtenerInfoLogin = async (setLoadingLocal, history) => {
     try {
       setLoadingLocal(true);
       getRedirectResult(auth)
         .then((result) => {
           const user = result.user;
-
           if (user) {
             dispatch({
               type: FB_USUARIO_AUTENTICADO,
               payload: user,
             });
-            userInfoLocal(user.uid);
+            userInfoLocal(user.uid, history);
           }
           setLoadingLocal(false);
         })
@@ -66,20 +64,19 @@ const FirebaseState = (props) => {
     }
   };
 
-  const userInfoLocal = async (uid) => {
+  const userInfoLocal = async (uid, history) => {
     let token = null;
     try {
       const result = await clienteAxios.get("/Auth/authUID", {
         params: { uid },
       });
 
-      /*   const result = await clienteAxios.post("/Auth/add", {
-        uid: state.usuario.uid,
-        nombre: state.usuario,
-      }); */
-
-      console.log("hola");
       token = result.data.token;
+      console.log("hola", token);
+
+      if (!result.data.token) {
+        history.push("/completarRegistro");
+      }
       console.log(result);
       dispatch({
         type: FB_USUARIO_LOCAL,
@@ -159,17 +156,36 @@ const FirebaseState = (props) => {
     LeerForm
   ) => {
     try {
+      setAlerta(null);
       setLoadingLocal(true);
-      const res = await auth.createUserWithEmailAndPassword(
-        DatosForm.email,
-        DatosForm.password
-      );
-      const user = res.user;
-      console.log(user.uid);
-      DatosForm.uid = user.uid;
-      const result = await clienteAxios.post("users/add", DatosForm);
+      createUserWithEmailAndPassword(auth, DatosForm.email, DatosForm.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          DatosForm.uid = user.uid;
+          registroUsuarioLocal(DatosForm, setLoadingLocal, setAlerta, LeerForm);
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
+            setAlerta({ msg: "El usuario ya Existe", type: "danger" });
+          }
+          setLoadingLocal(null);
+        });
+    } catch (e) {
       setLoadingLocal(null);
-      setAlerta({ msg: result.data.msg, type: "success" });
+    }
+  };
+
+  const registroUsuarioLocal = async (
+    DatosForm,
+    setLoadingLocal,
+    setAlerta,
+    LeerForm
+  ) => {
+    try {
+      setLoadingLocal(true);
+      clienteAxios.post("User/completarregistro", DatosForm);
+      setAlerta({ msg: "Se Creo el Usuario con Exito", type: "success" });
       LeerForm({
         email: "",
         password: "",
@@ -179,8 +195,10 @@ const FirebaseState = (props) => {
         telefono: "",
         tipousuario: "",
       });
-    } catch (e) {
       setLoadingLocal(null);
+    } catch (error) {
+      setLoadingLocal(null);
+      setAlerta({ msg: "Hubo un Error", type: "danger" });
     }
   };
 
