@@ -37,6 +37,20 @@ const Dashboard = () => {
       </div>
       <div className="card" style={{ width: "18rem", marginLeft: "20px" }}>
         <img
+          src="/assets/images/expectadores.jpg"
+          className="card-img-top"
+          alt="..."
+        />
+        <div className="card-body">
+          <h5 className="card-title">Expectadores</h5>
+          <h2 className="card-text">1500</h2>
+          <div className="row" style={{ padding: "10px" }}>
+            {/* <button className="btn btn-block btn-primary">Ver Detalle</button> */}
+          </div>
+        </div>
+      </div>
+      <div className="card" style={{ width: "18rem", marginLeft: "20px" }}>
+        <img
           src="/assets/images/tickets.jpg"
           className="card-img-top"
           alt="..."

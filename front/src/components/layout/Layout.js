@@ -1,5 +1,6 @@
 import Header from "./Headers/Header";
 import Footer from "./Footer/Footer";
+import BtnWhatsApp from "./BtnWhatsApp/BtnWhatsApp";
 
 const Layout = ({ children }) => {
   const mostrarEntorno = () => {
@@ -20,6 +21,7 @@ const Layout = ({ children }) => {
         <div>{children}</div>
       </div>
       <Footer />
+      <BtnWhatsApp />
     </>
   );
 };
