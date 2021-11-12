@@ -7,12 +7,15 @@ import {
   signInWithRedirect,
   getRedirectResult,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "../../config/firebase";
 import { clienteAxios } from "../../components/layout/Imports";
 
 import {
   FB_CERRAR_SESION,
   FB_USUARIO_AUTENTICADO,
+  FB_USUARIO_AUTENTICADO_LOCAL,
   FB_USUARIO_LOCAL,
 } from "../../types";
 
@@ -29,8 +32,39 @@ const FirebaseState = (props) => {
   const iniciarSesionRedirect = async () => {
     sessionStorage.setItem("action", "iniciarSesionRedirect");
     signInWithRedirect(auth, provider).then(() => {
-      console.log("sing");
+      //console.log("sing");
     });
+  };
+
+  const iniciarSesionEmailAndPass = async (
+    DatosForm,
+    setLoadingLocal,
+    setAlerta,
+    history
+  ) => {
+    try {
+      setLoadingLocal(true);
+      signInWithEmailAndPassword(auth, DatosForm.email, DatosForm.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user) {
+            dispatch({
+              type: FB_USUARIO_AUTENTICADO,
+              payload: user,
+            });
+            userInfoLocal(user.uid, history);
+          }
+          setLoadingLocal(null);
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage === "Firebase: Error (auth/user-not-found).") {
+            setAlerta({ msg: "No se Encuentra Registrado.", type: "danger" });
+          }
+          console.log(errorMessage);
+          setLoadingLocal(null);
+        });
+    } catch (error) {}
   };
 
   const obtenerInfoLogin = async (setLoadingLocal, history) => {
@@ -50,14 +84,6 @@ const FirebaseState = (props) => {
         })
         .catch((error) => {
           setLoadingLocal(false);
-          // Handle Errors here.
-          // const errorCode = error.code;
-          // const errorMessage = error.message;
-          // The email of the user's account used.
-          // const email = error.email;
-          // The AuthCredential type that was used.
-          // const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
         });
     } catch (e) {
       setLoadingLocal(false);
@@ -72,16 +98,36 @@ const FirebaseState = (props) => {
       });
 
       token = result.data.token;
-      console.log("hola", token);
 
-      if (!result.data.token) {
+      if (!token) {
         history.push("/completarRegistro");
+      } else {
+        console.log(result);
+        dispatch({
+          type: FB_USUARIO_LOCAL,
+          payload: token,
+        });
+
+        if (sessionStorage.getItem("url")) {
+          const url = sessionStorage.getItem("url");
+          sessionStorage.removeItem("url");
+          history.push(url);
+        } else {
+
+          switch (result.data.usuario.tipousuario) {
+            case "9":
+              history.push("/admin");
+              break;
+              
+            case "2":
+              history.push("/org");
+              break;
+
+            default:
+              break;
+          }
+        }
       }
-      console.log(result);
-      dispatch({
-        type: FB_USUARIO_LOCAL,
-        payload: result.data.token,
-      });
     } catch (e) {}
     return token;
   };
@@ -96,6 +142,7 @@ const FirebaseState = (props) => {
             type: FB_USUARIO_AUTENTICADO,
             payload: user,
           });
+          usuarioAutenticadoLocal();
           setData(true);
         } else {
           setError(true);
@@ -106,6 +153,16 @@ const FirebaseState = (props) => {
       console.error(err);
       alert(err.message);
     }
+  };
+
+  const usuarioAutenticadoLocal = async () => {
+    try {
+      const result = await clienteAxios.get("/Auth/getInfo");
+      dispatch({
+        type: FB_USUARIO_AUTENTICADO_LOCAL,
+        payload: result.data.usuario,
+      });
+    } catch (e) {}
   };
 
   const completarRegistro = async (
@@ -176,6 +233,29 @@ const FirebaseState = (props) => {
     }
   };
 
+  const resetPassword = async (
+    DatosForm,
+    setLoadingLocal,
+    setAlerta,
+    history
+  ) => {
+    try {
+      setLoadingLocal(true);
+      sendPasswordResetEmail(auth, DatosForm.email)
+        .then(() => {
+          // Password reset email sent!
+          // ..
+          setLoadingLocal(null);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          setLoadingLocal(null);
+        });
+    } catch (error) {}
+  };
+
   const registroUsuarioLocal = async (
     DatosForm,
     setLoadingLocal,
@@ -216,6 +296,8 @@ const FirebaseState = (props) => {
         cerrarSesion,
         completarRegistro,
         registrarUsuario,
+        iniciarSesionEmailAndPass,
+        resetPassword,
       }}
     >
       {props.children}

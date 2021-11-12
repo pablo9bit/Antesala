@@ -5,7 +5,7 @@ import {
   FB_USUARIO_LOCAL
 } from "../../types";
 
-const FirebaseReducer = (state, action) => {
+const OrganizacionReducer = (state, action) => {
   switch (action.type) {
     case FB_USUARIO_AUTENTICADO_LOCAL:
       return {
@@ -38,4 +38,4 @@ const FirebaseReducer = (state, action) => {
   }
 };
 
-export default FirebaseReducer;
+export default OrganizacionReducer;

@@ -3,9 +3,6 @@ import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
 
 
-import AuthContext from "../../context/auth/AuthContext";
-import AuthState from "../../context/auth/AuthState";
-
 import FirebaseContext from "../../context/firebase/FirebaseContext";
 import FirebaseState from "../../context/firebase/FirebaseState";
 
@@ -48,7 +45,7 @@ export { clienteAxios, axios };
 export { Tabla, Portal, Layout, ScrollToTop, Spinner };
 
 // contexts
-export { AuthContext, AuthState, FirebaseContext, FirebaseState };
+export { FirebaseContext, FirebaseState };
 
 // hooks
 export { useAlerta };

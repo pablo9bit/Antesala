@@ -1,5 +1,10 @@
 import { useState, useContext, useEffect } from "react";
-import { FirebaseContext, useAlerta, Spinner, useHistory } from "../layout/Imports";
+import {
+  FirebaseContext,
+  useAlerta,
+  Spinner,
+  useHistory,
+} from "../layout/Imports";
 
 const CompletarRegistro = () => {
   const history = useHistory();
@@ -19,7 +24,7 @@ const CompletarRegistro = () => {
     generatoken: "si",
   });
 
-  const { telefono, tipousuario } = DatosForm;
+  const { telefono, tipousuario, nombre } = DatosForm;
 
   useEffect(() => {
     if (token) {
@@ -63,6 +68,21 @@ const CompletarRegistro = () => {
         </h2>
         <br></br>
 
+        {!usuario.displayName  ? (
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre y Apellido</label>
+            <input
+              type="text"
+              name="nombre"
+              className="form-control"
+              id="nombre"
+              aria-describedby="emailHelp"
+              placeholder="Ingrese su Nombre"
+              onChange={onChange}
+              value={nombre}
+            />
+          </div>
+        ) : null}
         <div className="form-group">
           <label htmlFor="telefono">Telefono</label>
           <input
@@ -87,8 +107,8 @@ const CompletarRegistro = () => {
             value={tipousuario}
           >
             <option value="">Seleccione..</option>
-            <option value="1">Expectador</option>
-            <option value="2">Organización</option>
+            <option value="2">Expectador</option>
+            <option value="1">Organización</option>
           </select>
           <br></br>
         </div>

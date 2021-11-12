@@ -78,11 +78,21 @@ class Auth extends BaseController
 			$user = $model->where('uid', $uid)->first();
 
 			if (!$user) {
-				return $this->respondCreated(['msg' => 'Usuario No Existe', 'token' => null]);
+				return $this->respondCreated(['msg' => 'Usuario No Existe', 'token' => null, 'usuario' => null]);
 			} else {
 
 				$token = $this->_generarToken($user);
-				return $this->respondCreated(['token' => $token]);
+
+				$usuario = [
+					"id"  => $user->id,
+					"email" => $user->email,
+					"nombre" => $user->nombre,
+					"estado" => $user->idestado,
+					"tipousuario" => $user->idtipousuario,
+					"idestado" => $user->idestado
+				];
+
+				return $this->respondCreated(['token' => $token, 'usuario' => $usuario]);
 			}
 		} catch (\Exception $e) {
 			return $this->fail(['msg' => $e->getMessage()], 400);

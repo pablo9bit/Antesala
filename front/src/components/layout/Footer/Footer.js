@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import "./Footer.css";
-import {AuthContext, Link, useHistory} from "../Imports"
+import {FirebaseContext, Link, useHistory} from "../Imports"
 
 const Footer = () => {
   const history = useHistory();
 
-  const authContext = useContext(AuthContext);
+  const authContext = useContext(FirebaseContext);
   const { usuario, cerrarSesion } = authContext;
 
   return (

@@ -65,7 +65,7 @@ const NuevaCuenta = () => {
       style={{ paddingTop: "10px", paddingBottom: "50px" }}
     >
       <form onSubmit={onSubmit} className="p-3 form" style={{ width: "400px" }}>
-        <h2 className="text-center">Registrarse</h2>
+        <h2 className="text-center">Obtener Cuenta</h2>
 
         <div className="form-group">
           <label htmlFor="nombre">Nombre y Apellido</label>
@@ -105,8 +105,8 @@ const NuevaCuenta = () => {
             value={tipousuario}
           >
             <option value="">Seleccione..</option>
-            <option value="1">Expectador</option>
-            <option value="2">Organización</option>
+            <option value="2">Expectador</option>
+            <option value="1">Organización</option>
           </select>
         </div>
 
@@ -168,8 +168,8 @@ const NuevaCuenta = () => {
           </button>
         </div>
         <div className="text-center">
-          <Link aria-label="Ingresar" to={"/login"}>
-            Iniciar Sesión
+          <Link aria-label="Ingresar" to={"/ingresar"}>
+            Ingresar
           </Link>
         </div>
         <br></br>

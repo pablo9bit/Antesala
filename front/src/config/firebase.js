@@ -5,7 +5,8 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import "firebase/analytics";
 
@@ -22,18 +23,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth();
-//const db = firebase.firestore();
 
 const provider = new GoogleAuthProvider();
 
-const signInWithEmailAndPassword = async (email, password) => {
-  try {
-    await auth.signInWithEmailAndPassword(email, password);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
 
 const sendPasswordResetEmail = async (email) => {
   try {

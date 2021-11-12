@@ -8,7 +8,7 @@ import {
   CARGAR_COMBOS_USUARIO,
 } from "../../types";
 
-const UsuarioReducer = (state, action) => {
+const OrganizacionReducer = (state, action) => {
   switch (action.type) {
     case OBTENER_USUARIOS:
       return {
@@ -66,4 +66,4 @@ const UsuarioReducer = (state, action) => {
   }
 };
 
-export default UsuarioReducer;
+export default OrganizacionReducer;

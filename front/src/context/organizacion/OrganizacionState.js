@@ -1,6 +1,6 @@
 import { useReducer } from "react";
-import usuarioReducer from "./UsuarioReducer";
-import usuarioContext from "./UsuarioContext";
+import Reducer from "./OrganizacionReducer";
+import Context from "./OrganizacionContext";
 import { clienteAxios, axios } from "../../components/layout/Imports";
 
 import {
@@ -13,7 +13,7 @@ import {
   CARGAR_COMBOS_USUARIO,
 } from "../../types";
 
-const UsuarioState = (props) => {
+const OrganizacionState = (props) => {
   const initialState = {
     usuarioSeleccionado: null,
     usuarios: [],
@@ -23,7 +23,7 @@ const UsuarioState = (props) => {
     estadosUsuarios: [],
   };
 
-  const [state, dispatch] = useReducer(usuarioReducer, initialState);
+  const [state, dispatch] = useReducer(Reducer, initialState);
 
   const obtenerUsuarios = async (DatosForm, setLoadingLocal, setAlerta) => {
     if (DatosForm.idtipo !== "") {
@@ -218,7 +218,7 @@ const UsuarioState = (props) => {
 
 
   return (
-    <usuarioContext.Provider
+    <Context.Provider
       value={{
         usuarios: state.usuarios,
         resultado: state.resultado,
@@ -235,8 +235,8 @@ const UsuarioState = (props) => {
       }}
     >
       {props.children}
-    </usuarioContext.Provider>
+    </Context.Provider>
   );
 };
 
-export default UsuarioState;
+export default OrganizacionState;

@@ -1,17 +1,35 @@
 import { useContext } from "react";
-import { FirebaseContext, Link, useHistory } from "./Imports";
+import { FirebaseContext, Link, useHistory } from "../Imports";
+import HeaderAdmin from "../Headers/HeaderAdmin";
+import HeaderExpectador from "./HeaderExpectador";
+import HeaderOrganizacion from "./HeaderOrganizacion";
 
 const Header = () => {
   const history = useHistory();
 
   const authContext = useContext(FirebaseContext);
-  const { usuario, cerrarSesion } = authContext;
+  const { usuario, usuarioLocal, cerrarSesion } = authContext;
+
+  const menuSegunTipoUsuario = () => {
+    if (usuarioLocal) {
+      switch (usuarioLocal.tipousuario) {
+        case "9":
+          return <HeaderAdmin />;
+        case "2":
+          return <HeaderExpectador />;
+        case "1":
+          return <HeaderOrganizacion />;
+        default:
+          break;
+      }
+    }
+  };
 
   return (
     <>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <Link aria-label="Home" className="navbar-brand" to="/">
-         {/*  <img
+          {/*  <img
             src="https://remate54.com/assets/images/Remate54200.png"
             alt="Logo"
             width="150px"
@@ -43,47 +61,19 @@ const Header = () => {
               Quienes Somos
             </Link>
             <Link
-              aria-label="Tutoriales"
-              to="/tutoriales"
-              className="nav-item nav-link"
-            >
-              Tutoriales
-            </Link>
-            <Link
-              aria-label="Como Empezar"
-              to="/como"
-              className="nav-item nav-link"
-            >
-              Como Empezar
-            </Link>
-            {/*  <Link aria-label="Eventos" to="/events" className="nav-item nav-link">
-              Eventos
-            </Link> */}
-            <Link
               aria-label="Contactanos"
               to="/contacto"
               className="nav-item nav-link"
             >
               Contactanos
             </Link>
-            <Link
-              aria-label="Registrarse"
-              to="/crearcuenta"
-              className="nav-item nav-link"
-            >
-              Registrarse
-            </Link>
+         
           </div>
           <div className="navbar-nav">
             {usuario ? (
               <>
-                <Link
-                  aria-label="Mi Perfil"
-                  to="/admin"
-                  className="nav-item nav-link"
-                >
-                  Mi Perfil
-                </Link>
+                {menuSegunTipoUsuario()}
+
                 <Link
                   aria-label="Cerrar Sesion"
                   to=""
@@ -97,13 +87,22 @@ const Header = () => {
                 </Link>
               </>
             ) : (
-              <Link
-                aria-label="Ingresar"
-                to="/ingresar"
-                className="nav-item nav-link"
-              >
-                Ingresar
-              </Link>
+              <>
+                <Link
+                  aria-label="Registrarse"
+                  to="/crearcuenta"
+                  className="nav-item nav-link"
+                >
+                  Obtener Cuenta
+                </Link>
+                <Link
+                  aria-label="Ingresar"
+                  to="/ingresar"
+                  className="nav-item nav-link"
+                >
+                  Ingresar
+                </Link>
+              </>
             )}
           </div>
         </div>
