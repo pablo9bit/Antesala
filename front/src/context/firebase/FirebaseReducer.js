@@ -32,7 +32,6 @@ const FirebaseReducer = (state, action) => {
         autenticado: null,
         usuarioLocal: null,
       };
-
     default:
       return state;
   }

@@ -62,7 +62,7 @@ class User extends BaseController
 
 
 
-	
+
 	// ORGANIZACIONES
 
 	public function addOrUpdateOrganizacion()
@@ -103,7 +103,6 @@ class User extends BaseController
 
 					$modelOrg->insert($data);
 					return $this->respondCreated(['msg' => 'Su Perfil se Creo con Exito']);
-
 				} else {
 
 					$data = [
@@ -116,7 +115,7 @@ class User extends BaseController
 						'idestado' 		=> $campos['idestado'],
 						'url'			=> $campos['url'],
 						'motivodesactivado'	=> $campos['motivodesactivado'],
-						
+
 					];
 
 					$modelOrg
@@ -135,7 +134,31 @@ class User extends BaseController
 		}
 	}
 
-	public function getAllOrganizacion(){
+	public function getAllOrganizacion()
+	{
+	}
 
+
+	public function getOrganizacion()
+	{
+
+		$request = service('request');
+
+	    if (!$this->usuario) {
+			return $this->fail(['msg' => '0'], 400);
+		}
+ 
+		try {
+
+			$id = $request->getGet('idusuario');
+
+			$model = new UsuariosOrganizacionesModel();
+			$user = $model->where('id', $id)->first();
+
+			return $this->respondCreated(['org' => $user, 'msg' => '']);
+			
+		} catch (\Exception $e) {
+			return $this->fail(['msg' => $e->getMessage()], 400);
+		}
 	}
 }

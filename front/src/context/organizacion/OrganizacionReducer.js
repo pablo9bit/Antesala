@@ -6,10 +6,18 @@ import {
   ACTUALIZAR_USUARIO,
   ELIMINAR_USUARIO,
   CARGAR_COMBOS_USUARIO,
+  OBTENER_ORGANIZACION,
+  AGREGAR_IMAGEN,
+  QUITAR_IMAGEN,
 } from "../../types";
 
 const OrganizacionReducer = (state, action) => {
   switch (action.type) {
+    case OBTENER_ORGANIZACION:
+      return {
+        ...state,
+        organizacionSeleccionada: action.payload,
+      };
     case OBTENER_USUARIOS:
       return {
         ...state,
@@ -43,7 +51,7 @@ const OrganizacionReducer = (state, action) => {
         usuarioSeleccionado: null,
       };
     case ACTUALIZAR_USUARIO:
-      console.log('payload',action.payload);
+      console.log("payload", action.payload);
       return {
         ...state,
         usuarios: state.usuarios.map((usuario) =>
@@ -52,7 +60,7 @@ const OrganizacionReducer = (state, action) => {
         resultado: state.resultado.map((usuario) =>
           usuario.id === action.payload.id ? action.payload : usuario
         ),
-       // usuarioSeleccionado: action.payload,
+        // usuarioSeleccionado: action.payload,
       };
     case CARGAR_COMBOS_USUARIO:
       console.log("payload", action.payload);
@@ -60,6 +68,20 @@ const OrganizacionReducer = (state, action) => {
         ...state,
         tiposUsuarios: action.payload.tiposUsuarios,
         estadosUsuarios: action.payload.estadosUsuarios,
+      };
+    case AGREGAR_IMAGEN:
+      return {
+        ...state,
+        imagenes: [...state.imagenes, action.payload],
+      };
+    case QUITAR_IMAGEN:
+      return {
+        ...state,
+        imagenes: state.imagenes.map((fileitem) =>
+          fileitem.idtemp === action.payload.idtemp
+            ? { ...fileitem, accion: "borrar" }
+            : fileitem
+        ),
       };
     default:
       return state;

@@ -279,7 +279,7 @@ export const TextArea = ({ sets, onChange }) => {
   const { label, name, placeholder, valor, rows, cols, disabled } = sets;
 
   return (
-    <div className="form-group row p-2">
+    <div className="form-group row">
       <div className="col-sm-3">
         <label style={{ fontSize: "small" }} htmlFor={name}>
           {label}
@@ -287,14 +287,12 @@ export const TextArea = ({ sets, onChange }) => {
         <br></br>
       </div>
       <div className="col-sm-9">
+        
         <textarea
           rows={rows}
           cols={cols}
           name={name}
           disabled={disabled}
-          /*  className={`from-control ${
-            !valor && requerido ? "is-invalid" : null
-          }`} */
           className="form-control"
           id={name}
           placeholder={placeholder}
@@ -302,6 +300,7 @@ export const TextArea = ({ sets, onChange }) => {
           value={valor}
           style={{ borderRadius: "15px" }}
         ></textarea>
+        
       </div>
     </div>
   );

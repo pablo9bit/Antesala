@@ -2,7 +2,7 @@ import "./btnwhatsap.css";
 
 const BtnWhatsApp = ({ nroCel }) => {
   return (
-    <div class="btn-whatsapp">
+    <div className="btn-whatsapp">
       <a
         href={"https://api.whatsapp.com/send?phone=5199999999" + nroCel}
         target="_blank"

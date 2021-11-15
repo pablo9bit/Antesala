@@ -7,6 +7,7 @@ import {
   RutaPrivadaInfo,
   RutaPrivada,
   FirebaseState,
+  OrganizacionState,
 } from "./components/layout/Imports";
 
 import "./App.css";
@@ -21,12 +22,13 @@ import ResetPassword from "./components/auth/ResetPassword";
 
 import DashboardAdmin from "./components/backoffice/admin/Dashboard";
 import DashboardOrg from "./components/backoffice/organizacion/Dashboard";
-
+import FormPerfil from "./components/backoffice/organizacion/perfil/FormPerfil";
 
 
 function App() {
   return (
     <FirebaseState>
+      <OrganizacionState>
       <Router>
         <Layout>
           <ScrollToTop />
@@ -43,9 +45,12 @@ function App() {
 
             <RutaPrivada exact path="/admin" component={DashboardAdmin} />
             <RutaPrivada exact path="/org" component={DashboardOrg} />
+            <RutaPrivada exact path="/org/perfil" component={FormPerfil} />
+
           </Switch>
         </Layout>
       </Router>
+      </OrganizacionState>
     </FirebaseState>
   );
 }

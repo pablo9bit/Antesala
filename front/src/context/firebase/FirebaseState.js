@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "../../config/firebase";
-import { clienteAxios } from "../../components/layout/Imports";
+import { clienteAxios, Swal } from "../../components/layout/Imports";
 
 import {
   FB_CERRAR_SESION,
@@ -113,13 +113,12 @@ const FirebaseState = (props) => {
           sessionStorage.removeItem("url");
           history.push(url);
         } else {
-
           switch (result.data.usuario.tipousuario) {
             case "9":
               history.push("/admin");
               break;
-              
-            case "2":
+
+            case "1":
               history.push("/org");
               break;
 
@@ -282,6 +281,35 @@ const FirebaseState = (props) => {
     }
   };
 
+  const noPermitido = (tipo, setPermitido, history) => {
+    if (state.usuarioLocal !== null) {
+      if (state.usuarioLocal.tipousuario !== tipo) {
+        Swal.fire({
+          allowOutsideClick: false,
+          title: "No puede acceder a esta Sección",
+          icon: "error",
+          text: "Privilegios Insuficientes",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            switch (state.usuarioLocal.tipousuario) {
+              case "9":
+                history.push("/admin");
+                break;
+              case "1":
+                history.push("/org");
+                break;
+              default:
+                history.push("/ingresar");
+                break;
+            }
+          }
+        });
+      } else {
+        setPermitido("si");
+      }
+    }
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -298,6 +326,7 @@ const FirebaseState = (props) => {
         registrarUsuario,
         iniciarSesionEmailAndPass,
         resetPassword,
+        noPermitido,
       }}
     >
       {props.children}

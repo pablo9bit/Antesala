@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import FirebaseContext from "../../context/firebase/FirebaseContext";
 import FirebaseState from "../../context/firebase/FirebaseState";
-
+import OrganizacionContext from "../../context/organizacion/OrganizacionContext";
+import OrganizacionState from "../../context/organizacion/OrganizacionState";
 /*
 import SubastaContext from "../../context/subasta/SubastaContext";
 import SubastaState from "../../context/subasta/SubastaState";
@@ -31,7 +32,6 @@ import axios from "axios";
 
 //import { format, add } from "date-fns";
 
-//import useRest from "../../hooks/useRest";
 import useAlerta from "../../hooks/useAlerta";
 import useUsuarioAutenticado from "../../hooks/useUsuarioAutenticado";
 import Spinner from "./Spinner/Spinner";
@@ -44,8 +44,11 @@ export { clienteAxios, axios };
 //export { format, add };
 export { Tabla, Portal, Layout, ScrollToTop, Spinner };
 
+
+
 // contexts
-export { FirebaseContext, FirebaseState };
+export { FirebaseContext, FirebaseState, OrganizacionContext, OrganizacionState };
+
 
 // hooks
 export { useAlerta };

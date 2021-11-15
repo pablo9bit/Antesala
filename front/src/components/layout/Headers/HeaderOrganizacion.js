@@ -15,12 +15,12 @@ const HeaderOrganizacion = () => {
       </a>
       <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
         <li>
-          <Link aria-label="Mi Perfil" to="/admin" className="dropdown-item">
+          <Link aria-label="Panel" to="/org" className="dropdown-item">
             Panel Principal
           </Link>
         </li>
         <li>
-          <Link aria-label="Mi Perfil" to="/admin" className="dropdown-item">
+          <Link aria-label="Mi Perfil" to="/org/perfil" className="dropdown-item">
             Mi Organización
           </Link>
         </li>

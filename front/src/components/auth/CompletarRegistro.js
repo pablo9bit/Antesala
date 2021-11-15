@@ -109,6 +109,8 @@ const CompletarRegistro = () => {
             <option value="">Seleccione..</option>
             <option value="2">Expectador</option>
             <option value="1">Organización</option>
+            <option value="3">Freelance</option>
+
           </select>
           <br></br>
         </div>

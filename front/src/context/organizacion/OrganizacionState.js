@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import Reducer from "./OrganizacionReducer";
 import Context from "./OrganizacionContext";
-import { clienteAxios, axios } from "../../components/layout/Imports";
+import { clienteAxios, axios, uuidv4 } from "../../components/layout/Imports";
 
 import {
   OBTENER_USUARIOS,
@@ -11,6 +11,9 @@ import {
   ACTUALIZAR_USUARIO,
   ELIMINAR_USUARIO,
   CARGAR_COMBOS_USUARIO,
+  OBTENER_ORGANIZACION,
+  AGREGAR_IMAGEN,
+  QUITAR_IMAGEN,
 } from "../../types";
 
 const OrganizacionState = (props) => {
@@ -21,6 +24,9 @@ const OrganizacionState = (props) => {
 
     tiposUsuarios: [],
     estadosUsuarios: [],
+
+    organizacionSeleccionada: null,
+    imagenes: [],
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
@@ -43,7 +49,7 @@ const OrganizacionState = (props) => {
         setAlerta({ msg: e.response.data.messages.msg, type: "error" });
         setLoadingLocal(null);
       }
-    }else{
+    } else {
       dispatch({
         type: OBTENER_USUARIOS,
         payload: [],
@@ -54,7 +60,7 @@ const OrganizacionState = (props) => {
   const ordenarFiltrar = (filtros, campoOrden, tipoOrden) => {
     let elementos = state.usuarios;
 
-    if (filtros !== null && elementos.length !==0) {
+    if (filtros !== null && elementos.length !== 0) {
       elementos = elementos
         .filter((item) =>
           String(item.cuil)
@@ -134,10 +140,10 @@ const OrganizacionState = (props) => {
 
   const actualizarUsuario = async (usuario, setLoadingLocal, setAlerta) => {
     try {
-       setLoadingLocal(true);
+      setLoadingLocal(true);
       const resultado = await clienteAxios.put("/User/update", usuario);
       setLoadingLocal(null);
-      setAlerta({ msg: resultado.data.msg, type: "success" }); 
+      setAlerta({ msg: resultado.data.msg, type: "success" });
       //console.log(usuario);
       dispatch({
         type: ACTUALIZAR_USUARIO,
@@ -216,6 +222,96 @@ const OrganizacionState = (props) => {
     }
   };
 
+  const getOrganizacion = async (idusuario, setLoadingLocal, setAlerta) => {
+    try {
+      setLoadingLocal(true);
+      const result = await clienteAxios.get("User/getOrganizacion", {
+        params: { idusuario },
+      });
+      console.log("getOrg", result);
+
+      dispatch({
+        type: OBTENER_ORGANIZACION,
+        payload: result.data.org,
+      });
+      setLoadingLocal(null);
+    } catch (e) {
+      setLoadingLocal(null);
+      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
+    }
+  };
+
+  const saveOrganizacion = async (organizacion, setLoadingLocal, setAlerta) => {
+    try {
+      setLoadingLocal(true);
+      const resultado = await clienteAxios.put(
+        "/user/addOrUpdateOrganizacion",
+        organizacion
+      );
+
+      /* for (let index = 0; index < state.imagenes.length; index++) {
+        if (state.imagenes[index].accion === "agregar") {
+          imagenesGuardar(state.imagenes[index].fileInput, subasta.identificador);
+        }
+        if (state.imagenes[index].accion === "borrar") {
+          imagenesBorrar(state.imagenes[index]);
+        }
+      } */
+
+      console.log(resultado);
+      setLoadingLocal(null);
+      setAlerta({ msg: resultado.data.msg, type: "success" });
+    } catch (e) {
+      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
+      setLoadingLocal(null);
+    }
+  };
+
+  //imagenes
+
+  const imagenesHandleChange = (e) => {
+    if (e.target.files[0]) {
+      const url = URL.createObjectURL(e.target.files[0]);
+      const name = e.target.files[0].name;
+      const fileInput = e.target.files[0];
+      console.log(e);
+      dispatch({
+        type: AGREGAR_IMAGEN,
+        payload: {
+          url,
+          name,
+          fileInput,
+          id: "",
+          idtemp: uuidv4(),
+          accion: "agregar",
+        },
+      });
+    }
+  };
+
+  const imagenesQuitar = (item) => {
+    dispatch({
+      type: QUITAR_IMAGEN,
+      payload: item,
+    });
+  };
+
+  const imagenesGuardar = async (archivo, identificador) => {
+    const formData = new FormData();
+    if (typeof archivo !== "string") {
+      formData.append("archivo", archivo);
+    }
+    formData.append("identificador", identificador);
+    //console.log(identificador, archivo);
+    await clienteAxios.post("/Imagenes/subir", formData);
+  };
+
+  const imagenesBorrar = async (archivo) => {
+    //console.log(archivo);
+    await clienteAxios.get("/Imagenes/borrar", { params: { id: archivo.id } });
+  };
+
+  //imagenes
 
   return (
     <Context.Provider
@@ -225,6 +321,8 @@ const OrganizacionState = (props) => {
         usuarioSeleccionado: state.usuarioSeleccionado,
         tiposUsuarios: state.tiposUsuarios,
         estadosUsuarios: state.estadosUsuarios,
+        organizacionSeleccionada: state.organizacionSeleccionada,
+        imagenes: state.imagenes,
         obtenerUsuarios,
         ordenarFiltrar,
         deseleccionarUsuario,
@@ -232,6 +330,10 @@ const OrganizacionState = (props) => {
         eliminarUsuario,
         seleccionarUsuario,
         getDataCombos,
+        getOrganizacion,
+        saveOrganizacion,
+        imagenesHandleChange,
+        imagenesQuitar,
       }}
     >
       {props.children}

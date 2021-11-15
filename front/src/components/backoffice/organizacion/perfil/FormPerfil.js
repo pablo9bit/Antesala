@@ -1,24 +1,37 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Input,
   BotoneraForm,
   Select,
   TextArea,
 } from "../../../layout/FormsElements";
-import { Spinner, UsuarioContext, useAlerta } from "../../../layout/Imports";
+import {
+  Spinner,
+  OrganizacionContext,
+  FirebaseContext,
+  useAlerta,
+  useHistory,
+} from "../../../layout/Imports";
 
-const FormPerfil = ({ Seleccionado }) => {
+const FormPerfil = () => {
+  const history = useHistory();
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
   const [soloLectura, setSoloLectura] = useState(true);
+  const [permitido, setPermitido] = useState(null);
 
-  const usuarioContext = useContext(UsuarioContext);
+  const fbContext = useContext(FirebaseContext);
+  const {usuarioLocal, noPermitido } = fbContext;
+
+  const orgContext = useContext(OrganizacionContext);
   const {
-    usuarioSeleccionado,
-    deseleccionarUsuario,
-    closeModal,
-    actualizarUsuario,
-  } = usuarioContext;
+    organizacionSeleccionada,
+    getOrganizacion,
+    saveOrganizacion,
+    imagenes,
+    imagenesHandleChange,
+    imagenesQuitar,
+  } = orgContext;
 
   const [DatosForm, LeerForm] = useState({
     razon_social: "",
@@ -42,21 +55,24 @@ const FormPerfil = ({ Seleccionado }) => {
   } = DatosForm;
 
   useEffect(() => {
-    if (usuarioSeleccionado !== null) {
-      LeerForm(usuarioSeleccionado);
+    if (usuarioLocal !== null) {
+      if (usuarioLocal.tipousuario === "1") {
+        getOrganizacion(usuarioLocal.id, setLoadingLocal, setAlerta);
+      }
+      noPermitido("1", setPermitido, history);
+    }
+  }, [usuarioLocal]);
+
+  useEffect(() => {
+    if (organizacionSeleccionada !== null) {
+      LeerForm(organizacionSeleccionada);
     }
   }, []);
 
-  /*   useEffect(() => {
-    if (usuarioSeleccionado !== null && idestado !== "3") {
-      LeerForm({
-        ...DatosForm,
-        motivodesactivado: "",
-      });
-    }
-  }, [usuarioSeleccionado, idestado]); */
+ 
 
-  const Actualizar = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (
       razon_social.trim() === "" ||
       ubicacion.trim() === "" ||
@@ -73,13 +89,8 @@ const FormPerfil = ({ Seleccionado }) => {
       return;
     }
 
-    actualizarUsuario(DatosForm, setLoadingLocal, setAlerta);
+    saveOrganizacion(DatosForm, setLoadingLocal, setAlerta);
     setSoloLectura(true);
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    Actualizar();
   };
 
   const onChange = (e) => {
@@ -91,83 +102,157 @@ const FormPerfil = ({ Seleccionado }) => {
   };
 
   const funcionCancelar = () => {
-    deseleccionarUsuario();
-    closeModal(true);
+    history.push("/org");
   };
 
-  return (
-    <div className="center-block">
-      <br></br>
-      <h2 className="text-center">
-        {Seleccionado ? "Editar " : "Agregar "} Mi Perfil
-      </h2>
-      <br></br>
-      <form onSubmit={onSubmit} className="border p-3 form">
-        <Input
-          key={"razon_social"}
-          sets={{
-            label: "Razon Social ",
-            type: "text",
-            name: "razon_social",
-            placeholder: " ",
-            valor: razon_social,
-            disabled: true,
-          }}
-          onChange={onChange}
-        />
-        <Input
-          key={"ubicacion"}
-          sets={{
-            label: "Dirección: ",
-            type: "text",
-            name: "ubicacion",
-            placeholder: " ",
-            valor: ubicacion,
-            disabled: true,
-          }}
-          onChange={onChange}
-        />
+  if (permitido === null) return <></>;
+  if (permitido === "si")
+    return (
+      <div
+        className="abs-center"
+        style={{ paddingTop: "10px", paddingBottom: "50px" }}
+      >
+        <form onSubmit={onSubmit} className="border p-3 form">
+          <h2 className="text-center">Mi Organización</h2>
+          <br></br>
+          <Input
+            key={"razon_social"}
+            sets={{
+              label: "Razon Social ",
+              type: "text",
+              name: "razon_social",
+              placeholder: " ",
+              valor: razon_social,
+              disabled: true,
+            }}
+            onChange={onChange}
+          />
+          <br></br>
+          <TextArea
+            key={"descripcion"}
+            sets={{
+              label: "Descripcion",
+              type: "text",
+              name: "descripcion",
+              placeholder: " ",
+              rows: 3,
+              cols: 40,
+              valor: descripcion,
+            }}
+            onChange={onChange}
+          />
+          <br></br>
+          <Input
+            key={"url"}
+            sets={{
+              label: "Url ",
+              type: "text",
+              name: "url",
+              placeholder: " ",
+              valor: url,
+              disabled: true,
+            }}
+            onChange={onChange}
+          />
+          <br></br>
+          <Input
+            key={"ubicacion"}
+            sets={{
+              label: "Dirección: ",
+              type: "text",
+              name: "ubicacion",
+              placeholder: " ",
+              valor: ubicacion,
+              disabled: true,
+            }}
+            onChange={onChange}
+          />
+          <br></br>
 
-        <Select
-          key={"idestado"}
-          sets={{
-            label: "Estado de Martillero",
-            name: "idestado",
-            valor: idestado,
-            opciones: [
-              { label: "Sin Verificar Email", value: "1" },
-              { label: "Activo", value: "2" },
-              { label: "No Activo", value: "3" },
-            ],
-          }}
-          onChange={onChange}
-        />
-        <TextArea
-          key={"motivodesactivado"}
-          sets={{
-            label: "Causa Desactivación ",
-            type: "text",
-            name: "motivodesactivado",
-            placeholder: " ",
-            rows: 3,
-            cols: 40,
-            valor: motivodesactivado,
-          }}
-          onChange={onChange}
-        />
-        <div style={{ padding: "20px" }}>
-          Al Presionar "Guardar", se enviará un Email al usuario comunicandole
-          los cambios en su cuenta.
-        </div>
-        {loadingLocal ? <Spinner /> : <MostrarAlerta />}
+          <Select
+            key={"idestado"}
+            sets={{
+              label: "Estado",
+              name: "idestado",
+              valor: idestado,
+              opciones: [
+                { label: "Sin Verificar Email", value: "1" },
+                { label: "Activo", value: "2" },
+                { label: "No Activo", value: "3" },
+              ],
+            }}
+            onChange={onChange}
+          />
+          <br></br>
 
-        <BotoneraForm
-          funcionCancelar={funcionCancelar}
-          valorfuncion={null}
-          deshabilitado={soloLectura}
-        />
-      </form>
-    </div>
-  );
+          <TextArea
+            key={"motivodesactivado"}
+            sets={{
+              label: "Causa Desactivación ",
+              type: "text",
+              name: "motivodesactivado",
+              placeholder: " ",
+              rows: 3,
+              cols: 40,
+              valor: motivodesactivado,
+              disabled: true,
+            }}
+            onChange={onChange}
+          />
+
+          <div style={{ padding: "10px" }}>
+            <input
+              type="file"
+              multiple
+              onChange={imagenesHandleChange}
+              name="archivo"
+            />
+            <br></br>
+            {imagenes ? (
+              <>
+                <div className="text-center">
+                  <br></br>
+
+                  {imagenes.length > 0 ? (
+                    <div className="p-2 row justify-content-center">
+                      {imagenes
+                        .filter((item) => item.accion !== "borrar")
+                        .map((item) => (
+                          <div
+                            key={item.url}
+                            className="card"
+                            style={{ paddingTop: "10px" }}
+                          >
+                            <img src={item.url} width="220px" alt="" />
+                            <div>
+                              <button
+                                className="BotonQuitar"
+                                type="button"
+                                onClick={() => imagenesQuitar(item)}
+                              >
+                                <i className="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ) : null}
+                </div>
+                <br></br>
+                <br></br>
+              </>
+            ) : null}
+          </div>
+
+          {loadingLocal ? <Spinner /> : <MostrarAlerta />}
+
+          <BotoneraForm
+            funcionCancelar={funcionCancelar}
+            valorfuncion={null}
+            deshabilitado={soloLectura}
+          />
+        </form>
+      </div>
+    );
 };
 export default FormPerfil;

@@ -11,6 +11,7 @@ class BaseController extends \CodeIgniter\Controller
 {
 
 	protected $helpers = [];
+    public $usuario = [];
 
 	use ResponseTrait;
 
@@ -28,6 +29,8 @@ class BaseController extends \CodeIgniter\Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+		$this->usuario = $this->_verificarToken();
+
 	}
 	
 
