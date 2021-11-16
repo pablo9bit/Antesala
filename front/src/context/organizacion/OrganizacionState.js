@@ -34,7 +34,6 @@ const OrganizacionState = (props) => {
   const obtenerOrganizaciones = async (
     DatosForm,
     setLoadingLocal,
-    setAlerta
   ) => {
     if (DatosForm.idtipo !== "") {
       try {
@@ -49,7 +48,6 @@ const OrganizacionState = (props) => {
           payload: resultado.data.organizaciones,
         });
       } catch (e) {
-        //setAlerta({ msg: e.response.data.messages.msg, type: "error" });
         setLoadingLocal(null);
       }
     } else {

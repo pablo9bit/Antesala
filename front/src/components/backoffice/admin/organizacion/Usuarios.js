@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import {
   OrganizacionContext,
-  useAlerta,
   Portal,
   Spinner,
 } from "../../../layout/Imports";
@@ -16,7 +15,6 @@ const Usuarios = () => {
     isOpenedModal,
     usuarioSeleccionado,
   } = usuarioContext;
-  const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
   const [consultar, setConsultar] = useState(true);
 
@@ -39,7 +37,7 @@ const Usuarios = () => {
   useEffect(() => {
     if (consultar) {
       setConsultar(false);
-      obtenerOrganizaciones(DatosForm, setLoadingLocal, setAlerta);
+      obtenerOrganizaciones(DatosForm, setLoadingLocal);
     }
   }, [consultar]);
 
