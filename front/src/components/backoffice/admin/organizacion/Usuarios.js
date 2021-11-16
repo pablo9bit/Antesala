@@ -1,0 +1,92 @@
+import { useContext, useState, useEffect } from "react";
+import {
+  OrganizacionContext,
+  useAlerta,
+  Portal,
+  Spinner,
+} from "../../../layout/Imports";
+import { InputSinLabel } from "../../../layout/FormsElements";
+import Listar from "./ListarUsuarios";
+import FormUsuario from "./FormUsuario";
+
+const Usuarios = () => {
+  const usuarioContext = useContext(OrganizacionContext);
+  const {
+    obtenerOrganizaciones,
+    isOpenedModal,
+    usuarioSeleccionado,
+  } = usuarioContext;
+  const [setAlerta, MostrarAlerta] = useAlerta(null);
+  const [loadingLocal, setLoadingLocal] = useState(null);
+  const [consultar, setConsultar] = useState(true);
+
+  const [DatosForm, LeerForm] = useState({ texto: "" });
+  const { texto } = DatosForm;
+
+  const [config] = useState({
+    columnas: [
+      { label: "Nombre", nombre: "nombre" },
+      { label: "Razon Social", nombre: "razon_social" },
+      { label: "Telefono", nombre: "telefono" },
+      { label: "Ubicacion", nombre: "ubicacion" },
+    ],
+    permiteAgregar: false,
+    path: "admin/organizaciones",
+    nombre: "Organizaciones",
+    registrosPorPagina: 20,
+  });
+
+  useEffect(() => {
+    if (consultar) {
+      setConsultar(false);
+      obtenerOrganizaciones(DatosForm, setLoadingLocal, setAlerta);
+    }
+  }, [consultar]);
+
+  const onChange = (e) => {
+    LeerForm({
+      ...DatosForm,
+      [e.target.name]: e.target.value,
+    });
+    setConsultar(true);
+  };
+
+  return (
+    <div className="center-block">
+      <br></br>
+      <h3 className="text-center">{config.nombre}</h3>
+      <br></br>
+      <div className="row">
+        <div className="col-sm"></div>
+        <div className="col-sm ">
+          <InputSinLabel
+            key={"buscar"}
+            sets={{
+              type: "text",
+              name: "texto",
+              placeholder: "Ingrese su Búsqueda",
+              valor: texto,
+            }}
+            onChange={onChange}
+          />
+        </div>
+        <br></br>
+      </div>
+      <br></br>
+      {loadingLocal ? (
+        <Spinner />
+      ) : (
+        <Listar
+          columnas={config.columnas}
+          registrosPorPagina={config.registrosPorPagina}
+        />
+      )}
+
+      <Portal isOpened={isOpenedModal}>
+        <FormUsuario Seleccionado={usuarioSeleccionado} />
+      </Portal>
+    </div>
+  );
+};
+
+export default Usuarios;

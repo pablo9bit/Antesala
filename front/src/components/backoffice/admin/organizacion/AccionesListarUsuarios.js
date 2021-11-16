@@ -1,5 +1,10 @@
 import { useContext, useState } from "react";
-import { Swal, UsuarioContext, useAlerta, Spinner } from "../../../layout/Imports";
+import {
+  Swal,
+  OrganizacionContext,
+  useAlerta,
+  Spinner,
+} from "../../../layout/Imports";
 import {
   BotonEliminar,
   BotonEditar,
@@ -8,7 +13,7 @@ import {
 } from "../../../layout/FormsElements";
 
 const AccionesListarUsuarios = ({ item }) => {
-  const usuarioContext = useContext(UsuarioContext);
+  const usuarioContext = useContext(OrganizacionContext);
   const { actualizarUsuario } = usuarioContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);
@@ -36,19 +41,19 @@ const AccionesListarUsuarios = ({ item }) => {
 
   const cancelar = (item) => {
     //if (item.idestado === "4") {
-      // CANCELAR
-      item.idestado = "3";
-      item.estado = "SOLICITA OFERTAR";
-   // }
+    // CANCELAR
+    item.idestado = "3";
+    item.estado = "SOLICITA OFERTAR";
+    // }
     actualizarUsuario(item, setLoadingLocal, setAlerta);
   };
 
   const aprobar = (item) => {
-   // if (item.idestado === "3") {
-      // AUTORIZAR
-      item.idestado = "4";
-      item.estado = "PUEDE OFERTAR";
-   // }
+    // if (item.idestado === "3") {
+    // AUTORIZAR
+    item.idestado = "4";
+    item.estado = "PUEDE OFERTAR";
+    // }
     actualizarUsuario(item, setLoadingLocal, setAlerta);
   };
 
@@ -57,7 +62,19 @@ const AccionesListarUsuarios = ({ item }) => {
     <div className="text-center">
       {/* <BotonEditar editar={editar} item={item} />{" "}
       <BotonEliminar eliminar={eliminar} item={item} />{" "} */}
-
+      <button className="btn btn-info" title="Mas Info" value="">
+        <i class="fa fa-eye"></i>
+      </button>{" "}
+      <button className="btn btn-warning" title="Eventos" value="">
+        <i class="fa fa-users"></i>
+      </button>{" "}
+      <button className="btn btn-danger" title="Desactivar" value="">
+        <i class="fa fa-trash"></i>
+      </button>
+      {" "}
+      <button className="btn btn-success" title="Activar" value="">
+        <i class="fa fa-check"></i>
+      </button>
       {item.idtipousuario === "1" ? (
         <>
           {item.idestado === "3" ? (

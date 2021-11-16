@@ -5,6 +5,8 @@ namespace App\Controllers;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuariosModel;
 use App\Models\UsuariosOrganizacionesModel;
+use App\Models\UsuariosImagenesModel;
+
 
 class User extends BaseController
 {
@@ -134,9 +136,50 @@ class User extends BaseController
 		}
 	}
 
-	public function getAllOrganizacion()
+	public function getOrganizaciones()
 	{
+		$request = service('request');
+
+		/* 		if (!$this->usuario) {
+			return $this->fail(['msg' => '0'], 400);
+		}
+ */
+		try {
+			$texto = $request->getGet('texto');
+
+			$model = new UsuariosModel();
+
+			if (!empty($texto)) {
+				$like = ' and (nombre like "%' . $texto . '%" or apellido like "%' . $texto . '% or telefono like "%' . $texto . '% or email like "%' . $texto . '%")';
+			} else {
+				$like = '';
+			}
+
+			$filtrado = $model->Where('idtipousuario  = 1 ' . $like)
+				->Select([
+					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
+					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
+					'razon_social', 'descripcion',
+					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg', 'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg'
+				])
+				->join('UsuariosOrganizaciones', 'UsuariosOrganizaciones.idusuario = Usuarios.id', 'left')
+				->findAll();
+
+			$modelImages = new UsuariosImagenesModel();
+			foreach ($filtrado as $row) {
+				$imagenes = $modelImages
+					->select(['id',  'idusuario',  'archivo', 'slider', 'identificador', 'accion', 'id as idtemp'])
+					->where('idusuario', $row->idusuario)
+					->findAll();
+				$row->imagenes = $imagenes;
+			}
+
+			return $this->respondCreated(['msg' => '', 'organizaciones' => $filtrado]);
+		} catch (\Exception $e) {
+			return $this->fail(['type' => 'error', 'msg' => $e->getMessage()], 400);
+		}
 	}
+
 
 
 	public function getOrganizacion()
@@ -144,10 +187,10 @@ class User extends BaseController
 
 		$request = service('request');
 
-	    if (!$this->usuario) {
+		if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
 		}
- 
+
 		try {
 
 			$id = $request->getGet('idusuario');
@@ -156,7 +199,6 @@ class User extends BaseController
 			$user = $model->where('id', $id)->first();
 
 			return $this->respondCreated(['org' => $user, 'msg' => '']);
-			
 		} catch (\Exception $e) {
 			return $this->fail(['msg' => $e->getMessage()], 400);
 		}

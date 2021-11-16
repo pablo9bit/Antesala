@@ -23,6 +23,7 @@ import ResetPassword from "./components/auth/ResetPassword";
 import DashboardAdmin from "./components/backoffice/admin/Dashboard";
 import DashboardOrg from "./components/backoffice/organizacion/Dashboard";
 import FormPerfil from "./components/backoffice/organizacion/perfil/FormPerfil";
+import Usuarios from "./components/backoffice/admin/organizacion/Usuarios";
 
 
 function App() {
@@ -42,8 +43,9 @@ function App() {
             <Route exact path="/resetpass" component={ResetPassword} />
 
 
-
             <RutaPrivada exact path="/admin" component={DashboardAdmin} />
+            <RutaPrivada exact path="/admin/organizaciones" component={Usuarios} />
+
             <RutaPrivada exact path="/org" component={DashboardOrg} />
             <RutaPrivada exact path="/org/perfil" component={FormPerfil} />
 

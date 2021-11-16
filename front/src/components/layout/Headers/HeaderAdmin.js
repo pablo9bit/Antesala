@@ -20,7 +20,7 @@ const HeaderAdmin = () => {
           </Link>
         </li>
         <li>
-          <Link aria-label="Mi Perfil" to="/admin" className="dropdown-item">
+          <Link aria-label="Mi Perfil" to="/admin/organizaciones" className="dropdown-item">
             Organizaciones
           </Link>
         </li>

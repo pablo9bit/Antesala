@@ -31,22 +31,25 @@ const OrganizacionState = (props) => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const obtenerUsuarios = async (DatosForm, setLoadingLocal, setAlerta) => {
+  const obtenerOrganizaciones = async (
+    DatosForm,
+    setLoadingLocal,
+    setAlerta
+  ) => {
     if (DatosForm.idtipo !== "") {
       try {
         setLoadingLocal(true);
-        const resultado = await clienteAxios.get("/User/getAll", {
+        const resultado = await clienteAxios.get("/User/getOrganizaciones", {
           params: DatosForm,
         });
         console.log("usuarios", resultado);
         setLoadingLocal(null);
-        setAlerta({ msg: resultado.data.msg, type: "success" });
         dispatch({
           type: OBTENER_USUARIOS,
-          payload: resultado.data.usuarios,
+          payload: resultado.data.organizaciones,
         });
       } catch (e) {
-        setAlerta({ msg: e.response.data.messages.msg, type: "error" });
+        //setAlerta({ msg: e.response.data.messages.msg, type: "error" });
         setLoadingLocal(null);
       }
     } else {
@@ -63,43 +66,32 @@ const OrganizacionState = (props) => {
     if (filtros !== null && elementos.length !== 0) {
       elementos = elementos
         .filter((item) =>
-          String(item.cuil)
-            .toLowerCase()
-            .startsWith(`${filtros.cuil !== undefined ? filtros.cuil : ""}`)
-        )
-        .filter((item) =>
           String(item.nombre)
             .toLowerCase()
             .startsWith(`${filtros.nombre !== undefined ? filtros.nombre : ""}`)
         )
         .filter((item) =>
-          String(item.apellido)
+          String(item.razon_social)
             .toLowerCase()
             .startsWith(
-              `${filtros.apellido !== undefined ? filtros.apellido : ""}`
+              `${
+                filtros.razon_social !== undefined ? filtros.razon_social : ""
+              }`
             )
         )
         .filter((item) =>
-          String(item.alias)
-            .toLowerCase()
-            .startsWith(`${filtros.alias !== undefined ? filtros.alias : ""}`)
-        )
-        .filter((item) =>
-          String(item.email)
-            .toLowerCase()
-            .startsWith(`${filtros.email !== undefined ? filtros.email : ""}`)
-        )
-        .filter((item) =>
-          String(item.matricula)
+          String(item.telefono)
             .toLowerCase()
             .startsWith(
-              `${filtros.matricula !== undefined ? filtros.matricula : ""}`
+              `${filtros.telefono !== undefined ? filtros.telefono : ""}`
             )
         )
         .filter((item) =>
-          String(item.estado)
+          String(item.ubicacion)
             .toLowerCase()
-            .startsWith(`${filtros.estado !== undefined ? filtros.estado : ""}`)
+            .startsWith(
+              `${filtros.ubicacion !== undefined ? filtros.ubicacion : ""}`
+            )
         );
     } else {
       elementos = state.usuarios;
@@ -323,7 +315,7 @@ const OrganizacionState = (props) => {
         estadosUsuarios: state.estadosUsuarios,
         organizacionSeleccionada: state.organizacionSeleccionada,
         imagenes: state.imagenes,
-        obtenerUsuarios,
+        obtenerOrganizaciones,
         ordenarFiltrar,
         deseleccionarUsuario,
         actualizarUsuario,

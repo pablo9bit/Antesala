@@ -56,11 +56,10 @@ const Login = () => {
       className="abs-center"
       /* style={{ paddingTop: "10px", paddingBottom: "50px" }} */
     >
-      <div className="p-3 form" /* style={{ width: "400px" }} */>
+      <div className="p-3 form" style={{ width: "400px" }} >
         {!autenticado ? (
           <>
             <form onSubmit={onSubmit}>
-              <br></br>
               <h2 className="text-center">Ingresar a Antesala</h2>
               <br></br>
 
@@ -90,6 +89,12 @@ const Login = () => {
                   value={password}
                 />
                 <br></br>
+                <ul style={{ fontSize: "14px" }}>
+                  <li>
+                    Debe contener al menos una mayúscula (A-Z) y un número (0-9)
+                  </li>
+                  <li>Tiene que estar conformado con 6 o más caracteres</li>
+                </ul>
               </div>
               {loadingLocal ? <Spinner /> : <MostrarAlerta />}
 

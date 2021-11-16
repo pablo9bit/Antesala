@@ -18,7 +18,7 @@ const ExcelExport = ({ data }) => {
   if (data.length === 0) return <></>;
 
   return (
-    <div className="row">
+    <div className="row" style={{width:"100px"}}>
       <ExcelFile
         filename="Usuarios"
         element={

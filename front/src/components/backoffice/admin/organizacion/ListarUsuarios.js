@@ -1,22 +1,17 @@
 import { useContext, useState } from "react";
-import { UsuarioContext, Tabla } from "../../../layout/Imports";
+import { OrganizacionContext, Tabla } from "../../../layout/Imports";
 import AccionesListarUsuarios from "./AccionesListarUsuarios";
 import ExcelExport from "./ExcelExport";
 
 const ListarUsuarios = ({ columnas, registrosPorPagina }) => {
-  const usuarioContext = useContext(UsuarioContext);
+  const usuarioContext = useContext(OrganizacionContext);
   const { resultado, usuarios, ordenarFiltrar } = usuarioContext;
 
   const [filtros, setFiltros] = useState({
     nombre: "",
-    apellido: "",
-    cuil: "",
-    matricula: "",
-    email: "",
-    estado: "",
-    alias: "",
+    razon_social: "",
     telefono: "",
-    tipo: "",
+    ubicacion: ""
   });
 
   return (
