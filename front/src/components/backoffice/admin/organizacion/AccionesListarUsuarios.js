@@ -14,76 +14,149 @@ import {
 
 const AccionesListarUsuarios = ({ item }) => {
   const usuarioContext = useContext(OrganizacionContext);
-  const { actualizarUsuario } = usuarioContext;
+  const { cambiarEstado } = usuarioContext;
 
-  const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
 
-  /*   const editar = (usuario) => {
-    seleccionarUsuario(usuario);
-  };
-
-  const eliminar = (item) => {
+  const desactivar = async () => {
     Swal.fire({
-      title: "Esta Seguro que desea Eliminar?",
-      icon: "warning",
+      title: "Ingrese Motivo de Desactivación",
+      input: "textarea",
+      inputAttributes: {
+        autocapitalize: "on",
+      },
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Eliminar",
+      confirmButtonText: "Desactivar",
       cancelButtonText: "Cancelar",
+
+      showLoaderOnConfirm: true,
+      icon: "warning",
+      confirmButtonColor: "#d33",
+      preConfirm: (login) => {
+        if (login === "") {
+          Swal.showValidationMessage(`Debe ingresar Motivo`);
+        } else {
+          return clienteAxios
+            .post("/User/cambiarEstadoOrganizacion", {
+              id: item.id,
+              idestado: 1,
+              observacion: login,
+            })
+            .then((response) => {
+              console.log("response", response);
+
+              if (!response.data) {
+                throw new Error(response.statusText);
+              } else {
+                item.idestado = "1";
+                item.estado = "Baja";
+                cambiarEstado(item);
+                return response.data;
+              }
+            })
+            .catch((error) => {
+              Swal.showValidationMessage(`Request failed: ${error}`);
+            });
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
+      console.log(result);
       if (result.isConfirmed) {
-        eliminarUsuario(item.id);
+        Swal.fire({
+          title: `Se Desactivo Correctamente`,
+        });
       }
     });
-  }; */
-
-  const cancelar = (item) => {
-    //if (item.idestado === "4") {
-    // CANCELAR
-    item.idestado = "3";
-    item.estado = "SOLICITA OFERTAR";
-    // }
-    actualizarUsuario(item, setLoadingLocal, setAlerta);
   };
 
-  const aprobar = (item) => {
-    // if (item.idestado === "3") {
-    // AUTORIZAR
-    item.idestado = "4";
-    item.estado = "PUEDE OFERTAR";
-    // }
-    actualizarUsuario(item, setLoadingLocal, setAlerta);
+  const activar = async () => {
+    Swal.fire({
+      title: "Esta seguro que desea Activar?",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Activar",
+      cancelButtonText: "Cancelar",
+
+      showLoaderOnConfirm: true,
+      icon: "warning",
+      confirmButtonColor: "#d33",
+      preConfirm: () => {
+        return clienteAxios
+          .post("/User/cambiarEstadoOrganizacion", {
+            id: item.id,
+            idestado: 2,
+            observacion: login,
+          })
+          .then((response) => {
+            console.log("response", response);
+
+            if (!response.data) {
+              throw new Error(response.statusText);
+            } else {
+              item.idestado = "2";
+              item.estado = "Baja";
+              cambiarEstado(item);
+              return response.data;
+            }
+          })
+          .catch((error) => {
+            Swal.showValidationMessage(`Request failed: ${error}`);
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: `Se Activo Correctamente`,
+        });
+      }
+    });
+  };
+
+  const mostrar = (item) => {
+    history.push("concesiones/ver/" + item.id);
   };
 
   if (loadingLocal) return <Spinner />;
   return (
     <div className="text-center">
-      {/* <BotonEditar editar={editar} item={item} />{" "}
-      <BotonEliminar eliminar={eliminar} item={item} />{" "} */}
-      <button className="btn btn-info" title="Mas Info" value="">
+      
+      <button
+        onClick={() => mostrar()}
+        className="btn btn-info"
+        title="Mas Info"
+        value=""
+      >
         <i class="fa fa-eye"></i>
       </button>{" "}
+
+
       <button className="btn btn-warning" title="Eventos" value="">
         <i class="fa fa-users"></i>
       </button>{" "}
-      <button className="btn btn-danger" title="Desactivar" value="">
-        <i class="fa fa-trash"></i>
-      </button>
-      {" "}
-      <button className="btn btn-success" title="Activar" value="">
-        <i class="fa fa-check"></i>
-      </button>
-      {item.idtipousuario === "1" ? (
-        <>
-          {item.idestado === "3" ? (
-            <BotonAprobar editar={aprobar} item={item} />
-          ) : null}
-          {item.idestado === "4" ? (
-            <BotonCancel editar={cancelar} item={item} />
-          ) : null}
-        </>
+      
+      
+      {item.idestado === "3" ? (
+        <button
+          onClick={() => activar()}
+          className="btn btn-success"
+          title="Activar"
+          value=""
+        >
+          <i class="fa fa-check"></i>
+        </button>
+      ) : null}
+
+      {item.idestado === "4" ? (
+        <button
+          onClick={() => desactivar()}
+          className="btn btn-danger"
+          title="Desactivar"
+          value=""
+        >
+          <i class="fa fa-trash"></i>
+        </button>
       ) : null}
     </div>
   );

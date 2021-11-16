@@ -136,14 +136,62 @@ class User extends BaseController
 		}
 	}
 
+	public function cambiarEstadoOrganizacion()
+	{
+
+		$request = service('request');
+
+		if (!$this->usuario) {
+			return $this->fail(['msg' => '0'], 400);
+		}
+
+		try {
+
+			$campos = get_object_vars(json_decode($request->getBody()));
+			$id = $campos['id'];
+
+			$model = new UsuariosModel();
+			$user = $model->where('id', $id)->first();
+
+			if ($user) {
+
+				$modelOrg = new UsuariosOrganizacionesModel();
+				$userOrg = $model->where('idusuario', $id)->first();
+
+				if ($userOrg) {
+
+					$data = [
+						'idestado'			=> $campos['idestado'],
+						'motivodesactivado'	=> $campos['motivodesactivado'],
+					];
+
+					$modelOrg
+						->set($data)
+						->where('idusuario', $id)
+						->update();
+
+					return $this->respondCreated(['msg' => 'Su Perfil se Modifico con Exito']);
+				} else {
+					return $this->respondCreated(['msg' => 'Su Usuario no existe']);
+				}
+
+			} else {
+
+				return $this->respondCreated(['msg' => 'Su Usuario no existe']);
+			}
+		} catch (\Exception $e) {
+			return $this->fail(['msg' => $e->getMessage()], 400);
+		}
+	}
+
 	public function getOrganizaciones()
 	{
 		$request = service('request');
 
-		/* 		if (!$this->usuario) {
+		if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
 		}
- */
+
 		try {
 			$texto = $request->getGet('texto');
 
@@ -179,8 +227,6 @@ class User extends BaseController
 			return $this->fail(['type' => 'error', 'msg' => $e->getMessage()], 400);
 		}
 	}
-
-
 
 	public function getOrganizacion()
 	{

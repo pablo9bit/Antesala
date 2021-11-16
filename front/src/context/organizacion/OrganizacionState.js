@@ -14,6 +14,7 @@ import {
   OBTENER_ORGANIZACION,
   AGREGAR_IMAGEN,
   QUITAR_IMAGEN,
+  CAMBIAR_ESTADO_USUARIO
 } from "../../types";
 
 const OrganizacionState = (props) => {
@@ -31,10 +32,7 @@ const OrganizacionState = (props) => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const obtenerOrganizaciones = async (
-    DatosForm,
-    setLoadingLocal,
-  ) => {
+  const obtenerOrganizaciones = async (DatosForm, setLoadingLocal) => {
     if (DatosForm.idtipo !== "") {
       try {
         setLoadingLocal(true);
@@ -122,94 +120,11 @@ const OrganizacionState = (props) => {
     });
   };
 
-  const deseleccionarUsuario = () => {
+  const cambiarEstado = (usuario) => {
     dispatch({
-      type: DESELECCIONAR_USUARIO,
-    });
-  };
-
-  const actualizarUsuario = async (usuario, setLoadingLocal, setAlerta) => {
-    try {
-      setLoadingLocal(true);
-      const resultado = await clienteAxios.put("/User/update", usuario);
-      setLoadingLocal(null);
-      setAlerta({ msg: resultado.data.msg, type: "success" });
-      //console.log(usuario);
-      dispatch({
-        type: ACTUALIZAR_USUARIO,
-        payload: usuario,
-      });
-    } catch (e) {
-      setAlerta({ msg: e.response.data.messages.msg, type: "error" });
-      setLoadingLocal(null);
-    }
-  };
-
-  const eliminarUsuario = async (id) => {
-    try {
-      await clienteAxios.delete("/User/remove", {
-        params: { id },
-      });
-      dispatch({
-        type: ELIMINAR_USUARIO,
-        payload: id,
-      });
-    } catch (e) {}
-  };
-
-  const seleccionarUsuario = (usuario) => {
-    dispatch({
-      type: SELECCIONAR_USUARIO,
+      type: CAMBIAR_ESTADO_USUARIO,
       payload: usuario,
     });
-  };
-
-  const getDataCombos = () => {
-    if (
-      state.tiposUsuarios.length === 0 ||
-      state.estadosUsuarios.length === 0
-    ) {
-      try {
-        const tiposUsuarios = clienteAxios.get("/Combos/getUsuariosTipos");
-        const estadosUsuarios = clienteAxios.get("/Combos/getUsuariosEstados");
-
-        axios
-          .all([tiposUsuarios, estadosUsuarios])
-          .then(
-            axios.spread((...responses) => {
-              const tiposUsuarios = responses[0];
-              const estadosUsuarios = responses[1];
-
-              console.log(
-                tiposUsuarios.data.usuariostipos,
-                estadosUsuarios.data.usuariosestados
-              );
-
-              dispatch({
-                type: CARGAR_COMBOS_USUARIO,
-                payload: {
-                  tiposUsuarios: tiposUsuarios.data.usuariostipos.map(
-                    (item) => ({
-                      value: item.id,
-                      label: item.tipo,
-                    })
-                  ),
-                  estadosUsuarios: estadosUsuarios.data.usuariosestados.map(
-                    (item) => ({
-                      value: item.id,
-                      label: item.estado,
-                    })
-                  ),
-                },
-              });
-              // use/access the results
-            })
-          )
-          .catch((errors) => {
-            // react on errors.
-          });
-      } catch (e) {}
-    }
   };
 
   const getOrganizacion = async (idusuario, setLoadingLocal, setAlerta) => {
@@ -324,6 +239,7 @@ const OrganizacionState = (props) => {
         saveOrganizacion,
         imagenesHandleChange,
         imagenesQuitar,
+        cambiarEstado,
       }}
     >
       {props.children}

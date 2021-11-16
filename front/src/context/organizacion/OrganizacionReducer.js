@@ -9,6 +9,7 @@ import {
   OBTENER_ORGANIZACION,
   AGREGAR_IMAGEN,
   QUITAR_IMAGEN,
+  CAMBIAR_ESTADO_USUARIO,
 } from "../../types";
 
 const OrganizacionReducer = (state, action) => {
@@ -81,6 +82,15 @@ const OrganizacionReducer = (state, action) => {
           fileitem.idtemp === action.payload.idtemp
             ? { ...fileitem, accion: "borrar" }
             : fileitem
+        ),
+      };
+    case CAMBIAR_ESTADO_USUARIO:
+      return {
+        ...state,
+        usuarios: state.usuarios.map((usuario) =>
+          usuario.idusuario === action.payload.idusuario
+            ? action.payload
+            : usuario
         ),
       };
     default:
