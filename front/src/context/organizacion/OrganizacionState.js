@@ -14,7 +14,7 @@ import {
   OBTENER_ORGANIZACION,
   AGREGAR_IMAGEN,
   QUITAR_IMAGEN,
-  CAMBIAR_ESTADO_USUARIO
+  CAMBIAR_ESTADO_USUARIO,
 } from "../../types";
 
 const OrganizacionState = (props) => {
@@ -88,6 +88,11 @@ const OrganizacionState = (props) => {
             .startsWith(
               `${filtros.ubicacion !== undefined ? filtros.ubicacion : ""}`
             )
+        )
+        .filter((item) =>
+          String(item.estado)
+            .toLowerCase()
+            .startsWith(`${filtros.estado !== undefined ? filtros.estado : ""}`)
         );
     } else {
       elementos = state.usuarios;
@@ -154,14 +159,17 @@ const OrganizacionState = (props) => {
         organizacion
       );
 
-      /* for (let index = 0; index < state.imagenes.length; index++) {
+      for (let index = 0; index < state.imagenes.length; index++) {
         if (state.imagenes[index].accion === "agregar") {
-          imagenesGuardar(state.imagenes[index].fileInput, subasta.identificador);
+          imagenesGuardar(
+            state.imagenes[index].fileInput,
+            organizacion.idusuario
+          );
         }
         if (state.imagenes[index].accion === "borrar") {
           imagenesBorrar(state.imagenes[index]);
         }
-      } */
+      }
 
       console.log(resultado);
       setLoadingLocal(null);
@@ -179,7 +187,7 @@ const OrganizacionState = (props) => {
       const url = URL.createObjectURL(e.target.files[0]);
       const name = e.target.files[0].name;
       const fileInput = e.target.files[0];
-      console.log(e);
+      console.log(e, fileInput.size);
       dispatch({
         type: AGREGAR_IMAGEN,
         payload: {
@@ -207,13 +215,14 @@ const OrganizacionState = (props) => {
       formData.append("archivo", archivo);
     }
     formData.append("identificador", identificador);
-    //console.log(identificador, archivo);
-    await clienteAxios.post("/Imagenes/subir", formData);
+    console.log(identificador, archivo.size);
+    await clienteAxios.post("/UsuariosImagenes/subir", formData);
   };
 
   const imagenesBorrar = async (archivo) => {
-    //console.log(archivo);
-    await clienteAxios.get("/Imagenes/borrar", { params: { id: archivo.id } });
+    await clienteAxios.get("/UsuariosImagenes/borrar", {
+      params: { id: archivo.id },
+    });
   };
 
   //imagenes
@@ -230,11 +239,6 @@ const OrganizacionState = (props) => {
         imagenes: state.imagenes,
         obtenerOrganizaciones,
         ordenarFiltrar,
-        deseleccionarUsuario,
-        actualizarUsuario,
-        eliminarUsuario,
-        seleccionarUsuario,
-        getDataCombos,
         getOrganizacion,
         saveOrganizacion,
         imagenesHandleChange,

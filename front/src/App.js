@@ -45,6 +45,8 @@ function App() {
 
             <RutaPrivada exact path="/admin" component={DashboardAdmin} />
             <RutaPrivada exact path="/admin/organizaciones" component={Usuarios} />
+            <RutaPrivada exact path="/admin/organizaciones/:id" component={FormPerfil} />
+
 
             <RutaPrivada exact path="/org" component={DashboardOrg} />
             <RutaPrivada exact path="/org/perfil" component={FormPerfil} />

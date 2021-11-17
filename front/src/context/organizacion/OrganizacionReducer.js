@@ -18,6 +18,15 @@ const OrganizacionReducer = (state, action) => {
       return {
         ...state,
         organizacionSeleccionada: action.payload,
+        imagenes: action.payload.imagenes.map((item) => ({
+          idusuario: item.idusuario,
+          url: `${process.env.REACT_APP_URL_BASE_UPLOADS}${item.archivo}`,
+          name: item.archivo,
+          id: item.id,
+          accion: "",
+          file: null,
+          idtemp: item.id,
+        })),
       };
     case OBTENER_USUARIOS:
       return {

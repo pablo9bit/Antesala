@@ -12,7 +12,7 @@ const Dashboard = () => {
       if (usuarioLocal.tipousuario === "1") {
         //  getOrganizacion(usuarioLocal.id, setLoadingLocal, setAlerta);
       }
-      noPermitido("1", setPermitido, history);
+      noPermitido(["1"], setPermitido, history);
     }
   }, [usuarioLocal]);
 

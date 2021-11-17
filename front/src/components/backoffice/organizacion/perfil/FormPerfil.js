@@ -13,15 +13,17 @@ import {
   useHistory,
 } from "../../../layout/Imports";
 
-const FormPerfil = () => {
+const FormPerfil = (props) => {
+  const id = props.match.params.id;
+
   const history = useHistory();
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
-  const [soloLectura, setSoloLectura] = useState(true);
+  const [soloLectura, setSoloLectura] = useState(false);
   const [permitido, setPermitido] = useState(null);
 
   const fbContext = useContext(FirebaseContext);
-  const {usuarioLocal, noPermitido } = fbContext;
+  const { usuarioLocal, noPermitido } = fbContext;
 
   const orgContext = useContext(OrganizacionContext);
   const {
@@ -55,11 +57,18 @@ const FormPerfil = () => {
   } = DatosForm;
 
   useEffect(() => {
+    console.log("id", id);
     if (usuarioLocal !== null) {
-      if (usuarioLocal.tipousuario === "1") {
-        getOrganizacion(usuarioLocal.id, setLoadingLocal, setAlerta);
+      if (
+        usuarioLocal.tipousuario === "1" ||
+        usuarioLocal.tipousuario === "9"
+      ) {
+        getOrganizacion(id ? id : usuarioLocal.id, setLoadingLocal, setAlerta);
       }
-      noPermitido("1", setPermitido, history);
+      if (id) {
+        setSoloLectura(true);
+      }
+      noPermitido(["1", "9"], setPermitido, history);
     }
   }, [usuarioLocal]);
 
@@ -67,9 +76,7 @@ const FormPerfil = () => {
     if (organizacionSeleccionada !== null) {
       LeerForm(organizacionSeleccionada);
     }
-  }, []);
-
- 
+  }, [organizacionSeleccionada]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -102,7 +109,12 @@ const FormPerfil = () => {
   };
 
   const funcionCancelar = () => {
-    history.push("/org");
+    if (usuarioLocal.tipousuario === "1") {
+      history.push("/org");
+    }
+    if (usuarioLocal.tipousuario === "9") {
+      history.push("/admin/organizaciones");
+    }
   };
 
   if (permitido === null) return <></>;
@@ -123,7 +135,7 @@ const FormPerfil = () => {
               name: "razon_social",
               placeholder: " ",
               valor: razon_social,
-              disabled: true,
+              disabled: soloLectura,
             }}
             onChange={onChange}
           />
@@ -138,6 +150,7 @@ const FormPerfil = () => {
               rows: 3,
               cols: 40,
               valor: descripcion,
+              disabled: soloLectura,
             }}
             onChange={onChange}
           />
@@ -150,7 +163,7 @@ const FormPerfil = () => {
               name: "url",
               placeholder: " ",
               valor: url,
-              disabled: true,
+              disabled: soloLectura,
             }}
             onChange={onChange}
           />
@@ -163,7 +176,7 @@ const FormPerfil = () => {
               name: "ubicacion",
               placeholder: " ",
               valor: ubicacion,
-              disabled: true,
+              disabled: soloLectura,
             }}
             onChange={onChange}
           />
@@ -175,8 +188,8 @@ const FormPerfil = () => {
               label: "Estado",
               name: "idestado",
               valor: idestado,
+              disabled: true,
               opciones: [
-                { label: "Sin Verificar Email", value: "1" },
                 { label: "Activo", value: "2" },
                 { label: "No Activo", value: "3" },
               ],
@@ -201,12 +214,14 @@ const FormPerfil = () => {
           />
 
           <div style={{ padding: "10px" }}>
-            <input
-              type="file"
-              multiple
-              onChange={imagenesHandleChange}
-              name="archivo"
-            />
+            {!soloLectura ? (
+              <input
+                type="file"
+                multiple
+                onChange={imagenesHandleChange}
+                name="archivo"
+              />
+            ) : null}
             <br></br>
             {imagenes ? (
               <>
@@ -221,17 +236,19 @@ const FormPerfil = () => {
                           <div
                             key={item.url}
                             className="card"
-                            style={{ paddingTop: "10px" }}
+                            style={{ padding: "10px", width: "240px" }}
                           >
                             <img src={item.url} width="220px" alt="" />
                             <div>
-                              <button
-                                className="BotonQuitar"
-                                type="button"
-                                onClick={() => imagenesQuitar(item)}
-                              >
-                                <i className="fa fa-trash"></i>
-                              </button>
+                              {!soloLectura ? (
+                                <button
+                                  className="BotonQuitar"
+                                  type="button"
+                                  onClick={() => imagenesQuitar(item)}
+                                >
+                                  <i className="fa fa-trash"></i>
+                                </button>
+                              ) : null}
                             </div>
                           </div>
                         ))}

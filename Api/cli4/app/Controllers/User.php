@@ -79,7 +79,8 @@ class User extends BaseController
 		try {
 
 			$campos = get_object_vars(json_decode($request->getBody()));
-			$id = $campos['idusuario'];
+			$id = $this->usuario['id'];
+
 
 			$model = new UsuariosModel();
 			$user = $model->where('id', $id)->first();
@@ -87,7 +88,7 @@ class User extends BaseController
 			if ($user) {
 
 				$modelOrg = new UsuariosOrganizacionesModel();
-				$userOrg = $model->where('idusuario', $id)->first();
+				$userOrg = $modelOrg->where('idusuario', $id)->first();
 
 				if (!$userOrg) {
 
@@ -155,26 +156,36 @@ class User extends BaseController
 
 			if ($user) {
 
+				$data = [
+					'idestado'			=> $campos['idestado'],
+					'motivodesactivado'	=> $campos['motivodesactivado'],
+				];
+
+				$model
+					->set($data)
+					->where('id', $id)
+					->update();
+
+
 				$modelOrg = new UsuariosOrganizacionesModel();
-				$userOrg = $model->where('idusuario', $id)->first();
+				$userOrg = $modelOrg->where('idusuario', $id)->first();
 
 				if ($userOrg) {
-
-					$data = [
-						'idestado'			=> $campos['idestado'],
-						'motivodesactivado'	=> $campos['motivodesactivado'],
-					];
 
 					$modelOrg
 						->set($data)
 						->where('idusuario', $id)
 						->update();
 
+					$model
+						->set($data)
+						->where('id', $id)
+						->update();
+
 					return $this->respondCreated(['msg' => 'Su Perfil se Modifico con Exito']);
 				} else {
 					return $this->respondCreated(['msg' => 'Su Usuario no existe']);
 				}
-
 			} else {
 
 				return $this->respondCreated(['msg' => 'Su Usuario no existe']);
@@ -208,9 +219,12 @@ class User extends BaseController
 					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
 					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
 					'razon_social', 'descripcion',
-					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg', 'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg'
+					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg',
+					'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg', 'UsuariosOrganizaciones.id as idOrg',
+					'UsuariosEstados.estado'
 				])
 				->join('UsuariosOrganizaciones', 'UsuariosOrganizaciones.idusuario = Usuarios.id', 'left')
+				->join('UsuariosEstados', 'UsuariosEstados.id = Usuarios.idestado')
 				->findAll();
 
 			$modelImages = new UsuariosImagenesModel();
@@ -242,7 +256,17 @@ class User extends BaseController
 			$id = $request->getGet('idusuario');
 
 			$model = new UsuariosOrganizacionesModel();
-			$user = $model->where('id', $id)->first();
+			$user = $model->where('idusuario', $id)->first();
+
+			$modelImages = new UsuariosImagenesModel();
+
+			$imagenes = $modelImages
+				->select(['id',  'idusuario',  'archivo', 'slider', 'identificador', 'accion', 'id as idtemp'])
+				->where('idusuario', $id)
+				->findAll();
+			$user->imagenes = $imagenes;
+
+
 
 			return $this->respondCreated(['org' => $user, 'msg' => '']);
 		} catch (\Exception $e) {

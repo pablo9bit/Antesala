@@ -1,7 +1,7 @@
 import "./FormsElements.css";
 
 export const Input = ({ sets, onChange }) => {
-  const { label, type, name, placeholder, valor } = sets;
+  const { label, type, name, placeholder, valor, disabled } = sets;
 
   return (
     <div className="form-group row ">
@@ -20,6 +20,7 @@ export const Input = ({ sets, onChange }) => {
           placeholder={placeholder}
           onChange={onChange}
           value={valor}
+          disabled={disabled}
         />
       </div>
     </div>
@@ -46,7 +47,7 @@ export const InputSinLabel = ({ sets, onChange }) => {
 };
 
 export const Select = ({ sets, onChange }) => {
-  const { label, name, valor, opciones } = sets;
+  const { label, name, valor, opciones, disabled } = sets;
 
   return (
     <div className="form-group row">
@@ -63,6 +64,7 @@ export const Select = ({ sets, onChange }) => {
           id={name}
           onChange={onChange}
           value={valor}
+          disabled={disabled}
         >
           <option value="">Seleccione..</option>
           {opciones.map((opcion) => (
@@ -125,10 +127,14 @@ export const BotonSubmit = ({ label }) => {
   );
 };
 
-export const BotoneraForm = ({ funcionCancelar, valorfuncion }) => {
+export const BotoneraForm = ({
+  funcionCancelar,
+  valorfuncion,
+  deshabilitado,
+}) => {
   return (
     <div className="row">
-      <BotonSubmit label="Guardar" />
+      {!deshabilitado ? <BotonSubmit label="Guardar" /> : null}
 
       <div className="col-sm d-grid gap-2">
         <button
@@ -287,7 +293,6 @@ export const TextArea = ({ sets, onChange }) => {
         <br></br>
       </div>
       <div className="col-sm-9">
-        
         <textarea
           rows={rows}
           cols={cols}
@@ -300,20 +305,19 @@ export const TextArea = ({ sets, onChange }) => {
           value={valor}
           style={{ borderRadius: "15px" }}
         ></textarea>
-        
       </div>
     </div>
   );
 };
 
-export const LoginConGoogle = ({funcion}) => {
+export const LoginConGoogle = ({ funcion }) => {
   return (
     <div className="row" style={{ padding: "10px" }}>
       <a
         className="btn btn-outline-dark"
         role="button"
         style={{ textTransform: "none" }}
-        onClick={()=>funcion()}
+        onClick={() => funcion()}
       >
         <img
           width="20px"

@@ -2,21 +2,18 @@ import { useContext, useState } from "react";
 import {
   Swal,
   OrganizacionContext,
-  useAlerta,
   Spinner,
+  clienteAxios,
+  useHistory,
 } from "../../../layout/Imports";
-import {
-  BotonEliminar,
-  BotonEditar,
-  BotonAprobar,
-  BotonCancel,
-} from "../../../layout/FormsElements";
 
 const AccionesListarUsuarios = ({ item }) => {
+  const history = useHistory();
   const usuarioContext = useContext(OrganizacionContext);
   const { cambiarEstado } = usuarioContext;
 
   const [loadingLocal, setLoadingLocal] = useState(null);
+
 
   const desactivar = async () => {
     Swal.fire({
@@ -38,9 +35,9 @@ const AccionesListarUsuarios = ({ item }) => {
         } else {
           return clienteAxios
             .post("/User/cambiarEstadoOrganizacion", {
-              id: item.id,
-              idestado: 1,
-              observacion: login,
+              id: item.idusuario,
+              idestado: 3,
+              motivodesactivado: login,
             })
             .then((response) => {
               console.log("response", response);
@@ -48,8 +45,8 @@ const AccionesListarUsuarios = ({ item }) => {
               if (!response.data) {
                 throw new Error(response.statusText);
               } else {
-                item.idestado = "1";
-                item.estado = "Baja";
+                item.idestadoUsuario = "3";
+                item.estado = "NO ACTIVO";
                 cambiarEstado(item);
                 return response.data;
               }
@@ -83,9 +80,9 @@ const AccionesListarUsuarios = ({ item }) => {
       preConfirm: () => {
         return clienteAxios
           .post("/User/cambiarEstadoOrganizacion", {
-            id: item.id,
+            id: item.idusuario,
             idestado: 2,
-            observacion: login,
+            motivodesactivado: "",
           })
           .then((response) => {
             console.log("response", response);
@@ -93,8 +90,8 @@ const AccionesListarUsuarios = ({ item }) => {
             if (!response.data) {
               throw new Error(response.statusText);
             } else {
-              item.idestado = "2";
-              item.estado = "Baja";
+              item.idestadoUsuario = "2";
+              item.estado = "ACTIVO";
               cambiarEstado(item);
               return response.data;
             }
@@ -114,30 +111,33 @@ const AccionesListarUsuarios = ({ item }) => {
     });
   };
 
-  const mostrar = (item) => {
-    history.push("concesiones/ver/" + item.id);
+  const mostrar = () => {
+    history.push("/admin/organizaciones/" + item.idusuario);
   };
+
+
+
 
   if (loadingLocal) return <Spinner />;
   return (
     <div className="text-center">
-      
-      <button
-        onClick={() => mostrar()}
-        className="btn btn-info"
-        title="Mas Info"
-        value=""
-      >
-        <i class="fa fa-eye"></i>
-      </button>{" "}
+      {item.idOrg ? (
+        <>
+          <button
+            onClick={() => mostrar()}
+            className="btn btn-info"
+            title="Mas Info"
+            value=""
+          >
+            <i class="fa fa-eye"></i>
+          </button>{" "}
+          <button className="btn btn-warning" title="Eventos" value="">
+            <i class="fa fa-users"></i>
+          </button>{" "}
+        </>
+      ) : null}
 
-
-      <button className="btn btn-warning" title="Eventos" value="">
-        <i class="fa fa-users"></i>
-      </button>{" "}
-      
-      
-      {item.idestado === "3" ? (
+      {item.idestadoUsuario === "3" ? (
         <button
           onClick={() => activar()}
           className="btn btn-success"
@@ -148,7 +148,7 @@ const AccionesListarUsuarios = ({ item }) => {
         </button>
       ) : null}
 
-      {item.idestado === "4" ? (
+      {item.idestadoUsuario === "2" ? (
         <button
           onClick={() => desactivar()}
           className="btn btn-danger"

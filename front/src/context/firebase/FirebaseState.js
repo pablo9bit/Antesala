@@ -18,6 +18,7 @@ import {
   FB_USUARIO_AUTENTICADO_LOCAL,
   FB_USUARIO_LOCAL,
 } from "../../types";
+import { isAdmin } from "@firebase/util";
 
 const FirebaseState = (props) => {
   const initialState = {
@@ -282,31 +283,48 @@ const FirebaseState = (props) => {
   };
 
   const noPermitido = (tipo, setPermitido, history) => {
+    /* 
+    1 ORGANIZACION
+    2 EXPECTADOR
+    3 RRHH
+    9 ADMIN 
+    */
+
     if (state.usuarioLocal !== null) {
-      if (state.usuarioLocal.tipousuario !== tipo) {
-        Swal.fire({
-          allowOutsideClick: false,
-          title: "No puede acceder a esta Sección",
-          icon: "error",
-          text: "Privilegios Insuficientes",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            switch (state.usuarioLocal.tipousuario) {
-              case "9":
-                history.push("/admin");
-                break;
-              case "1":
-                history.push("/org");
-                break;
-              default:
-                history.push("/ingresar");
-                break;
+      console.log(tipo.indexOf(state.usuarioLocal.tipousuario));
+
+        if (tipo.indexOf(state.usuarioLocal.tipousuario) < 0) {
+
+          Swal.fire({
+            allowOutsideClick: false,
+            title: "No puede acceder a esta Sección",
+            icon: "error",
+            text: "Privilegios Insuficientes",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              switch (state.usuarioLocal.tipousuario) {
+                case "9":
+                  history.push("/admin");
+                  break;
+                case "1":
+                  history.push("/org");
+                  break;
+                case "2":
+                  history.push("/exp");
+                  break;
+                case "3":
+                  history.push("/rrhh");
+                  break;
+                default:
+                  history.push("/ingresar");
+                  break;
+              }
             }
-          }
-        });
-      } else {
-        setPermitido("si");
-      }
+          });
+        } else {
+          setPermitido("si");
+        }
+
     }
   };
 
