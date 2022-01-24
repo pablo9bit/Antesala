@@ -2,7 +2,7 @@ import React from "react";
 
 const Eventos = () => {
   return (
-    <section id="eventos" className="mb-400">
+    <section id="eventos">
       <div className="container">
         <div className="row">
           <div

@@ -70,14 +70,14 @@ const News = () => {
                 <div className="card position-relative d-flex align-items-center justify-content-center">
                   <img src="assets/img/box-podcast-01.png" width="100%" />
                   <a href="#" className="lottie-player">
-                    <lottie-player
+                    {/* <lottie-player
                       src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"
                       background="transparent"
                       speed="1"
                       style="width: 200px; height: 200px;"
                       loop
                       autoplay
-                    ></lottie-player>
+                    ></lottie-player> */}
                   </a>
                 </div>
               </div>
@@ -85,14 +85,14 @@ const News = () => {
                 <div className="card position-relative d-flex align-items-center justify-content-center">
                   <img src="assets/img/box-podcast-02.png" width="100%" />
                   <a href="#" className="lottie-player">
-                    <lottie-player
+                   {/*  <lottie-player
                       src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"
                       background="transparent"
                       speed="1"
                       style="width: 200px; height: 200px;"
                       loop
                       autoplay
-                    ></lottie-player>
+                    ></lottie-player> */}
                   </a>
                 </div>
               </div>
@@ -118,17 +118,17 @@ const News = () => {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                   >
-                    <lottie-player
+                   {/*  <lottie-player
                       src="https://assets7.lottiefiles.com/private_files/lf30_avzk3oss.json"
                       background="transparent"
                       speed="1"
                       style="width: 200px; height: 200px;"
                       loop
                       autoplay
-                    ></lottie-player>
+                    ></lottie-player> */}
                   </a>
                   {/*                                     <!-- Modal -->
-                   */}{" "}
+                   */}
                   <div
                     className="modal fade"
                     id="exampleModal"
