@@ -11,11 +11,11 @@ import {
 } from "./components/layout/Imports";
 
 import "./App.css";
-import PageError from "./components/pages/PageError";
+import PageError from "./pages/PageError";
 
 import CrearCuenta from "./components/auth/NuevaCuenta";
 import Login from "./components/auth/Login";
-import Home from "./components/pages/Home/Home";
+import Home from "./pages/Home/";
 import CompletarRegistro from "./components/auth/CompletarRegistro";
 import ResetPassword from "./components/auth/ResetPassword";
 
