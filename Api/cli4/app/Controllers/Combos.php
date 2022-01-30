@@ -4,9 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
 
-use App\Models\ProductosCategoriasModel;
-use App\Models\ProductosRubrosModel;
-use App\Models\SubastasEstadosModel;
+use App\Models\EventosTipoLiquidacionModel;
 
 
 class Combos extends BaseController
@@ -14,59 +12,15 @@ class Combos extends BaseController
 	use ResponseTrait;
 
 
-	public function getProductosCategorias()
+	public function getEventosTiposLiquidacion()
 	{
-	 	$request = service('request');
-		
-		try
-		{
-			$model = new ProductosCategoriasModel();
-			$usuarios = $model->where('activo', 1)->findAll();
-							
-			return $this->respondCreated(['productoscategorias' => $usuarios]);
-			
-		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
+		try {
+			$model = new EventosTipoLiquidacionModel();
+			$items = $model->where('habilitado', 1)->findAll();
+
+			return $this->respondCreated(['tipoliquidacion' => $items]);
+		} catch (\Exception $e) {
+			return $this->fail(['msg' => $e->getMessage()], 400);
 		}
 	}
-	
-	public function getProductosRubros()
-	{
-	 	$request = service('request');
-		
-		try
-		{
-			$model = new ProductosRubrosModel();
-			$usuarios = $model->where('activo', 1)->findAll();
-							
-			return $this->respondCreated(['productosrubros' => $usuarios]);
-			
-		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
-		}
-	}
-
-	public function getSubastasEstados()
-	{
-	 	$request = service('request');
-		
-		try
-		{
-			$model = new SubastasEstadosModel();
-			$usuarios = $model->findAll();
-							
-			return $this->respondCreated(['subastasestados' => $usuarios]);
-			
-		}
-		catch (\Exception $e)
-		{
-			return $this->fail(['msg' => $e->getMessage()],400);
-		}
-	}
-
-
 }

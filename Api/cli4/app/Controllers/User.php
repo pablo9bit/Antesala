@@ -6,6 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuariosModel;
 use App\Models\UsuariosOrganizacionesModel;
 use App\Models\UsuariosImagenesModel;
+use App\Models\UsuariosOpcionesCobrosModel;
 
 
 class User extends BaseController
@@ -96,12 +97,14 @@ class User extends BaseController
 						'idusuario'		=> $id,
 						'razon_social' 	=> $campos['razon_social'],
 						'logo'		 	=> $campos['logo'],
-						'descripcion'	=> $campos['descripcion'],
+						'descripcionOrg' => $campos['descripcion'],
 						'ubicacion'    	=> $campos['ubicacion'],
 						'coordX' 		=> $campos['coordX'],
 						'coordY' 		=> $campos['coordY'],
+						'whatsapp'		=> $campos['whatsapp'],
 						'idestado'		=> 1,
 						'url'			=> $campos['url'],
+						'accesibilidad'	=> $campos['accesibilidad'],
 					];
 
 					$modelOrg->insert($data);
@@ -111,14 +114,15 @@ class User extends BaseController
 					$data = [
 						'razon_social' 	=> $campos['razon_social'],
 						'logo'		 	=> $campos['logo'],
-						'descripcion'	=> $campos['descripcion'],
+						'descripcionOrg' => $campos['descripcion'],
 						'ubicacion'    	=> $campos['ubicacion'],
 						'coordX' 		=> $campos['coordX'],
 						'coordY' 		=> $campos['coordY'],
-						'idestado' 		=> $campos['idestado'],
+						'whatsapp'		=> $campos['whatsapp'],
+						'idestado'		=> 1,
 						'url'			=> $campos['url'],
+						'accesibilidad'	=> $campos['accesibilidad'],
 						'motivodesactivado'	=> $campos['motivodesactivado'],
-
 					];
 
 					$modelOrg
@@ -218,7 +222,7 @@ class User extends BaseController
 				->Select([
 					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
 					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
-					'razon_social', 'descripcion',
+					'razon_social', 'descripcionOrg',
 					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg',
 					'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg', 'UsuariosOrganizaciones.id as idOrg',
 					'UsuariosEstados.estado'
@@ -266,7 +270,12 @@ class User extends BaseController
 				->findAll();
 			$user->imagenes = $imagenes;
 
+			$modelCobros = new UsuariosOpcionesCobrosModel();
 
+			$cobros = $modelCobros
+				->where('idusuario', $id)
+				->findAll();
+			$user->cobros = $cobros;
 
 			return $this->respondCreated(['org' => $user, 'msg' => '']);
 		} catch (\Exception $e) {

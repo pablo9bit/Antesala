@@ -4,12 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class EventosAsistenciaModel extends Model
+class EventosTipoLiquidacionModel extends Model
 {
-    protected $table = 'EventosAsistencia';
+    protected $table = 'EventosTipoLiquidacion';
 
     protected $allowedFields = [
-        'idusuario', 'idevento', 'confirmado'
+        'detalle',
+        'habilitado',
     ];
     protected $primaryKey = 'id';
     protected $returnType     = 'object';

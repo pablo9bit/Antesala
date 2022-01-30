@@ -39,8 +39,8 @@ class EventosImagenesModel extends Model
 			$id = $row->id;
 			$archivo = $row->archivo;
 
-			if (file_exists(WRITEPATH . 'uploads/' . $archivo)) {
-				unlink(WRITEPATH . 'uploads/' . $archivo);
+			if (file_exists(WRITEPATH . 'uploads/eventos/' . $archivo)) {
+				unlink(WRITEPATH . 'uploads/eventos/' . $archivo);
 			}
 		}
 		$this->where('identificador', $identificador);
@@ -59,8 +59,8 @@ class EventosImagenesModel extends Model
 			$accion = $row->accion;
 
 			if ($accion === '1') {
-				if (file_exists(WRITEPATH . 'uploads/' . $archivo)) {
-					unlink(WRITEPATH . 'uploads/' . $archivo);
+				if (file_exists(WRITEPATH . 'uploads/eventos/' . $archivo)) {
+					unlink(WRITEPATH . 'uploads/eventos/' . $archivo);
 				}
 			}
 		}
