@@ -203,9 +203,9 @@ class User extends BaseController
 	{
 		$request = service('request');
 
-		if (!$this->usuario) {
+		/* if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
-		}
+		} */
 
 		try {
 			$texto = $request->getGet('texto');
@@ -251,16 +251,28 @@ class User extends BaseController
 
 		$request = service('request');
 
-		if (!$this->usuario) {
+		/* 	if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
-		}
+		} */
 
 		try {
 
 			$id = $request->getGet('idusuario');
 
-			$model = new UsuariosOrganizacionesModel();
-			$user = $model->where('idusuario', $id)->first();
+			$model = new UsuariosModel();
+			$user = $model
+				->Select([
+					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
+					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
+					'razon_social', 'descripcionOrg',
+					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg',
+					'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg', 'UsuariosOrganizaciones.id as idOrg',
+					'UsuariosEstados.estado', 'UsuariosOrganizaciones.accesibilidad'
+				])
+				->join('UsuariosOrganizaciones', 'UsuariosOrganizaciones.idusuario = Usuarios.id', 'left')
+				->join('UsuariosEstados', 'UsuariosEstados.id = Usuarios.idestado')
+				->where('Usuarios.id', $id)
+				->first();
 
 			$modelImages = new UsuariosImagenesModel();
 
@@ -275,7 +287,7 @@ class User extends BaseController
 			$cobros = $modelCobros
 				->where('idusuario', $id)
 				->findAll();
-			$user->cobros = $cobros;
+			$user->MediosCobros = $cobros;
 
 			return $this->respondCreated(['org' => $user, 'msg' => '']);
 		} catch (\Exception $e) {

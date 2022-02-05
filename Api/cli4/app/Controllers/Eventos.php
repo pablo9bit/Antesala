@@ -147,11 +147,11 @@ class Eventos extends BaseController
 	public function getAll()
 	{
 		$request = service('request');
-
+		/* 
 		if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
 		}
-
+ */
 		try {
 			$texto = $request->getGet('texto');
 
@@ -166,9 +166,11 @@ class Eventos extends BaseController
 
 			$filtrado = $model->Where('Eventos.id > 0 ' . $like)
 				->Select([
-					`id`, `idusuario`, `titulo`, `grupo`, `descripcionCorta`, `descripcion`, `atp`, `presencial`, `duracion`, `url`, `facebook`, `instagram`, `claves`, `habilitado`,
-					`razon_social`, `logo`, `descripcionOrg`, `ubicacion`, `coordX`, `coordY`, `whatsapp`, `idestado`, `url`, `accesibilidad`,
-					`nombre`, `apellido`, `telefono`, `email`, `direccion`, `idestado`, `fecha`, `idtipousuario`, `imagen`, `motivodesactivado`
+					`Eventos.id`, `Eventos.idusuario`, `Eventos.titulo`, `Eventos.grupo`, `Eventos.descripcionCorta`, `Eventosdescripcion`, `Eventosatp`,
+					`Eventos.presencial`, `Eventos.duracion`, `Eventos.url as urlevento`, `Eventos.facebook`, `Eventos.instagram`, `Eventos.claves`,
+					`Eventos.habilitado`,
+					`razon_social`, `logo`, `descripcionOrg`, `ubicacion`, `coordX`, `coordY`, `whatsapp`, `url`, `accesibilidad`,
+					`nombre`, `apellido`, `telefono`, `email`, `direccion`, `Usuarios.idestado`, `fecha`, `idtipousuario`, `imagen`, `motivodesactivado`
 				])
 				->join('Usuarios', 'Eventos.idusuario = Usuarios.id', 'left')
 				->join('UsuariosOrganizaciones', 'UsuariosOrganizaciones.idusuario = Usuarios.id', 'left')
@@ -207,10 +209,10 @@ class Eventos extends BaseController
 
 		$request = service('request');
 
-		if (!$this->usuario) {
+	/* 	if (!$this->usuario) {
 			return $this->fail(['msg' => '0'], 400);
-		}
-
+		}*/
+		
 		try {
 
 			$id = $request->getGet('idevento');
@@ -218,9 +220,11 @@ class Eventos extends BaseController
 			$model = new EventosModel();
 			$evento = $model
 				->Select([
-					`id`, `idusuario`, `titulo`, `grupo`, `descripcionCorta`, `descripcion`, `atp`, `presencial`, `duracion`, `url`, `facebook`, `instagram`, `claves`, `habilitado`,
-					`razon_social`, `logo`, `descripcionOrg`, `ubicacion`, `coordX`, `coordY`, `whatsapp`, `idestado`, `url`, `accesibilidad`,
-					`nombre`, `apellido`, `telefono`, `email`, `direccion`, `idestado`, `fecha`, `idtipousuario`, `imagen`, `motivodesactivado`
+					`Eventos.id`, `Eventos.idusuario`, `Eventos.titulo`, `Eventos.grupo`, `Eventos.descripcionCorta`, `Eventosdescripcion`, `Eventosatp`,
+					`Eventos.presencial`, `Eventos.duracion`, `Eventos.url as urlevento`, `Eventos.facebook`, `Eventos.instagram`, `Eventos.claves`,
+					`Eventos.habilitado`,
+					`razon_social`, `logo`, `descripcionOrg`, `ubicacion`, `coordX`, `coordY`, `whatsapp`, `url`, `accesibilidad`,
+					`nombre`, `apellido`, `telefono`, `email`, `direccion`, `Usuarios.idestado`, `fecha`, `idtipousuario`, `imagen`, `motivodesactivado`
 				])
 				->join('Usuarios', 'Eventos.idusuario = Usuarios.id', 'left')
 				->join('UsuariosOrganizaciones', 'UsuariosOrganizaciones.idusuario = Usuarios.id', 'left')

@@ -16,7 +16,7 @@ defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
 
 defined('EMPRESA') || define('EMPRESA', 'Antesala');
 defined('EMAILADMIN') || define('EMAILADMIN', 'gestion.grupoeme@gmail.com');
-defined('URLSITIO') || define('URLSITIO', 'http://antesala.com.ar/api/cli4/');
+defined('URLSITIO') || define('URLSITIO', 'https://antesala.com.ar/api/cli4/');
 /*
 |--------------------------------------------------------------------------
 | Composer Path

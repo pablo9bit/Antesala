@@ -66,7 +66,7 @@ const Usuarios = () => {
   if (permitido === null) return <></>;
   if (permitido === "si")
     return (
-      <div className="center-block">
+      <div className="center-block" style={{marginLeft: '20px', marginRight: '20px'}}>
         <br></br>
         <h3 className="text-center">{config.nombre}</h3>
         <br></br>

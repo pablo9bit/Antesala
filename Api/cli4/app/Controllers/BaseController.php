@@ -29,6 +29,7 @@ class BaseController extends \CodeIgniter\Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+		// if(ENVIRONMENT === 'production')
 		$this->usuario = $this->_verificarToken();
 
 	}

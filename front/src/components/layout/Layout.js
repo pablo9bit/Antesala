@@ -1,6 +1,6 @@
 import Footer from "./Footer/Footer";
 import BtnWhatsApp from "./BtnWhatsApp/BtnWhatsApp";
-import Navbar from "./../../pages/Home/Sections/Header/Navbar";
+import Navbar from "./Headers/Navbar";
 const Layout = ({ children }) => {
   return (
     <>
