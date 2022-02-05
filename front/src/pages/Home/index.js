@@ -5,6 +5,7 @@ import Calendar from "./Sections/Calendar/Calendar";
 import Eventos from "./Sections/Eventos/Eventos";
 import Header from "./Sections/Header/Header";
 import News from "./Sections/News/News";
+import Publicidad from "./Sections/Publicidad";
 import Suscriptions from "./Sections/Suscriptions/Suscriptions";
 
 const index = () => {
@@ -15,6 +16,7 @@ const index = () => {
       <Eventos />
       <div style={{ marginTop: "300px" }}></div>
       <Actualidad />
+      <Publicidad />
       <News />
       <Apoyo />
       <Suscriptions />

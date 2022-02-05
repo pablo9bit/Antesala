@@ -8,7 +8,7 @@ const Suscriptions = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6  d-flex align-items-center">
-            <form className="d-flex position-relative me-auto ms-auto">
+            <form className="d-flex position-relative me-auto ms-auto mb-4 mb-md-0">
               <input
                 className="form-control"
                 type="search"
@@ -48,14 +48,13 @@ const Suscriptions = () => {
               </button>
             </form>
           </div>
-          <div className="col-md-4 d-flex flex-column align-self-center">
+          <div className="col-md-4 d-flex flex-column align-self-center text-center text-md-start mb-4 mb-md-0">
             <h1 className="GothamBold fc-blanco fs-32 m-0">SUSCRIBITE</h1>
             <p className="fc-blanco m-0">para recibí novedades y promociones</p>
           </div>
-          <div className="col-md-2 d-flex align-items-center justify-content-end">
-            <a href="#" target="blank">
+          <div className="col-md-2 d-flex align-items-center justify-content-center justify-content-md-end">
+            <a href="#" target="blank" className="text-center">
               <svg
-                className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
                 width="65.939"
                 height="65.939"
@@ -70,9 +69,8 @@ const Suscriptions = () => {
                 />
               </svg>
             </a>
-            <a href="#" target="blank">
+            <a href="#" target="blank" className="text-center">
               <svg
-                className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
                 width="65.989"
                 height="65.988"
@@ -108,9 +106,8 @@ const Suscriptions = () => {
                 </g>
               </svg>
             </a>
-            <a href="#" target="blank">
+            <a href="#" target="blank" className="text-center">
               <svg
-                className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
                 width="67.02"
                 height="67.021"

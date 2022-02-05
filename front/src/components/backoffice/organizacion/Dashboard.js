@@ -19,6 +19,7 @@ const Dashboard = () => {
   if (permitido === null) return <></>;
   if (permitido === "si")
     return (
+      <main>
       <div
         className="d-flex justify-content-center"
         style={{ padding: "50px" }}
@@ -53,6 +54,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      </main>
     );
 };
 

@@ -11,16 +11,16 @@ const Footer = () => {
     <footer className="bg-black pt-100">
       <div className="container">
         <div className="row">
-          <div className="col-md-3 d-flex align-self-center">
-            <img src="assets/img/antesala-logo-white.svg" width="80%" alt="" />
+          <div className="col-md-3 d-flex align-self-center justify-content-center justify-content-md-starts mb-4 mb-md-0">
+            <img src="/assets/img/antesala-logo-white.svg" width="80%" alt="" />
           </div>
           <div className="col-md-3">
-            <h1 className="GothamLight fc-blanco">Enlaces</h1>
+            <h1 className="GothamLight fc-blanco mt-4 mt-md-0">Enlaces</h1>
             <ul className="mb-0 p-0">
               <li className="pb-2">
-                <a href="#" className="GothamLight fc-blanco">
+                <Link to="/somos" className="GothamLight fc-blanco">
                   Quienes Somos
-                </a>
+                </Link>
               </li>
               <li className="pb-2">
                 <a href="#" className="GothamLight fc-blanco">
@@ -43,14 +43,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="GothamLight fc-blanco">
+                <Link to="/contacto" className="GothamLight fc-blanco">
                   Contáctanos
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           <div className="col-md-3">
-            <h1 className="GothamLight fc-blanco">Mi Cuenta</h1>
+            <h1 className="GothamLight fc-blanco mt-4 mt-md-0">Mi Cuenta</h1>
             <ul className="p-0">
               <li className="pb-2">
                 <a href="#" className="GothamLight fc-blanco">
@@ -63,40 +63,42 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-            <h1 className="GothamLight fc-blanco">Salas y Productores</h1>
+            <h1 className="GothamLight fc-blanco mt-4 mt-md-0">
+              Salas y Productores
+            </h1>
             <ul className="mb-0 p-0">
               <li className="pb-2">
-                <a href="#" className="GothamLight fc-blanco">
+                <Link to="/ingresar" className="GothamLight fc-blanco">
                   Iniciar Sesión
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="GothamLight fc-blanco">
+                <Link to="/crearcuenta" className="GothamLight fc-blanco">
                   Registrate
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           <div className="col-md-3">
-            <ul className="mb-0 p-0">
+            <ul className="mb-0 p-0 mt-4 mt-md-0">
+              <li className="pb-2">
+                <Link to="/terminos" className="GothamLight fc-blanco">
+                  Terminos y Condiciones
+                </Link>
+              </li>
               <li className="pb-2">
                 <a href="#" className="GothamLight fc-blanco">
-                  TERMINOS Y CONDICIONES
+                  Políticas de Privacidad
                 </a>
               </li>
               <li className="pb-2">
                 <a href="#" className="GothamLight fc-blanco">
-                  POLÍTICAS DE PRIVACIDAD
-                </a>
-              </li>
-              <li className="pb-2">
-                <a href="#" className="GothamLight fc-blanco">
-                  PREGUNTAS FRECUENTES
+                  Preguntas Frecuentes
                 </a>
               </li>
               <li>
                 <a href="#" className="GothamLight fc-blanco">
-                  INFO@ANTESALA.COM.AR
+                  info@antesala.com.ar
                 </a>
               </li>
             </ul>

@@ -6,7 +6,7 @@ const News = () => {
       <div className="container">
         <div className="row mb-100">
           <div className="col-12 text-center mb-4">
-            <h1 className="Grifter fc-blanco fs-42 wow bounceInUp">
+            <h1 className="fc-blanco wow bounceInUp">
               últimas notas y entrevistas
             </h1>
           </div>
@@ -14,13 +14,11 @@ const News = () => {
             <div className="card">
               <img src="assets/img/box-ultima-nota-01.png" width="100%" />
               <div className="card-body">
-                <h1 className="Grifter fc-blanco">
-                  La venta de cerveza en el teatro
-                </h1>
-                <h2 className="Grifter fc-blanco">por coco albarracin</h2>
+                <h2 className="fc-blanco">La venta de cerveza en el teatro</h2>
+                <h4 className="Grifter fc-blanco">por coco albarracin</h4>
               </div>
               <a href="#" className="btn btn-custom-black">
-                leer
+                leer +
               </a>
             </div>
           </div>
@@ -28,87 +26,119 @@ const News = () => {
             <div className="card">
               <img src="assets/img/box-ultima-nota-02.png" width="100%" />
               <div className="card-body">
-                <h1 className="Grifter fc-blanco">
-                  La venta de cerveza en el teatro
-                </h1>
-                <h2 className="Grifter fc-blanco">por coco albarracin</h2>
+                <h2 className="fc-blanco">La venta de cerveza en el teatro</h2>
+                <h4 className="Grifter fc-blanco">por coco albarracin</h4>
               </div>
               <a href="#" className="btn btn-custom-black">
-                leer
+                leer +
               </a>
             </div>
           </div>
           <div className="col-md-4 mb-4 wow bounceInUp">
             <div className="card">
-              <img src="assets/img/box-ultima-nota-03.png" width="100%" />
+              <img src="/assets/img/box-ultima-nota-03.png" width="100%" />
               <div className="card-body">
-                <h1 className="Grifter fc-blanco">
-                  La venta de cerveza en el teatro
-                </h1>
-                <h2 className="Grifter fc-blanco">por coco albarracin</h2>
+                <h2 className="fc-blanco">La venta de cerveza en el teatro</h2>
+                <h4 className="Grifter fc-blanco">por coco albarracin</h4>
               </div>
               <a href="#" className="btn btn-custom-black">
-                leer
+                leer +
               </a>
             </div>
           </div>
-          <div className="mt-4 d-grid gap-2 wow bounceInUp">
+          <div className="d-grid gap-2 wow bounceInUp">
             <a href="#" className="btn btn-custom-amarillo">
-              ver todo
+              ver más +
             </a>
           </div>
         </div>
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <div className="row">
               <div className="col-12 text-center mb-4">
-                <h1 className="Grifter fc-blanco fs-42 wow bounceInUp">
-                  últimos podcast
-                </h1>
+                <h2 className="fc-blanco wow bounceInUp">últimos podcast</h2>
               </div>
-              <div className="col-md-6 wow bounceInUp">
+              <div className="col-md-6 wow bounceInUp mb-4">
                 <div className="card position-relative d-flex align-items-center justify-content-center">
                   <img src="assets/img/box-podcast-01.png" width="100%" />
-                  <a href="#" className="lottie-player">
-                    {/* <lottie-player
-                      src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"
-                      background="transparent"
-                      speed="1"
-                      style="width: 200px; height: 200px;"
-                      loop
-                      autoplay
-                    ></lottie-player> */}
+                  <a
+                    className="lottie-player"
+                    data-bs-toggle="modal"
+                    data-bs-target="#spotify"
+                  >
+                    {/* <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px;" loop autoplay></lottie-player> */}
                   </a>
+                  {/* <!-- Modal --> */}
+                  <div
+                    className="modal fade"
+                    id="spotify"
+                    tabindex="-1"
+                    aria-labelledby="spotifyLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-body">
+                          <iframe
+                            src="https://open.spotify.com/embed/episode/3Gfh07HRSjeBTY91Bdj24P?utm_source=generator&theme=0"
+                            width="100%"
+                            height="152"
+                            frameBorder="0"
+                            allowfullscreen=""
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          ></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col-md-6 wow bounceInUp">
+              <div className="col-md-6 wow bounceInUp mb-4">
                 <div className="card position-relative d-flex align-items-center justify-content-center">
                   <img src="assets/img/box-podcast-02.png" width="100%" />
-                  <a href="#" className="lottie-player">
-                   {/*  <lottie-player
-                      src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"
-                      background="transparent"
-                      speed="1"
-                      style="width: 200px; height: 200px;"
-                      loop
-                      autoplay
-                    ></lottie-player> */}
+                  <a
+                    className="lottie-player"
+                    data-bs-toggle="modal"
+                    data-bs-target="#spotify"
+                  >
+                    {/* <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_nwo471nu.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px;" loop autoplay></lottie-player> */}
                   </a>
+                  {/* <!-- Modal --> */}
+                  <div
+                    className="modal fade"
+                    id="spotify"
+                    tabindex="-1"
+                    aria-labelledby="spotifyLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-body">
+                          <iframe
+                            src="https://open.spotify.com/embed/episode/3Gfh07HRSjeBTY91Bdj24P?utm_source=generator&theme=0"
+                            width="100%"
+                            height="152"
+                            frameBorder="0"
+                            allowfullscreen=""
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          ></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4 d-grid gap-2 wow bounceInUp">
+              <div className="d-grid gap-2 wow bounceInUp">
                 <a href="#" className="btn btn-custom-amarillo">
-                  ver todo
+                  ver más +
                 </a>
               </div>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-md-4">
             <div className="row">
-              <div className="col-12 text-center mb-4">
-                <h1 className="Grifter fc-blanco fs-42 wow bounceInUp">
-                  video del mes
-                </h1>
+              <div className="col-12 text-center mb-4 mt-4 mt-md-0">
+                <h2 className="fc-blanco wow bounceInUp">video del mes</h2>
               </div>
               <div className="col-12 wow bounceInUp">
                 <div className="card position-relative d-flex align-items-center justify-content-center">
@@ -118,17 +148,9 @@ const News = () => {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                   >
-                   {/*  <lottie-player
-                      src="https://assets7.lottiefiles.com/private_files/lf30_avzk3oss.json"
-                      background="transparent"
-                      speed="1"
-                      style="width: 200px; height: 200px;"
-                      loop
-                      autoplay
-                    ></lottie-player> */}
+                    {/* <lottie-player src="https://assets7.lottiefiles.com/private_files/lf30_avzk3oss.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px;"  loop autoplay></lottie-player> */}
                   </a>
-                  {/*                                     <!-- Modal -->
-                   */}
+                  {/* <!-- Modal --> */}
                   <div
                     className="modal fade"
                     id="exampleModal"
