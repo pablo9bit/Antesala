@@ -12,6 +12,8 @@ class UsuariosOpcionesCobrosModel extends Model
         'idusuario',
         'situacionFiscal',
         'CBU',
+        'CUIL',
+        'estado'
     ];
     protected $primaryKey = 'id';
     protected $returnType     = 'object';
