@@ -9,9 +9,21 @@ class UsuariosModel extends Model
 	protected $table = 'Usuarios';
 
 	protected $allowedFields 	= [
-		'uid', 'nombre', 'apellido', 'telefono', 'email', 'direccion', 'idestado', 'password',
-		'code', 'codePassword', 'fecha', 'idtipousuario',
-		'imagen',  'motivodesactivado'
+		'uid',
+		'nombre',
+		'apellido',
+		'telefono',
+		'email',
+		'direccion',
+		'idlocalidad',
+		'idestado',
+		'password',
+		'code',
+		'codePassword',
+		'fecha',
+		'idtipousuario',
+		'imagen',
+		'motivodesactivado'
 	];
 
 	protected $primaryKey 		= 'id';

@@ -24,7 +24,7 @@ import DashboardOrg from "./components/backoffice/organizacion/Dashboard";
 import FormPerfil from "./components/backoffice/organizacion/perfil/FormPerfil";
 import Usuarios from "./components/backoffice/admin/organizacion/Usuarios";
 import test from "./components/test";
-import Comprar from "./pages/Comprar";
+import Entradas from "./pages/Entradas";
 import Somos from "./pages/Somos";
 import Cartelera from "./pages/Cartelera";
 import Contenidos from "./pages/Contenidos";
@@ -41,7 +41,7 @@ function App() {
             <ScrollToTop />
             <Switch>
               <RutaPrivadaInfo exact path="/" component={Home} />
-              <RutaPrivadaInfo exact path="/comprar" component={Comprar} />
+              <RutaPrivadaInfo exact path="/entradas" component={Entradas} />
               <RutaPrivadaInfo exact path="/somos" component={Somos} />
               <RutaPrivadaInfo exact path="/cartelera" component={Cartelera} />
               <RutaPrivadaInfo exact path="/contenidos" component={Contenidos} />

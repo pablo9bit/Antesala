@@ -32,9 +32,9 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-expand-lg custom-navbar fixed-top d-block d-md-none">
         <div className="container">
-          <Link className="navbar-brand" to="/">
+          <a className="navbar-brand" href="/">
             <img src="/assets/img/antesala-logo.svg" width="100px" alt="" />
-          </Link>
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -49,9 +49,9 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" aria-current="page" to="/comprar">
+                <a className="nav-link" aria-current="page" href="/entradas">
                   Entradas
-                </Link>
+                </a>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" aria-current="page" to="/somos">
@@ -86,10 +86,10 @@ const Navbar = () => {
             </ul>
             <hr />
             <select className="form-select form-select">
-              <option selected>Córdoba</option>
-              <option value="1">Rosario</option>
-              <option value="2">Buenos Aires</option>
-              <option value="3">Santa Fé</option>
+              <option selected value="1">Córdoba</option>
+              <option value="2">Rosario</option>
+              <option value="3">Buenos Aires</option>
+              <option value="4">Santa Fé</option>
             </select>
           </div>
 
@@ -112,9 +112,9 @@ const Navbar = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-2">
-              <Link to="/">
+              <a href="/">
                 <img src="/assets/img/antesala-logo.svg" width="200px" alt="" />
-              </Link>
+              </a>
             </div>
             <div className="col-md-8 d-flex flex-column justify-content-between">
               <form className="d-flex position-relative me-auto ms-auto">
@@ -130,13 +130,13 @@ const Navbar = () => {
               </form>
               <ul className="navbar-nav flex-row justify-content-center mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link
+                  <a
                     className="nav-link active"
                     aria-current="page"
-                    to="/comprar"
+                    href="/entradas"
                   >
                     Entradas
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" aria-current="page" to="/somos">

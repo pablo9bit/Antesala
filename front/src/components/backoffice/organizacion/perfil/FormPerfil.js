@@ -40,6 +40,7 @@ const FormPerfil = (props) => {
     idestado: "",
     descripcionOrg: "",
     ubicacion: "",
+    idlocalidad: "",
     url: "",
     motivodesactivado: "",
     coordX: "",
@@ -58,6 +59,7 @@ const FormPerfil = (props) => {
     idestado,
     descripcionOrg,
     ubicacion,
+    idlocalidad,
     url,
     motivodesactivado,
     whatsapp,
@@ -93,8 +95,8 @@ const FormPerfil = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (
-      nombre.trim()==="" ||
-      apellido.trim()==="" ||
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
       razon_social.trim() === "" ||
       ubicacion.trim() === "" ||
       descripcionOrg.trim() === ""
@@ -102,13 +104,6 @@ const FormPerfil = (props) => {
       setAlerta({ msg: "Todos los campos son obligatorios", type: "error" });
       return;
     }
-   /*  if (idestado.trim() === "3" && motivodesactivado.trim() === "") {
-      setAlerta({
-        msg: "Debe ingresar la causa de Desactivación",
-        type: "error",
-      });
-      return;
-    } */
 
     saveOrganizacion(DatosForm, setLoadingLocal, setAlerta);
     setSoloLectura(true);
@@ -205,6 +200,21 @@ const FormPerfil = (props) => {
                     }}
                     onChange={onChange}
                   />
+                  <br></br>
+                  <select
+                    name="idlocalidad"
+                    id="idlocalidad"
+                    onChange={onChange}
+                    value={idlocalidad}
+                    disabled={soloLectura}
+                    className="form-select form-select"
+                  >
+                    <option value="">Seleccione Su Localidad</option>
+                    <option value="1">Córdoba</option>
+                    <option value="2">Rosario</option>
+                    <option value="3">Buenos Aires</option>
+                    <option value="4">Santa Fé</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -256,7 +266,7 @@ const FormPerfil = (props) => {
                     }}
                     onChange={onChange}
                   />
-                   <br></br>
+                  <br></br>
                   <Input
                     key={"whatsapp"}
                     sets={{

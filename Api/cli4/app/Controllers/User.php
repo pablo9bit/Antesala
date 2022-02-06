@@ -97,7 +97,7 @@ class User extends BaseController
 						'idusuario'		=> $id,
 						'razon_social' 	=> $campos['razon_social'],
 						'logo'		 	=> $campos['logo'],
-						'descripcionOrg' => $campos['descripcion'],
+						'descripcionOrg' => $campos['descripcionOrg'],
 						'ubicacion'    	=> $campos['ubicacion'],
 						'coordX' 		=> $campos['coordX'],
 						'coordY' 		=> $campos['coordY'],
@@ -114,7 +114,7 @@ class User extends BaseController
 					$data = [
 						'razon_social' 	=> $campos['razon_social'],
 						'logo'		 	=> $campos['logo'],
-						'descripcionOrg' => $campos['descripcion'],
+						'descripcionOrg' => $campos['descripcionOrg'],
 						'ubicacion'    	=> $campos['ubicacion'],
 						'coordX' 		=> $campos['coordX'],
 						'coordY' 		=> $campos['coordY'],
@@ -129,6 +129,20 @@ class User extends BaseController
 						->set($data)
 						->where('idusuario', $id)
 						->update();
+
+
+					$datauser = [
+						'nombre' 	=> $campos['nombre'],
+						'apellido'	=> $campos['apellido'],
+						'telefono'  => $campos['telefono'],
+						'idlocalidad' => $campos['idlocalidad'],
+					];
+
+					$model
+						->set($datauser)
+						->where('id', $id)
+						->update();
+
 
 					return $this->respondCreated(['msg' => 'Su Perfil se Modifico con Exito']);
 				}
@@ -222,7 +236,7 @@ class User extends BaseController
 				->Select([
 					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
 					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
-					'razon_social', 'descripcionOrg',
+					'razon_social', 'descripcionOrg', 'logo', 'whatsapp', 'idlocalidad',
 					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg',
 					'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg', 'UsuariosOrganizaciones.id as idOrg',
 					'UsuariosEstados.estado'
@@ -263,8 +277,8 @@ class User extends BaseController
 			$user = $model
 				->Select([
 					'Usuarios.id as idusuario', 'uid', 'nombre', 'apellido', 'telefono', 'email', 'Usuarios.idestado as idestadoUsuario', 'fecha', 'idtipousuario',
-					'imagen',  'Usuarios.motivodesactivado as motivoUsuario',
-					'razon_social', 'descripcionOrg',
+					'imagen',  'Usuarios.motivodesactivado',
+					'razon_social', 'descripcionOrg', 'logo', 'whatsapp', 'idlocalidad',
 					'ubicacion', 'coordX', 'coordY', 'UsuariosOrganizaciones.idestado as idestadoOrg',
 					'url', 'UsuariosOrganizaciones.motivodesactivado as motivoOrg', 'UsuariosOrganizaciones.id as idOrg',
 					'UsuariosEstados.estado', 'UsuariosOrganizaciones.accesibilidad'
