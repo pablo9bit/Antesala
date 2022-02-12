@@ -1,16 +1,11 @@
 import { useReducer } from "react";
 import Reducer from "./OrganizacionReducer";
 import Context from "./OrganizacionContext";
-import { clienteAxios, axios, uuidv4 } from "../../components/layout/Imports";
+import { clienteAxios, uuidv4 } from "../../components/layout/Imports";
 
 import {
   OBTENER_USUARIOS,
   ORDENAR_FILTRAR_USUARIOS,
-  SELECCIONAR_USUARIO,
-  DESELECCIONAR_USUARIO,
-  ACTUALIZAR_USUARIO,
-  ELIMINAR_USUARIO,
-  CARGAR_COMBOS_USUARIO,
   OBTENER_ORGANIZACION,
   AGREGAR_IMAGEN,
   QUITAR_IMAGEN,

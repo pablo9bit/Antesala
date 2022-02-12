@@ -4,8 +4,8 @@ import HeaderAdmin from "../Headers/HeaderAdmin";
 import HeaderExpectador from "./HeaderExpectador";
 import HeaderOrganizacion from "./HeaderOrganizacion";
 
-const Navbar = () => {
-  const history = useHistory();
+const Navbar = ({ props }) => {
+  //  const history = useHistory();
 
   const authContext = useContext(FirebaseContext);
   const { usuario, usuarioLocal, cerrarSesion } = authContext;
@@ -86,7 +86,9 @@ const Navbar = () => {
             </ul>
             <hr />
             <select className="form-select form-select">
-              <option selected value="1">Córdoba</option>
+              <option selected value="1">
+                Córdoba
+              </option>
               <option value="2">Rosario</option>
               <option value="3">Buenos Aires</option>
               <option value="4">Santa Fé</option>
@@ -197,7 +199,8 @@ const Navbar = () => {
                       to=""
                       onClick={() => {
                         cerrarSesion();
-                        history.push("/");
+                        props.history.push("/");
+                        window.location.reload(true);
                       }}
                       className="nav-item nav-link"
                     >

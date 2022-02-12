@@ -18,7 +18,6 @@ import {
   FB_USUARIO_AUTENTICADO_LOCAL,
   FB_USUARIO_LOCAL,
 } from "../../types";
-import { isAdmin } from "@firebase/util";
 
 const FirebaseState = (props) => {
   const initialState = {

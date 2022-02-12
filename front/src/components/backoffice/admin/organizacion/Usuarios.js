@@ -96,9 +96,9 @@ const Usuarios = () => {
           />
         )}
 
-        <Portal isOpened={isOpenedModal}>
+        {/* <Portal isOpened={isOpenedModal}>
           <FormUsuario Seleccionado={usuarioSeleccionado} />
-        </Portal>
+        </Portal> */}
       </div>
     );
 };

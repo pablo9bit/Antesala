@@ -1,66 +1,58 @@
 import { useContext, useState, useEffect } from "react";
 import {
-  UsuarioContext,
-  useAlerta,
+  EventoContext,
+  FirebaseContext,
   Portal,
   Spinner,
+  useHistory,
 } from "../../../layout/Imports";
-import { InputSinLabel, SelectSinLabel } from "../../../layout/FormsElements";
-import Listar from "./ListarUsuarios";
-import FormUsuario from "./FormUsuario";
+import { InputSinLabel } from "../../../layout/FormsElements";
+import Listar from "./ListarEventos";
+import FormEvento from "./FormEvento";
 
 const Eventos = () => {
-  const usuarioContext = useContext(UsuarioContext);
-  const {
-    obtenerUsuarios,
-    isOpenedModal,
-    usuarioSeleccionado,
-    openModal,
-    getDataCombos,
-    tiposUsuarios,
-  } = usuarioContext;
-  const [setAlerta, MostrarAlerta] = useAlerta(null);
-  const [loadingLocal, setLoadingLocal] = useState(null);
-  const [consultar, setConsultar] = useState(false);
+  const history = useHistory();
+  const authContext = useContext(FirebaseContext);
+  const { usuarioLocal, noPermitido } = authContext;
 
-  const [DatosForm, LeerForm] = useState({ texto: "", idtipo: "" });
-  const { texto, idtipo } = DatosForm;
+  const eventoContext = useContext(EventoContext);
+  const { obtenerEventos, isOpenedModal, eventoSeleccionado } = eventoContext;
+
+  const [loadingLocal, setLoadingLocal] = useState(null);
+  const [consultar, setConsultar] = useState(true);
+  const [permitido, setPermitido] = useState(null);
+  const [DatosForm, LeerForm] = useState({ texto: "" });
+  const { texto } = DatosForm;
 
   const [config] = useState({
-    columnasMartilleros: [
-      { label: "Cuil", nombre: "cuil" },
+    columnas: [
       { label: "Nombre", nombre: "nombre" },
-      { label: "Apellido", nombre: "apellido" },
-      { label: "Email", nombre: "email" },
+      { label: "Razon Social", nombre: "razon_social" },
       { label: "Telefono", nombre: "telefono" },
-      { label: "Matricula", nombre: "matricula" },
-      { label: "Estado", nombre: "estado" },
-    ],
-    columnasOferentes: [
-      { label: "Cuil", nombre: "cuil" },
-      { label: "Nombre", nombre: "nombre" },
-      { label: "Apellido", nombre: "apellido" },
-      { label: "Alias", nombre: "alias" },
-      { label: "Email", nombre: "email" },
-      { label: "Telefono", nombre: "telefono" },
+      { label: "Ubicacion", nombre: "ubicacion" },
       { label: "Estado", nombre: "estado" },
     ],
     permiteAgregar: false,
-    path: "admin/usuarios",
-    nombre: "Usuarios",
+    path: "org/eventos",
+    nombre: "Mis Eventos",
     registrosPorPagina: 20,
   });
 
   useEffect(() => {
-    getDataCombos();
-  }, []);
-
-  useEffect(() => {
     if (consultar) {
       setConsultar(false);
-      obtenerUsuarios(DatosForm, setLoadingLocal, setAlerta);
+      obtenerEventos(DatosForm, setLoadingLocal);
     }
   }, [consultar]);
+
+  useEffect(() => {
+    if (usuarioLocal !== null) {
+      if (usuarioLocal.tipousuario === "1") {
+        //  getOrganizacion(usuarioLocal.id, setLoadingLocal, setAlerta);
+      }
+      noPermitido(["1", "9"], setPermitido, history);
+    }
+  }, [usuarioLocal]);
 
   const onChange = (e) => {
     LeerForm({
@@ -70,61 +62,59 @@ const Eventos = () => {
     setConsultar(true);
   };
 
-  return (
-    <div className="center-block">
-      <br></br>
-      <h3 className="text-center">Gestionar {config.nombre}</h3>
-      <br></br>
-      <div className="row">
-        <div className="col-sm"></div>
-        <div className="col-sm ">
-          <InputSinLabel
-            key={"buscar"}
-            sets={{
-              type: "text",
-              name: "texto",
-              placeholder: "Ingrese su Búsqueda",
-              valor: texto,
-            }}
-            onChange={onChange}
-          />
-
-          <SelectSinLabel
-            key={"idtipo"}
-            sets={{
-              name: "idtipo",
-              valor: idtipo,
-              label: "Seleccione Tipo de Usuario",
-              opciones: tiposUsuarios,
-            }}
-            onChange={onChange}
-          />
+  if (permitido === null) return <></>;
+  if (permitido === "si")
+    return (
+      <div
+        className="center-block"
+        style={{ marginLeft: "20px", marginRight: "20px" }}
+      >
+        <br></br>
+        <h3 className="text-center">{config.nombre}</h3>
+        <br></br>
+        <div className="row">
+          <div className="col-sm">
+            <div className="form-group">
+              <button
+                onClick={() => {
+                  history.push("/org/eventos/nuevo");
+                }}
+                className="btn btn-dark"
+              >
+                <i className="fa fa-plus-circle"></i> Agregar Evento
+              </button>
+              
+            </div>
+          </div>
+          <div className="col-sm ">
+            <InputSinLabel
+              key={"buscar"}
+              sets={{
+                type: "text",
+                name: "texto",
+                placeholder: "Ingrese su Búsqueda",
+                valor: texto,
+              }}
+              onChange={onChange}
+            />
+          </div>
+          <br></br>
         </div>
         <br></br>
-      </div>
-
-      <br></br>
-      {loadingLocal ? (
-        <Spinner />
-      ) : (
-      
-          
+        {loadingLocal ? (
+          <Spinner />
+        ) : (
           <Listar
-            columnas={
-              idtipo !== "1"
-                ? config.columnasMartilleros
-                : config.columnasOferentes
-            }
+            columnas={config.columnas}
             registrosPorPagina={config.registrosPorPagina}
           />
-        
-      )}
+        )}
 
-      <Portal isOpened={isOpenedModal}>
-        <FormUsuario Seleccionado={usuarioSeleccionado} />
-      </Portal>
-    </div>
-  );
+        <Portal isOpened={isOpenedModal}>
+          <FormEvento Seleccionado={eventoSeleccionado} />
+        </Portal>
+      </div>
+    );
 };
 
 export default Eventos;

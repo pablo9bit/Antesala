@@ -27,7 +27,7 @@ const HeaderOrganizacion = () => {
         <li>
           <hr className="dropdown-divider" />
         </li>
-        <Link aria-label="Mi Perfil" to="/admin" className="dropdown-item">
+        <Link aria-label="Mis Eventos" to="/org/eventos" className="dropdown-item">
           Mis Eventos
         </Link>
       </ul>

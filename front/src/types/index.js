@@ -17,6 +17,19 @@ export const CAMBIAR_ESTADO_USUARIO = "CAMBIAR_ESTADO_USUARIO";
 //OrganizacionContext
 export const OBTENER_ORGANIZACION = "OBTENER_ORGANIZACION";
 
+
+//EventosContext
+export const OBTENER_EVENTOS = "OBTENER_EVENTOS";
+export const ORDENAR_FILTRAR_EVENTOS = "ORDENAR_FILTRAR_EVENTOS";
+
+
+// ModalContext
+export const SET_MODAL = "SET_MODAL";
+
+
+
+
+
 // SubastaContext
 export const OBTENER_SUBASTAS = "OBTENER_SUBASTAS";
 export const ORDENAR_FILTRAR_SUBASTAS = "ORDENAR_FILTRAR_SUBASTAS";

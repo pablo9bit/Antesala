@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { UsuarioContext, Tabla } from "../../../layout/Imports";
-import AccionesListarUsuarios from "./AccionesListarUsuarios";
+import { EventoContext, Tabla } from "../../../layout/Imports";
+import AccionesListarEventos from "./AccionesListarEventos";
 import ExcelExport from "./ExcelExport";
 
 const ListarEventos = ({ columnas, registrosPorPagina }) => {
-  const usuarioContext = useContext(UsuarioContext);
-  const { resultado, usuarios, ordenarFiltrar } = usuarioContext;
+  const eventoContext = useContext(EventoContext);
+  const { resultado, eventos, ordenarFiltrar } = eventoContext;
 
   const [filtros, setFiltros] = useState({
     nombre: "",
@@ -26,13 +26,13 @@ const ListarEventos = ({ columnas, registrosPorPagina }) => {
           <ExcelExport data={resultado} />
           <Tabla
             registrosPorPagina={registrosPorPagina}
-            itemsOriginal={usuarios}
+            itemsOriginal={eventos}
             itemsResultado={resultado}
             columnas={columnas}
             filtros={filtros}
             setFiltros={setFiltros}
             fnordenarFiltrar={ordenarFiltrar}
-            AccionesListar={AccionesListarUsuarios}
+            AccionesListar={AccionesListarEventos}
             TemplateFila={null}
           />
         </>

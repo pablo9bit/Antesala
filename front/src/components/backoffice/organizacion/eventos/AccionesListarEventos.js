@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Swal, UsuarioContext, useAlerta, Spinner } from "../../../layout/Imports";
+import { Swal, EventoContext, useAlerta, Spinner } from "../../../layout/Imports";
 import {
   BotonEliminar,
   BotonEditar,
@@ -8,7 +8,7 @@ import {
 } from "../../../layout/FormsElements";
 
 const AccionesListarEventos = ({ item }) => {
-  const usuarioContext = useContext(UsuarioContext);
+  const usuarioContext = useContext(EventoContext);
   const { actualizarUsuario } = usuarioContext;
 
   const [setAlerta, MostrarAlerta] = useAlerta(null);

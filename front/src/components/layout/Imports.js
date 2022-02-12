@@ -1,12 +1,15 @@
-
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
-
 
 import FirebaseContext from "../../context/firebase/FirebaseContext";
 import FirebaseState from "../../context/firebase/FirebaseState";
 import OrganizacionContext from "../../context/organizacion/OrganizacionContext";
 import OrganizacionState from "../../context/organizacion/OrganizacionState";
+import EventoContext from "../../context/eventos/EventosContext";
+import EventosState from "../../context/eventos/EventosState";
+import ModalContext from "../../context/modal/ModalContext";
+import ModalState from "../../context/modal/ModalState";
+
 /*
 import SubastaContext from "../../context/subasta/SubastaContext";
 import SubastaState from "../../context/subasta/SubastaState";
@@ -38,17 +41,34 @@ import Spinner from "./Spinner/Spinner";
 import Tabla from "./Tabla/Tabla";
 import Portal from "./Portal";
 
-export { Link, NavLink, useHistory, Router, Switch, Route, Redirect ,RutaPrivada, RutaPrivadaInfo, useUsuarioAutenticado };
+export {
+  Link,
+  NavLink,
+  useHistory,
+  Router,
+  Switch,
+  Route,
+  Redirect,
+  RutaPrivada,
+  RutaPrivadaInfo,
+  useUsuarioAutenticado,
+};
 export { Swal, uuidv4 };
 export { clienteAxios, axios };
 //export { format, add };
 export { Tabla, Portal, Layout, ScrollToTop, Spinner };
 
-
-
 // contexts
-export { FirebaseContext, FirebaseState, OrganizacionContext, OrganizacionState };
-
+export {
+  FirebaseContext,
+  FirebaseState,
+  OrganizacionContext,
+  OrganizacionState,
+  EventoContext,
+  EventosState,
+  ModalContext,
+  ModalState,
+};
 
 // hooks
 export { useAlerta };

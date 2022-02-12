@@ -5,14 +5,14 @@ import {
   Select,
   TextArea,
 } from "../../../layout/FormsElements";
-import { Spinner, UsuarioContext, useAlerta } from "../../../layout/Imports";
+import { Spinner, EventoContext, useAlerta } from "../../../layout/Imports";
 
 const FormEvento = ({ Seleccionado }) => {
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
   const [soloLectura, setSoloLectura] = useState(true);
 
-  const usuarioContext = useContext(UsuarioContext);
+  const usuarioContext = useContext(EventoContext);
   const {
     usuarioSeleccionado,
     deseleccionarUsuario,
