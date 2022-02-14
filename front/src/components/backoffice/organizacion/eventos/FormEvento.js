@@ -1,95 +1,113 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Input,
   BotoneraForm,
   Select,
   TextArea,
 } from "../../../layout/FormsElements";
-import { Spinner, EventoContext, useAlerta } from "../../../layout/Imports";
+import {
+  Spinner,
+ EventoContext,
+  FirebaseContext,
+  useAlerta,
+  useHistory,
+} from "../../../layout/Imports";
+import Cobros from "./mediosdecobro/Cobros";
 
-const FormEvento = ({ Seleccionado }) => {
+const FormEvento = (props) => {
+  const id = props.match.params.id;
+
+  const history = useHistory();
   const [setAlerta, MostrarAlerta] = useAlerta(null);
   const [loadingLocal, setLoadingLocal] = useState(null);
-  const [soloLectura, setSoloLectura] = useState(true);
+  const [soloLectura, setSoloLectura] = useState(false);
+  const [permitido, setPermitido] = useState(null);
 
-  const usuarioContext = useContext(EventoContext);
+  const fbContext = useContext(FirebaseContext);
+  const { usuarioLocal, noPermitido } = fbContext;
+
+  const eventoContext = useContext(EventoContext);
   const {
-    usuarioSeleccionado,
-    deseleccionarUsuario,
-    closeModal,
-    actualizarUsuario,
-  } = usuarioContext;
+    eventoSeleccionado,
+    getEvento,
+    saveEvento,
+    imagenes,
+    imagenesHandleChange,
+    imagenesQuitar,
+  } = eventoContext;
 
   const [DatosForm, LeerForm] = useState({
-    nombre: "",
-    apellido: "",
+    razon_social: "",
     idestado: "",
-    email: "",
-    cuil: "",
-    direccion: "",
-    telefono: "",
-    idtipousuario: "",
-    matricula: "",
-    imagen: "",
-    aprobado: "",
+    descripcionOrg: "",
+    ubicacion: "",
+    idlocalidad: "",
     url: "",
     motivodesactivado: "",
-    cdadSubastas: "",
-    cdadSubastasDestacadas: "",
-    ciudad: "",
-    provincia: "",
-    id: "",
-    avisar: true,
+    coordX: "",
+    coordY: "",
+    logo: "",
+    whatsapp: "",
+    accesibilidad: "",
+    MediosCobros: [],
+    nombre: "",
+    apellido: "",
+    telefono: "",
   });
 
   const {
+    razon_social,
+    idestado,
+    descripcionOrg,
+    ubicacion,
+    idlocalidad,
+    url,
+    motivodesactivado,
+    whatsapp,
+    accesibilidad,
+    MediosCobros,
     nombre,
     apellido,
-    idestado,
-    motivodesactivado,
-    cdadSubastas,
-    cdadSubastasDestacadas,
+    telefono,
   } = DatosForm;
 
   useEffect(() => {
-    if (usuarioSeleccionado !== null) {
-      LeerForm(usuarioSeleccionado);
+    console.log("id", id);
+    if (usuarioLocal !== null) {
+      if (
+        usuarioLocal.tipousuario === "1" ||
+        usuarioLocal.tipousuario === "9"
+      ) {
+        getOrganizacion(id ? id : usuarioLocal.id, setLoadingLocal, setAlerta);
+      }
+      if (id) {
+        setSoloLectura(true);
+      }
+      noPermitido(["1", "9"], setPermitido, history);
     }
-  }, []);
+  }, [usuarioLocal]);
 
-  /*   useEffect(() => {
-    if (usuarioSeleccionado !== null && idestado !== "3") {
-      LeerForm({
-        ...DatosForm,
-        motivodesactivado: "",
-      });
+  useEffect(() => {
+    if (eventoSeleccionado !== null) {
+      LeerForm(eventoSeleccionado);
     }
-  }, [usuarioSeleccionado, idestado]); */
+  }, [eventoSeleccionado]);
 
-  const Actualizar = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (
-      cdadSubastasDestacadas.trim() === "" ||
-      cdadSubastas.trim() === "" ||
-      idestado.trim() === ""
+      nombre.trim() === "" ||
+      apellido.trim() === "" ||
+      razon_social.trim() === "" ||
+      ubicacion.trim() === "" ||
+      descripcionOrg.trim() === ""
     ) {
       setAlerta({ msg: "Todos los campos son obligatorios", type: "error" });
       return;
     }
-    if (idestado.trim() === "3" && motivodesactivado.trim() === "") {
-      setAlerta({
-        msg: "Debe ingresar la causa de Desactivación",
-        type: "error",
-      });
-      return;
-    }
 
-    actualizarUsuario(DatosForm, setLoadingLocal, setAlerta);
+    saveOrganizacion(DatosForm, setLoadingLocal, setAlerta);
     setSoloLectura(true);
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    Actualizar();
   };
 
   const onChange = (e) => {
@@ -101,104 +119,328 @@ const FormEvento = ({ Seleccionado }) => {
   };
 
   const funcionCancelar = () => {
-    deseleccionarUsuario();
-    closeModal(true);
+    if (usuarioLocal.tipousuario === "1") {
+      history.push("/org");
+    }
+    if (usuarioLocal.tipousuario === "9") {
+      history.push("/admin/organizaciones");
+    }
   };
 
-  return (
-    <div className="center-block">
-      <br></br>
-      <h2 className="text-center">
-        {Seleccionado ? "Editar " : "Agregar "} Martillero
-      </h2>
-      <br></br>
-      <form onSubmit={onSubmit} className="border p-3 form">
-        <Input
-          key={"nombre"}
-          sets={{
-            label: "Nombre ",
-            type: "text",
-            name: "nombre",
-            placeholder: " ",
-            valor: nombre,
-            disabled: true,
-          }}
-          onChange={onChange}
-        />
-        <Input
-          key={"apellido"}
-          sets={{
-            label: "Apellido ",
-            type: "text",
-            name: "apellido",
-            placeholder: " ",
-            valor: apellido,
-            disabled: true,
-          }}
-          onChange={onChange}
-        />
-        <Input
-          key={"cdadSubastas"}
-          sets={{
-            label: "Cdad. Subastas Permitidas ",
-            type: "number",
-            name: "cdadSubastas",
-            placeholder: " ",
-            valor: cdadSubastas,
-          }}
-          onChange={onChange}
-        />
-        <Input
-          key={"cdadSubastasDestacadas"}
-          sets={{
-            label: "Cdad. Subastas Destacadas Permitidas ",
-            type: "number",
-            name: "cdadSubastasDestacadas",
-            placeholder: " ",
-            valor: cdadSubastasDestacadas,
-          }}
-          onChange={onChange}
-        />
-        <Select
-          key={"idestado"}
-          sets={{
-            label: "Estado de Martillero",
-            name: "idestado",
-            valor: idestado,
-            opciones: [
-              { label: "Sin Verificar Email", value: "1" },
-              { label: "Activo", value: "2" },
-              { label: "No Activo", value: "3" },
-            ],
-          }}
-          onChange={onChange}
-        />
-        <TextArea
-          key={"motivodesactivado"}
-          sets={{
-            label: "Causa Desactivación ",
-            type: "text",
-            name: "motivodesactivado",
-            placeholder: " ",
-            rows: 3,
-            cols: 40,
-            valor: motivodesactivado,
-          }}
-          onChange={onChange}
-        />
-        <div style={{padding: "20px"}}>
-          Al Presionar "Guardar", se enviará un Email al usuario comunicandole
-          los cambios en su cuenta.
-        </div>
-        {loadingLocal ? <Spinner /> : <MostrarAlerta />}
+  if (permitido === null) return <></>;
+  if (permitido === "si")
+    return (
+      <div
+        className="abs-center"
+        style={{ paddingTop: "5px", paddingBottom: "10px" }}
+      >
+        <form
+          onSubmit={onSubmit}
+          className="border p-3 form"
+          style={{ width: "90%" }}
+        >
+          <h2 className="text-center">Mi Evento</h2>
 
-        <BotoneraForm
-          funcionCancelar={funcionCancelar}
-          valorfuncion={null}
-          deshabilitado={soloLectura}
-        />
-      </form>
-    </div>
-  );
+          <div className="accordion" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingOne">
+                <button
+                  className="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  Datos de Productor
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                className="accordion-collapse collapse show"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <br></br>
+                  <Input
+                    key={"nombre"}
+                    sets={{
+                      label: "Nombre",
+                      type: "text",
+                      name: "nombre",
+                      placeholder: " ",
+                      valor: nombre,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Input
+                    key={"apellido"}
+                    sets={{
+                      label: "Apellido",
+                      type: "text",
+                      name: "apellido",
+                      placeholder: " ",
+                      valor: apellido,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Input
+                    key={"telefono"}
+                    sets={{
+                      label: "Telefono",
+                      type: "text",
+                      name: "telefono",
+                      placeholder: " ",
+                      valor: telefono,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <select
+                    name="idlocalidad"
+                    id="idlocalidad"
+                    onChange={onChange}
+                    value={idlocalidad}
+                    disabled={soloLectura}
+                    className="form-select form-select"
+                  >
+                    <option value="">Seleccione Su Localidad</option>
+                    <option value="1">Córdoba</option>
+                    <option value="2">Rosario</option>
+                    <option value="3">Buenos Aires</option>
+                    <option value="4">Santa Fé</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingTwo">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  Datos de la Sala
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <br></br>
+                  <Input
+                    key={"razon_social"}
+                    sets={{
+                      label: "Razon Social",
+                      type: "text",
+                      name: "razon_social",
+                      placeholder: " ",
+                      valor: razon_social,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <TextArea
+                    key={"descripcionOrg"}
+                    sets={{
+                      label: "Descripcion",
+                      type: "text",
+                      name: "descripcionOrg",
+                      placeholder: " ",
+                      rows: 3,
+                      cols: 40,
+                      valor: descripcionOrg,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Input
+                    key={"whatsapp"}
+                    sets={{
+                      label: "Whatsapp",
+                      type: "text",
+                      name: "whatsapp",
+                      placeholder: " ",
+                      valor: whatsapp,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Input
+                    key={"url"}
+                    sets={{
+                      label: "Url ",
+                      type: "text",
+                      name: "url",
+                      placeholder: " ",
+                      valor: url,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Input
+                    key={"ubicacion"}
+                    sets={{
+                      label: "Dirección: ",
+                      type: "text",
+                      name: "ubicacion",
+                      placeholder: " ",
+                      valor: ubicacion,
+                      disabled: soloLectura,
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Select
+                    key={"accesibilidad"}
+                    sets={{
+                      label: "Accesible",
+                      name: "accesibilidad",
+                      valor: accesibilidad,
+                      disabled: true,
+                      opciones: [
+                        { label: "Si", value: "Si" },
+                        { label: "No", value: "No" },
+                      ],
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+                  <Select
+                    key={"idestado"}
+                    sets={{
+                      label: "Estado",
+                      name: "idestado",
+                      valor: idestado,
+                      disabled: true,
+                      opciones: [
+                        { label: "Activo", value: "ACTIVO" },
+                        { label: "No Activo", value: "3" },
+                      ],
+                    }}
+                    onChange={onChange}
+                  />
+                  <br></br>
+
+                  <TextArea
+                    key={"motivodesactivado"}
+                    sets={{
+                      label: "Causa Desactivación ",
+                      type: "text",
+                      name: "motivodesactivado",
+                      placeholder: " ",
+                      rows: 3,
+                      cols: 40,
+                      valor: motivodesactivado,
+                      disabled: true,
+                    }}
+                    onChange={onChange}
+                  />
+
+                  <div style={{ padding: "10px" }}>
+                    {!soloLectura ? (
+                      <input
+                        type="file"
+                        multiple
+                        onChange={imagenesHandleChange}
+                        name="archivo"
+                      />
+                    ) : null}
+                    <br></br>
+                    {imagenes ? (
+                      <>
+                        <div className="text-center">
+                          <br></br>
+
+                          {imagenes.length > 0 ? (
+                            <div className="p-2 row justify-content-center">
+                              {imagenes
+                                .filter((item) => item.accion !== "borrar")
+                                .map((item) => (
+                                  <div
+                                    key={item.url}
+                                    className="card"
+                                    style={{
+                                      padding: "10px",
+                                      width: "240px",
+                                    }}
+                                  >
+                                    <img src={item.url} width="220px" alt="" />
+                                    <div>
+                                      {!soloLectura ? (
+                                        <button
+                                          className="BotonQuitar"
+                                          type="button"
+                                          onClick={() => imagenesQuitar(item)}
+                                        >
+                                          <i className="fa fa-trash"></i>
+                                        </button>
+                                      ) : null}
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          ) : null}
+                        </div>
+                        <br></br>
+                        <br></br>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingThree">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  Medios de Cobro
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <Cobros DatosForm={DatosForm} LeerForm={LeerForm} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {loadingLocal ? <Spinner /> : <MostrarAlerta />}
+
+          <BotoneraForm
+            funcionCancelar={funcionCancelar}
+            valorfuncion={null}
+            deshabilitado={soloLectura}
+          />
+        </form>
+      </div>
+    );
 };
 export default FormEvento;
