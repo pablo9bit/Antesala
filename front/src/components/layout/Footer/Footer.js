@@ -39,7 +39,7 @@ const Footer = () => {
               </li>
               <li className="pb-2">
                 <a href="#" className="GothamLight fc-blanco">
-                  Pautá con nosotrxs
+                  Pautá con nosotrxs si?
                 </a>
               </li>
               <li>
